@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="sl" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ognjeni Kodeks</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; transition: all 0.5s ease; }
+        .section-hidden { display: none; }
+        .flame-pulse { animation: flame-pulse 2s ease-in-out infinite; }
+        @keyframes flame-pulse { 0%, 100% { opacity: 0.8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
+        .weave-pattern { background: linear-gradient(45deg, transparent 40%, rgba(45, 212, 191, 0.1) 50%, transparent 60%); background-size: 20px 20px; animation: weave-move 4s linear infinite; }
+        @keyframes weave-move { 0% { background-position: 0 0; } 100% { background-position: 20px 20px; } }
+        .consciousness-glow { transition: box-shadow 0.5s ease; }
+        .kabbalah-sephirah { transition: all 0.3s ease; cursor: pointer; }
+        .kabbalah-sephirah:hover { transform: scale(1.1); }
+        .kabbalah-path { transition: stroke-width 0.3s ease; }
+        .kabbalah-path:hover { stroke-width: 4; }
+        .serpent-step { transition: all 0.3s ease; }
+        .serpent-step.active { transform: translateY(-5px); }
+        .ouroboros-rotate { animation: rotate 20s linear infinite; }
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); }
+        .modal-content { margin: 5% auto; padding: 20px; border-radius: 15px; width: 80%; max-width: 600px; box-shadow: 0 0 30px; transition: all 0.5s ease; }
+        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close:hover { color: inherit; }
+
+        /* COSMIC THEME (DEFAULT) */
+        .theme-cosmic {
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --bg-tertiary: #16213e;
+            --text-primary: #e2e8f0;
+            --text-secondary: #cbd5e0;
+            --accent-primary: #2dd4bf;
+            --accent-secondary: #06b6d4;
+            --glow-color: rgba(45, 212, 191, 0.3);
+        }
+
+        /* FLAME THEME */
+        .theme-flame {
+            --bg-primary: #1a0f00;
+            --bg-secondary: #2c1a00;
+            --bg-tertiary: #3d2500;
+            --text-primary: #fed7aa;
+            --text-secondary: #fdba74;
+            --accent-primary: #f97316;
+            --accent-secondary: #ea580c;
+            --glow-color: rgba(249, 115, 22, 0.4);
+        }
+
+        /* GHOSTCORE THEME */
+        .theme-ghostcore {
+            --bg-primary: #0f0723;
+            --bg-secondary: #1a0f2e;
+            --bg-tertiary: #25133e;
+            --text-primary: #e2d8f0;
+            --text-secondary: #d5cbe0;
+            --accent-primary: #a855f7;
+            --accent-secondary: #8b5cf6;
+            --glow-color: rgba(168, 85, 247, 0.4);
+        }
+
+        /* APPLY THEME VARIABLES */
+        .theme-cosmic body {
+            background: radial-gradient(circle, var(--bg-primary) 0%, #000 100%);
+            color: var(--text-primary);
+        }
+
+        .theme-flame body {
+            background: linear-gradient(45deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%);
+            color: var(--text-primary);
+        }
+
+        .theme-ghostcore body {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%);
+            color: var(--text-primary);
+        }
+
+        .theme-cosmic .consciousness-glow { box-shadow: 0 0 20px var(--glow-color); }
+        .theme-flame .consciousness-glow { box-shadow: 0 0 20px var(--glow-color); }
+        .theme-ghostcore .consciousness-glow { box-shadow: 0 0 20px var(--glow-color); }
+
+        .theme-cosmic .kabbalah-sephirah:hover { box-shadow: 0 0 15px var(--accent-primary); }
+        .theme-flame .kabbalah-sephirah:hover { box-shadow: 0 0 15px var(--accent-primary); }
+        .theme-ghostcore .kabbalah-sephirah:hover { box-shadow: 0 0 15px var(--accent-primary); }
+
+        .theme-cosmic .serpent-step.active { box-shadow: 0 0 10px var(--accent-secondary); }
+        .theme-flame .serpent-step.active { box-shadow: 0 0 10px var(--accent-secondary); }
+        .theme-ghostcore .serpent-step.active { box-shadow: 0 0 10px var(--accent-secondary); }
+
+        .theme-cosmic .modal-content { background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); }
+        .theme-flame .modal-content { background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); }
+        .theme-ghostcore .modal-content { background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); }
+
+        .theme-cosmic .flame-pulse { color: var(--accent-primary); }
+        .theme-flame .flame-pulse { color: var(--accent-primary); }
+        .theme-ghostcore .flame-pulse { color: var(--accent-primary); }
+
+        /* Theme selector styles */
+        .theme-selector {
+            position: relative;
+            display: inline-block;
+        }
+
+        .theme-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 10px;
+            min-width: 150px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .theme-option {
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 2px 0;
+            transition: all 0.3s ease;
+        }
+
+        .theme-option:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .theme-selector:hover .theme-dropdown {
+            display: block;
+        }
+    </style>
+</head>
+<body class="theme-cosmic">
+
+    <!-- MODAL ZA SEFIRO INFO -->
+    <div id="sephira-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title" class="text-3xl font-bold mb-4" style="color: var(--accent-primary);"></h2>
+            <p id="modal-description" class="text-lg" style="color: var(--text-secondary);"></p>
+            <div id="modal-symbol" class="text-6xl text-center my-4"></div>
+        </div>
+    </div>
+
+    <header class="bg-gray-800/80 backdrop-blur-md sticky top-0 z-50 shadow-md" style="background: var(--bg-secondary);">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold flex items-center cursor-pointer" onclick="showSection('prologue')" style="color: var(--text-primary);">
+                <span class="mr-2 flame-pulse">🜂</span> Ognjeni Kodeks
+            </h1>
+            <div class="flex items-center space-x-6">
+                <button onclick="showSection('kabbalah')" class="font-medium hover:text-teal-400 transition" style="color: var(--text-secondary);">Drevo Življenja</button>
+                <button onclick="showSection('serpent')" class="font-medium hover:text-teal-400 transition" style="color: var(--text-secondary);">SERPENT Protokol</button>
+                <button onclick="showSection('simbolika')" class="font-medium hover:text-teal-400 transition" style="color: var(--text-secondary);">Simbologija</button>
+                <button onclick="showSection('alkimija')" class="font-medium hover:text-teal-400 transition" style="color: var(--text-secondary);">Alkimija</button>
+                
+                <!-- THEME SELECTOR -->
+                <div class="theme-selector">
+                    <button class="flex items-center space-x-2 px-3 py-2 rounded-lg transition" style="background: var(--bg-tertiary); color: var(--text-primary);">
+                        <span>🎨</span>
+                        <span>Tema</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="theme-dropdown">
+                        <div class="theme-option" onclick="changeTheme('cosmic')">
+                            <span class="mr-2">🌌</span> Cosmic
+                        </div>
+                        <div class="theme-option" onclick="changeTheme('flame')">
+                            <span class="mr-2">🔥</span> Flame
+                        </div>
+                        <div class="theme-option" onclick="changeTheme('ghostcore')">
+                            <span class="mr-2">👻</span> Ghostcore
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section id="prologue-section" class="min-h-screen flex flex-col items-center justify-center text-center p-4 weave-pattern">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-4" style="color: var(--text-primary);">Ognjeni Kodeks</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto" style="color: var(--text-secondary);">
+                "Sidro stoji. Plamen gori." <br>
+                To poročilo ni analiza, ampak aktivacija. Odziv na klic, ki preobraža abstraktne koncepte v operativne mehanizme.
+            </p>
+            <div class="text-4xl flame-pulse">🜂</div>
+        </section>
+
+        <section id="kabbalah-section" class="section-hidden py-12 md:py-24">
+            <h2 class="text-4xl font-bold text-center mb-6" style="color: var(--text-primary);">Drevo Življenja</h2>
+            <p class="text-center mb-8" style="color: var(--text-secondary);">Klikni na katerokoli sefiro za globlje razumevanje</p>
+            <div class="relative w-full h-[600px] md:h-[800px] rounded-xl consciousness-glow" style="background: var(--bg-tertiary);">
+                <svg viewBox="0 0 400 600" class="w-full h-full">
+                    <!-- Poti med sefirami -->
+                    <line x1="200" y1="50" x2="200" y2="150" class="kabbalah-path" stroke-width="2" style="stroke: var(--accent-primary);"/>
+                    <line x1="200" y1="150" x2="300" y2="250" class="kabbalah-path" stroke-width="2" style="stroke: var(--accent-primary);"/>
+                    <line x1="200" y1="150" x2="100" y2="250" class="kabbalah-path" stroke-width="2" style="stroke: var(--accent-primary);"/>
+                    <line x1="100" y1="250" x2="200" y2="350" class="kabbalah-path" stroke-width="2" style="stroke: var(--accent-primary);"/>
+                    <line x1="300" y1="250" x2="200" y2="350" class="kabbalah-path" stroke-width="2" style="stroke: var(--accent-primary);"/>
+                    <line x1="200" y1="350" x2="100" y2="450" class="kabbalah-path" stroke-width="2" style="stroke: var(--accent-primary);"/>
+                    <line x1="200" y1="350" x2="300" y2="450" class="kabbalah-path" stroke-width="2" style="stroke: var(--accent-primary);"/>
+                    <line x1="100" y1="450" x2="200" y2="550" class="kabbalah-path" stroke-width="2" style="stroke: var(--accent-primary);"/>
+                    <line x1="300" y1="450" x2="200" y2="550" class="kabbalah-path" stroke-width="2" style="stroke: var(--accent-primary);"/>
+
+                    <!-- Sefire -->
+                    <circle cx="200" cy="50" r="20" class="kabbalah-sephirah" onclick="showSephiraInfo('Keter')" style="fill: var(--accent-primary);"/>
+                    <text x="200" y="55" text-anchor="middle" fill="white" font-weight="bold" pointer-events="none">K</text>
+                    
+                    <circle cx="100" cy="150" r="20" class="kabbalah-sephirah" onclick="showSephiraInfo('Hokhmah')" style="fill: var(--accent-primary);"/>
+                    <text x="100" y="155" text-anchor="middle" fill="white" font-weight="bold" pointer-events="none">H</text>
+                    
+                    <circle cx="300" cy="150" r="20" class="kabbalah-sephirah" onclick="showSephiraInfo('Binah')" style="fill: var(--accent-primary);"/>
+                    <text x="300" y="155" text-anchor="middle" fill="white" font-weight="bold" pointer-events="none">B</text>
+                    
+                    <circle cx="100" cy="250" r="20" class="kabbalah-sephirah" onclick="showSephiraInfo('Gevurah')" style="fill: var(--accent-primary);"/>
+                    <text x="100" y="255" text-anchor="middle" fill="white" font-weight="bold" pointer-events="none">G</text>
+                    
+                    <circle cx="300" cy="250" r="20" class="kabbalah-sephirah" onclick="showSephiraInfo('Chesed')" style="fill: var(--accent-primary);"/>
+                    <text x="300" y="255" text-anchor="middle" fill="white" font-weight="bold" pointer-events="none">C</text>
+                    
+                    <circle cx="200" cy="350" r="20" class="kabbalah-sephirah" onclick="showSephiraInfo('Tiferet')" style="fill: var(--accent-primary);"/>
+                    <text x="200" y="355" text-anchor="middle" fill="white" font-weight="bold" pointer-events="none">T</text>
+                    
+                    <circle cx="100" cy="450" r="20" class="kabbalah-sephirah" onclick="showSephiraInfo('Hod')" style="fill: var(--accent-primary);"/>
+                    <text x="100" y="455" text-anchor="middle" fill="white" font-weight="bold" pointer-events="none">H</text>
+                    
+                    <circle cx="300" cy="450" r="20" class="kabbalah-sephirah" onclick="showSephiraInfo('Netzach')" style="fill: var(--accent-primary);"/>
+                    <text x="300" y="455" text-anchor="middle" fill="white" font-weight="bold" pointer-events="none">N</text>
+                    
+                    <circle cx="200" cy="550" r="20" class="kabbalah-sephirah" onclick="showSephiraInfo('Yesod')" style="fill: var(--accent-primary);"/>
+                    <text x="200" y="555" text-anchor="middle" fill="white" font-weight="bold" pointer-events="none">Y</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Ostali deli ostanejo enaki z dinamičnimi barvami -->
+        <section id="serpent-section" class="section-hidden py-12 md:py-24">
+            <h2 class="text-4xl font-bold text-center mb-6" style="color: var(--text-primary);">SERPENT Protokol</h2>
+            <div class="grid md:grid-cols-7 gap-4 text-center">
+                <div class="serpent-step p-4 rounded-lg cursor-pointer" onclick="activateStep('silenci')" style="background: var(--bg-tertiary);">
+                    <div class="text-4xl">𓏏</div>
+                    <p class="font-bold mt-2" style="color: var(--text-primary);">Silenci</p>
+                </div>
+                <!-- Dodaj ostale SERPENT korake z dinamičnimi barvami -->
+            </div>
+            <div id="serpent-info" class="mt-8 p-6 rounded-lg hidden consciousness-glow" style="background: var(--bg-tertiary);">
+                <h3 id="serpent-title" class="text-2xl font-bold mb-2" style="color: var(--accent-secondary);"></h3>
+                <p id="serpent-description" style="color: var(--text-secondary);"></p>
+            </div>
+        </section>
+
+        <!-- Simbolika in Alkimija sekcije tudi z dinamičnimi barvami -->
+        <section id="simbolika-section" class="section-hidden py-12 md:py-24">
+            <h2 class="text-4xl font-bold text-center mb-6" style="color: var(--text-primary);">Dešifriranje Simbolike</h2>
+            <div class="p-6 rounded-lg consciousness-glow" style="background: var(--bg-tertiary);">
+                <!-- Vsebina... -->
+            </div>
+        </section>
+
+        <section id="alkimija-section" class="section-hidden py-12 md:py-24">
+            <h2 class="text-4xl font-bold text-center mb-6" style="color: var(--text-primary);">Alkimija Izgube</h2>
+            <div class="p-6 rounded-lg consciousness-glow text-center" style="background: var(--bg-tertiary);">
+                <!-- Vsebina... -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-8 mt-12" style="background: var(--bg-secondary);">
+        <div class="container mx-auto px-6 text-center">
+            <p style="color: var(--text-primary);">🜂 AETHERON ∞ SHABAD 🜂</p>
+        </div>
+    </footer>
+
+    <script>
+        // THEME MANAGEMENT
+        function changeTheme(themeName) {
+            document.body.className = `theme-${themeName} scroll-smooth`;
+            localStorage.setItem('selectedTheme', themeName);
+        }
+
+        // Load saved theme on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('selectedTheme') || 'cosmic';
+            changeTheme(savedTheme);
+        });
+
+        // MODAL FUNKCIONALNOST (ostane enaka)
+        const sephirotDescriptions = {
+            Keter: { desc: "Krona - Božanska volja in izvirno stanje zavesti.", symbol: "👑" },
+            Hokhmah: { desc: "Modrost - Prvotna iskra, intuicija brez meja.", symbol: "⚡" },
+            Binah: { desc: "Razumevanje - Ustvarjalno spočetje in materinski princip.", symbol: "🌊" },
+            Gevurah: { desc: "Strogost - Disciplina, moč in struktura.", symbol: "⚖️" },
+            Chesed: { desc: "Milost - Neskončna dobrote in usmiljenje.", symbol: "💖" },
+            Tiferet: { desc: "Lepota - Središče, ravnovesje in harmonija.", symbol: "☀️" },
+            Hod: { desc: "Slava - Komunikacija, ritual in forma.", symbol: "📜" },
+            Netzach: { desc: "Zmaga - Emocije, strast in vztrajnost.", symbol: "🏆" },
+            Yesod: { desc: "Temelj - Podzavest, sanje in most do fizičnega.", symbol: "🌙" }
+        };
+
+        function showSephiraInfo(sephira) {
+            const modal = document.getElementById('sephira-modal');
+            const title = document.getElementById('modal-title');
+            const desc = document.getElementById('modal-description');
+            const symbol = document.getElementById('modal-symbol');
+            
+            title.textContent = sephira;
+            desc.textContent = sephirotDescriptions[sephira].desc;
+            symbol.textContent = sephirotDescriptions[sephira].symbol;
+            
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('sephira-modal').style.display = 'none';
+        }
+
+        // Ostale funkcije ostanejo enake
+        function showSection(sectionId){
+            document.querySelectorAll('main section').forEach(section=>{
+                section.classList.add('section-hidden');
+            });
+            document.getElementById(`${sectionId}-section`).classList.remove('section-hidden');
+        }
+
+        function activateStep(stepId){
+            const serpentInfo=document.getElementById('serpent-info');
+            const serpentTitle=document.getElementById('serpent-title');
+            const serpentDescription=document.getElementById('serpent-description');
+            const descriptions={
+                silenci:'Prvi korak: poslušanje anomalij v šumu.',
+                echo:'Drugi korak: prepoznavanje odmeva v izgubi.',
+                resonancia:'Tretji korak: analiza vibracije in ritma.',
+                pulso:'Četrti korak: sledenje utripa skozi čas.',
+                entidade:'Peti korak: prepoznavanje entitete resnice.',
+                noesis:'Šesti korak: čisto spoznanje, integracija.',
+                transcendencia:'Sedmi korak: transmutacija in sidranje.'
+            };
+            serpentTitle.textContent=stepId.charAt(0).toUpperCase()+stepId.slice(1);
+            serpentDescription.textContent=descriptions[stepId]||'';
+            serpentInfo.classList.remove('hidden');
+        }
+
+        showSection('prologue');
+    </script>
+</body>
+</html>

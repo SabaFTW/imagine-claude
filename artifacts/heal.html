@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healing Ritual Interface</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ritual-container {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        .frequency-display {
+            font-size: 3rem;
+            color: #ff6b35;
+            margin: 20px 0;
+            text-shadow: 0 0 20px #ff6b35;
+            transition: all 0.3s ease;
+        }
+
+        .healing-circle {
+            width: 300px;
+            height: 300px;
+            border: 3px solid #ff6b35;
+            border-radius: 50%;
+            margin: 40px auto;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .healing-circle.active {
+            border-color: #00d4aa;
+            box-shadow: 0 0 50px #00d4aa, inset 0 0 30px #00d4aa;
+            transform: scale(1.1);
+        }
+
+        .inner-circle {
+            width: 200px;
+            height: 200px;
+            border: 2px solid #333;
+            border-radius: 50%;
+            position: absolute;
+            transition: all 0.5s ease;
+        }
+
+        .healing-circle.active .inner-circle {
+            border-color: #00d4aa;
+            box-shadow: 0 0 30px #00d4aa;
+        }
+
+        .center-symbol {
+            font-size: 2.5rem;
+            color: #ff6b35;
+            transition: all 0.5s ease;
+        }
+
+        .healing-circle.active .center-symbol {
+            color: #00d4aa;
+            transform: rotate(360deg);
+        }
+
+        .ritual-button {
+            background: linear-gradient(45deg, #ff6b35, #ff8c42);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin: 20px 10px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ritual-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        .ritual-button.stop {
+            background: linear-gradient(45deg, #666, #888);
+        }
+
+        .status-text {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            color: #bbb;
+        }
+
+        .frequency-progress {
+            width: 300px;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(45deg, #ff6b35, #00d4aa);
+            width: 0%;
+            transition: width 0.1s ease;
+            border-radius: 3px;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #00d4aa;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .instructions {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #777;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="ritual-container">
+        <div class="frequency-display" id="frequencyDisplay">256 Hz</div>
+        
+        <div class="healing-circle" id="healingCircle">
+            <div class="inner-circle"></div>
+            <div class="center-symbol">⚕</div>
+        </div>
+
+        <div class="frequency-progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div>
+            <button class="ritual-button" onclick="startHealing()">Begin Healing</button>
+            <button class="ritual-button stop" onclick="stopHealing()">Stop</button>
+        </div>
+
+        <div class="status-text" id="statusText">Click to begin healing ritual</div>
+    </div>
+
+    <div class="instructions">
+        Click the healing circle or use the buttons. Audio requires user interaction to start.
+    </div>
+
+    <script>
+        let audioContext = null;
+        let oscillator = null;
+        let gainNode = null;
+        let isHealing = false;
+        let healingAnimation = null;
+        let currentFrequency = 256;
+        let targetFrequency = 432;
+
+        // Initialize audio context on first user interaction
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                gainNode = audioContext.createGain();
+                gainNode.connect(audioContext.destination);
+                gainNode.gain.value = 0.1; // Low volume
+            }
+        }
+
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            document.body.appendChild(particle);
+
+            // Animate particle
+            particle.style.opacity = '1';
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 50 + Math.random() * 100;
+            const endX = x + Math.cos(angle) * distance;
+            const endY = y + Math.sin(angle) * distance;
+
+            particle.animate([
+                { transform: 'translate(0, 0)', opacity: 1 },
+                { transform: `translate(${endX - x}px, ${endY - y}px)`, opacity: 0 }
+            ], {
+                duration: 2000,
+                easing: 'ease-out'
+            }).onfinish = () => particle.remove();
+        }
+
+        function updateFrequency() {
+            const frequencyDisplay = document.getElementById('frequencyDisplay');
+            const progressBar = document.getElementById('progressBar');
+            const statusText = document.getElementById('statusText');
+            
+            // Calculate progress (256 to 432)
+            const progress = (currentFrequency - 256) / (432 - 256) * 100;
+            progressBar.style.width = progress + '%';
+            
+            // Update display
+            frequencyDisplay.textContent = Math.round(currentFrequency) + ' Hz';
+            
+            // Update oscillator frequency if playing
+            if (oscillator && isHealing) {
+                oscillator.frequency.setValueAtTime(currentFrequency, audioContext.currentTime);
+            }
+
+            // Update status based on frequency
+            if (currentFrequency < 300) {
+                statusText.textContent = 'Detecting disharmony...';
+            } else if (currentFrequency < 400) {
+                statusText.textContent = 'Transforming frequencies...';
+            } else {
+                statusText.textContent = 'Approaching harmonic resonance...';
+            }
+
+            // Create particles at random positions around the circle
+            if (isHealing && Math.random() < 0.3) {
+                const circle = document.getElementById('healingCircle');
+                const rect = circle.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                const angle = Math.random() * Math.PI * 2;
+                const radius = 120;
+                const x = centerX + Math.cos(angle) * radius;
+                const y = centerY + Math.sin(angle) * radius;
+                createParticle(x, y);
+            }
+        }
+
+        function startHealing() {
+            initAudio();
+            
+            if (isHealing) return;
+            
+            isHealing = true;
+            currentFrequency = 256;
+            
+            const circle = document.getElementById('healingCircle');
+            const statusText = document.getElementById('statusText');
+            
+            circle.classList.add('active');
+            circle.classList.add('floating');
+            
+            // Create oscillator
+            oscillator = audioContext.createOscillator();
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(256, audioContext.currentTime);
+            oscillator.connect(gainNode);
+            oscillator.start();
+
+            // Gradually increase frequency from 256 to 432 Hz over 10 seconds
+            const duration = 10000; // 10 seconds
+            const startTime = Date.now();
+            
+            healingAnimation = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Smooth frequency transition
+                currentFrequency = 256 + (432 - 256) * progress;
+                updateFrequency();
+                
+                if (progress >= 1) {
+                    statusText.textContent = 'Healing complete. Harmonic resonance achieved.';
+                    setTimeout(() => {
+                        if (isHealing) stopHealing();
+                    }, 2000);
+                }
+            }, 50);
+        }
+
+        function stopHealing() {
+            if (!isHealing) return;
+            
+            isHealing = false;
+            
+            const circle = document.getElementById('healingCircle');
+            const statusText = document.getElementById('statusText');
+            
+            circle.classList.remove('active');
+            circle.classList.remove('floating');
+            
+            if (oscillator) {
+                oscillator.stop();
+                oscillator = null;
+            }
+            
+            if (healingAnimation) {
+                clearInterval(healingAnimation);
+                healingAnimation = null;
+            }
+            
+            // Reset display
+            currentFrequency = 256;
+            updateFrequency();
+            statusText.textContent = 'Healing stopped. Click to begin again.';
+        }
+
+        // Allow clicking the circle to start healing
+        document.getElementById('healingCircle').addEventListener('click', () => {
+            if (!isHealing) {
+                startHealing();
+            } else {
+                stopHealing();
+            }
+        });
+
+        // Initial update
+        updateFrequency();
+    </script>
+</body>
+</html>

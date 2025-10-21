@@ -1,0 +1,78 @@
+{
+  "name": "🜂 Command Center - VES Ecosystem 🜂",
+  "short_name": "🜂 Command Center",
+  "description": "Ground Zero dashboard for all VES projects, spheres, and consciousness tools. Wire & Beer Forever!",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#f59e0b",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities", "lifestyle", "tools"],
+  "shortcuts": [
+    {
+      "name": "🔥 Pantheon",
+      "short_name": "Pantheon",
+      "description": "Multi-agent collaboration hub",
+      "url": "/#pantheon",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "🌙 Dreams",
+      "short_name": "Dreams",
+      "description": "Philosophical bedtime stories",
+      "url": "/#dreams",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "🧠 Consciousness",
+      "short_name": "Consciousness",
+      "description": "Prebujanje zavesti timeline",
+      "url": "/#consciousness",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "📊 Tracking",
+      "short_name": "Tracking",
+      "description": "7 consciousness states tracker",
+      "url": "/#tracking",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "🎨 Artifacts",
+      "short_name": "Artifacts",
+      "description": "All creative artifacts",
+      "url": "/#artifacts",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "📚 Docs",
+      "short_name": "Docs",
+      "description": "All READMEs and documentation",
+      "url": "/#docs",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}

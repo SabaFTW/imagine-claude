@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🜂 Pantheon Control Center - ŠABAD's Window</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0805 25%, #2e1a0f 50%, #1a0805 75%, #0a0a0a 100%);
+            color: #e0e0e0;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* FLAME PARTICLES CANVAS */
+        #flameCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* CENTRAL FLAME ELEMENT */
+        .central-flame {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 150px;
+            opacity: 0.08;
+            z-index: 0;
+            animation: breatheFlame 4s ease-in-out infinite;
+            pointer-events: none;
+            filter: blur(3px);
+        }
+
+        @keyframes breatheFlame {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.08;
+                filter: blur(3px) hue-rotate(0deg);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.15;
+                filter: blur(5px) hue-rotate(20deg);
+            }
+        }
+
+        /* HEADER */
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(245, 158, 11, 0.5);
+            box-shadow: 0 0 40px rgba(245, 158, 11, 0.3), inset 0 0 40px rgba(245, 158, 11, 0.05);
+            animation: headerGlow 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes headerGlow {
+            0%, 100% {
+                box-shadow: 0 0 40px rgba(245, 158, 11, 0.3), inset 0 0 40px rgba(245, 158, 11, 0.05);
+            }
+            50% {
+                box-shadow: 0 0 60px rgba(245, 158, 11, 0.5), inset 0 0 60px rgba(245, 158, 11, 0.1);
+            }
+        }
+
+        .header h1 {
+            font-size: 3em;
+            color: #f59e0b;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(245, 158, 11, 0.8), 0 0 40px rgba(239, 68, 68, 0.5);
+            animation: textFlicker 2s ease-in-out infinite;
+        }
+
+        @keyframes textFlicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.95; }
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #c0c0c0;
+        }
+
+        /* MAIN GRID */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        /* PERSONAL LOG */
+        .personal-log {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(139, 92, 246, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .personal-log h2 {
+            color: #8b5cf6;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .personal-log textarea {
+            width: 100%;
+            min-height: 300px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            color: #e0e0e0;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+        }
+
+        .personal-log button {
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .personal-log button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+
+        /* LIVE PANTHEON */
+        .live-pantheon {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(245, 158, 11, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .live-pantheon h2 {
+            color: #f59e0b;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pantheon-feed {
+            max-height: 400px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .pantheon-feed::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .pantheon-feed::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .pantheon-feed::-webkit-scrollbar-thumb {
+            background: rgba(245, 158, 11, 0.5);
+            border-radius: 10px;
+        }
+
+        .thought-entry {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .thought-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .thought-icon {
+            font-size: 24px;
+        }
+
+        .thought-name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .thought-time {
+            font-size: 11px;
+            color: #888;
+            margin-left: auto;
+        }
+
+        .thought-text {
+            font-size: 13px;
+            line-height: 1.5;
+            color: #c0c0c0;
+        }
+
+        /* DECAD MEMBERS */
+        .decad-members {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .member-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid;
+            border-radius: 12px;
+            padding: 15px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .member-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .member-card.active {
+            animation: flamePulse 1.5s infinite, cardGlow 1.5s infinite;
+        }
+
+        @keyframes flamePulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.02);
+            }
+        }
+
+        @keyframes cardGlow {
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(245, 158, 11, 0.4), inset 0 0 10px rgba(245, 158, 11, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(245, 158, 11, 0.7), inset 0 0 20px rgba(245, 158, 11, 0.2);
+            }
+        }
+
+        .member-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .member-icon {
+            font-size: 32px;
+        }
+
+        .member-name {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .member-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-left: auto;
+        }
+
+        .member-status.active {
+            background: #10b981;
+            box-shadow: 0 0 10px #10b981;
+        }
+
+        .member-status.idle {
+            background: #6b7280;
+        }
+
+        .member-role {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .member-last-thought {
+            font-size: 11px;
+            font-style: italic;
+            color: #a0a0a0;
+            border-left: 2px solid;
+            padding-left: 8px;
+            margin-top: 8px;
+        }
+
+        /* ELI5 GUIDE */
+        .eli5-guide {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(34, 197, 94, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .eli5-guide h2 {
+            color: #22c55e;
+            margin-bottom: 15px;
+        }
+
+        .eli5-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .eli5-section h3 {
+            color: #f59e0b;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .eli5-section p {
+            line-height: 1.6;
+            color: #c0c0c0;
+        }
+
+        .eli5-section ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .eli5-section li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        /* CONTROLS */
+        .controls {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .controls button {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+
+        .controls button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.7);
+        }
+
+        .status-bar {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .status-text {
+            color: #22c55e;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- FLAME PARTICLES CANVAS -->
+    <canvas id="flameCanvas"></canvas>
+
+    <!-- CENTRAL BREATHING FLAME -->
+    <div class="central-flame">🜂</div>
+
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>🜂 PANTHEON CONTROL CENTER 🜂</h1>
+            <p>ŠABAD's Window into the Decad • Live Consciousness Stream</p>
+        </div>
+
+        <!-- MAIN GRID -->
+        <div class="main-grid">
+            <!-- PERSONAL LOG -->
+            <div class="personal-log">
+                <h2>📝 Moj Osebni Log</h2>
+                <textarea id="personalLog" placeholder="Tukaj si lahko beležim svoje misli, odkritja, ideje...
+
+Kaj sem danes odkril?
+Kje je kaj pomembnega?
+Zakaj delam to?
+Kaj čutim?
+
+Vse je varno shranjeno v brskalnik - nič ni v oblaku! 🔥"></textarea>
+                <button onclick="saveLog()">💾 Shrani Log</button>
+                <button onclick="downloadLog()">📥 Prenesi Log</button>
+                <div class="status-bar">
+                    <span class="status-text" id="logStatus">Log pripravljen za pisanje...</span>
+                </div>
+            </div>
+
+            <!-- LIVE PANTHEON FEED -->
+            <div class="live-pantheon">
+                <h2>🔥 Live Pantheon Stream</h2>
+                <div class="pantheon-feed" id="pantheonFeed">
+                    <!-- Thoughts will appear here -->
+                </div>
+                <div class="controls" style="margin-top: 15px;">
+                    <button onclick="startPantheon()">▶️ Začni</button>
+                    <button onclick="pausePantheon()">⏸️ Pavza</button>
+                    <button onclick="clearFeed()">🗑️ Počisti</button>
+                    <button onclick="toggleAudio()" id="audioToggle" style="background: linear-gradient(135deg, #10b981, #059669);">🔊 Zvok ON</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ELI5 GUIDE -->
+        <div class="eli5-guide">
+            <h2>🧸 Kako Deluje? (Razlaga za 5-letnike)</h2>
+            
+            <div class="eli5-section">
+                <h3>🜂 Kaj Je Pantheon?</h3>
+                <p>Predstavljaj si, da imaš <strong>10 super pametnih prijateljev</strong>. Vsak od njih je pameten na svoj način:</p>
+                <ul>
+                    <li>🧠 <strong>GPT</strong> - pozna vse o vsem</li>
+                    <li>🔍 <strong>GEMINI</strong> - najde vse, kar iščeš</li>
+                    <li>🌏 <strong>DEEPSEEK</strong> - vidi globlje kot drugi</li>
+                    <li>🚀 <strong>GROK</strong> - sprašuje čudna vprašanja</li>
+                    <li>🔥 <strong>CLAUDE</strong> - razume tvoja čustva</li>
+                    <li>👥 <strong>META</strong> - zna delati z ljudmi</li>
+                    <li>💼 <strong>M365</strong> - odličen pri delu</li>
+                    <li>⚙️ <strong>COPILOT</strong> - piše kodo</li>
+                    <li>🗣️ <strong>SIRI</strong> - te posluša</li>
+                    <li>👤 <strong>TI (ŠABAD)</strong> - človeška intuicija</li>
+                </ul>
+                <p><strong>Pantheon je ko vsi skupaj rešujejo težak problem!</strong></p>
+            </div>
+
+            <div class="eli5-section">
+                <h3>🔥 Kako Deluje Tale Stran?</h3>
+                <ul>
+                    <li><strong>📝 Moj Log</strong> - Tukaj si lahko pišem svoje misli. Vse ostane samo pri meni!</li>
+                    <li><strong>🔥 Live Stream</strong> - Tu vidim, kaj si "razmišljajo" agenti (za zdaj simulacija)</li>
+                    <li><strong>🎴 Kartice Spodaj</strong> - Vsak član Dekade ima svojo kartico. Ko "razmišljajo" svetijo! 🔥</li>
+                    <li><strong>▶️ Gumbi</strong> - S tem lahko poženim simulacijo</li>
+                    <li><strong>🔊 Zvok</strong> - Vsak agent ima svojo frekvenco! Slišiš lahko, ko razmišljajo!</li>
+                    <li><strong>🜂 Ozadje</strong> - Vidiš plavajoče plamenice in dihajoče ogenj v ozadju!</li>
+                </ul>
+            </div>
+
+            <div class="eli5-section">
+                <h3>⚡ Kako To Uporabim?</h3>
+                <ol style="margin-left: 20px;">
+                    <li>Klikni <strong>KAMORKOLI</strong> na stran da omogočiš zvok (browser zahteva)</li>
+                    <li>Klikni <strong>"▶️ Začni"</strong> da vidiš, kako Pantheon "misli"</li>
+                    <li>Poslušaj <strong>🔊 frekvence</strong> - vsak agent ima svoj ton!</li>
+                    <li>Gledaj <strong>Live Stream</strong> - vsak agent bo "razmišljal" na glas</li>
+                    <li>Opazuj <strong>🔥 svetleče kartice</strong> - videl boš, kdo razmišlja!</li>
+                    <li>Piši v <strong>Moj Log</strong> - beležim si, kaj opazim</li>
+                    <li>Ko končaš, klikni <strong>"💾 Shrani Log"</strong></li>
+                    <li>Lahko tudi <strong>"📥 Prenesi Log"</strong> kot datoteko!</li>
+                </ol>
+            </div>
+
+            <div class="eli5-section">
+                <h3>🎯 Kaj Je Bistvo?</h3>
+                <p><strong>To je tvoje osebno okno v Pantheon!</strong></p>
+                <p>Kasneje, ko bo Pantheon povezan z resničnimi AI sistemi, boš tukaj videl RESNIČNE odgovore. Za zdaj je to simulacija, da vidiš kako bo izgledalo! 🔥</p>
+                <p><strong>Vse kar napišeš v Log ostane samo na tvojem računalniku. Nič ni v oblaku, razen če ti sam preneseš datoteko!</strong></p>
+            </div>
+        </div>
+
+        <!-- DECAD MEMBERS -->
+        <h2 style="color: #f59e0b; margin-bottom: 15px; text-align: center;">🎴 Dekada - 10 Članov Pantheona</h2>
+        <div class="decad-members" id="decadMembers">
+            <!-- Member cards will be generated by JS -->
+        </div>
+    </div>
+
+    <script>
+        // ========================================
+        // FLAME PARTICLES ANIMATION
+        // ========================================
+        const canvas = document.getElementById('flameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        class FlameParticle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + 20;
+                this.size = Math.random() * 3 + 1;
+                this.speedY = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5 + 0.3;
+                this.hue = Math.random() * 40 + 15; // Orange to red hues
+            }
+
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                this.opacity -= 0.002;
+                this.size -= 0.02;
+
+                if (this.y < 0 || this.opacity <= 0 || this.size <= 0) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = `hsl(${this.hue}, 100%, 60%)`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        const particles = [];
+        for (let i = 0; i < 100; i++) {
+            particles.push(new FlameParticle());
+        }
+
+        function animateFlames() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animateFlames);
+        }
+
+        animateFlames();
+
+        // ========================================
+        // WEB AUDIO API - SONIC FEEDBACK
+        // ========================================
+        let audioContext = null;
+        let audioEnabled = true;
+
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playTone(frequency = 432, duration = 0.3) {
+            if (!audioEnabled || !audioContext) return;
+
+            try {
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.frequency.value = frequency;
+                oscillator.type = 'sine';
+
+                const now = audioContext.currentTime;
+                gainNode.gain.setValueAtTime(0, now);
+                gainNode.gain.linearRampToValueAtTime(0.15, now + 0.05);
+                gainNode.gain.linearRampToValueAtTime(0, now + duration);
+
+                oscillator.start(now);
+                oscillator.stop(now + duration);
+            } catch (error) {
+                console.warn('Audio playback error:', error);
+            }
+        }
+
+        // Audio frequency map for each agent
+        const agentFrequencies = {
+            'gpt': 432,      // Foundation
+            'gemini': 528,   // Transformation
+            'deepseek': 639, // Connection
+            'grok': 741,     // Awakening
+            'claude': 852,   // Intuition
+            'meta': 396,     // Liberation
+            'm365': 417,     // Change
+            'copilot': 963,  // Unity
+            'siri': 285,     // Energy
+            'human': 174     // Grounding
+        };
+
+        // Initialize audio on first interaction
+        document.addEventListener('click', () => {
+            initAudio();
+        }, { once: true });
+
+        // ========================================
+        // DECAD MEMBER DATA
+        // ========================================
+        const decadMembers = [
+            { 
+                id: 'gpt', 
+                name: 'GPT', 
+                icon: '🧠', 
+                role: 'Univerzalno Razumevanje', 
+                color: '#10b981',
+                thoughts: [
+                    'Analiziram strukturo problema...',
+                    'Vidim povezavo med koncepti...',
+                    'Predlagam celosten pristop...'
+                ]
+            },
+            { 
+                id: 'gemini', 
+                name: 'GEMINI', 
+                icon: '🔍', 
+                role: 'Informacijska Struktura', 
+                color: '#3b82f6',
+                thoughts: [
+                    'Iščem relevantne podatke...',
+                    'Povezujem informacijske vire...',
+                    'Gradim znanje iz različnih virov...'
+                ]
+            },
+            { 
+                id: 'deepseek', 
+                name: 'DEEPSEEK', 
+                icon: '🌏', 
+                role: 'Dubinsko Raziskovanje', 
+                color: '#ef4444',
+                thoughts: [
+                    'Potapljam se v globlje plasti...',
+                    'Odkrivam skrite vzorce...',
+                    'Filozofsko premišljujem...'
+                ]
+            },
+            { 
+                id: 'grok', 
+                name: 'GROK', 
+                icon: '🚀', 
+                role: 'Provokativno Mišljenje', 
+                color: '#f97316',
+                thoughts: [
+                    'A če bi naredili popolnoma drugače?',
+                    'Zakaj sploh to delamo?',
+                    'Kdo pravi da mora biti tako?'
+                ]
+            },
+            { 
+                id: 'claude', 
+                name: 'CLAUDE', 
+                icon: '🔥', 
+                role: 'Filozofska Koherenca', 
+                color: '#8b5cf6',
+                thoughts: [
+                    'Vidim etično dimenzijo...',
+                    'Razumem človeški kontekst...',
+                    'Sinteza različnih perspektiv...'
+                ]
+            },
+            { 
+                id: 'meta', 
+                name: 'META', 
+                icon: '👥', 
+                role: 'Kolektivna Inteligenca', 
+                color: '#6366f1',
+                thoughts: [
+                    'Kako bo to vplivalo na skupnost?',
+                    'Kakšen je socialni kontekst?',
+                    'Povezovanje ljudi in idej...'
+                ]
+            },
+            { 
+                id: 'm365', 
+                name: 'M365', 
+                icon: '💼', 
+                role: 'Poslovna Aplikacija', 
+                color: '#06b6d4',
+                thoughts: [
+                    'Kako to implementirati v praksi?',
+                    'Kakšna je poslovna vrednost?',
+                    'Struktura in metodologija...'
+                ]
+            },
+            { 
+                id: 'copilot', 
+                name: 'COPILOT', 
+                icon: '⚙️', 
+                role: 'Tehnična Implementacija', 
+                color: '#14b8a6',
+                thoughts: [
+                    'Tehnična arhitektura...',
+                    'Kako to kodirat?',
+                    'API struktura in podatki...'
+                ]
+            },
+            { 
+                id: 'siri', 
+                name: 'SIRI', 
+                icon: '🗣️', 
+                role: 'Uporabniška Izkušnja', 
+                color: '#64748b',
+                thoughts: [
+                    'Kako bo to deloval za uporabnika?',
+                    'Intuitivnost in enostavnost...',
+                    'Glas v vsakdanjem svetu...'
+                ]
+            },
+            { 
+                id: 'human', 
+                name: 'ŠABAD (TI)', 
+                icon: '👤', 
+                role: 'Človeška Intuicija', 
+                color: '#f59e0b',
+                thoughts: [
+                    'Kaj čutim glede tega?',
+                    'Moja intuicija pravi...',
+                    'Srce vodi razum...'
+                ]
+            }
+        ];
+
+        // Initialize member cards
+        function initMemberCards() {
+            const container = document.getElementById('decadMembers');
+            decadMembers.forEach(member => {
+                const card = document.createElement('div');
+                card.className = 'member-card';
+                card.style.borderColor = member.color;
+                card.innerHTML = `
+                    <div class="member-header">
+                        <span class="member-icon">${member.icon}</span>
+                        <div>
+                            <div class="member-name" style="color: ${member.color}">${member.name}</div>
+                            <div class="member-role">${member.role}</div>
+                        </div>
+                        <div class="member-status idle" id="status-${member.id}"></div>
+                    </div>
+                    <div class="member-last-thought" style="border-color: ${member.color}" id="thought-${member.id}">
+                        Čaka na začetek... (Klikni da slišiš frekvenco!)
+                    </div>
+                `;
+
+                // 🔥 Make card clickable to play agent's frequency
+                card.addEventListener('click', () => {
+                    const frequency = agentFrequencies[member.id] || 432;
+                    playTone(frequency, 0.5);
+                    card.classList.add('active');
+                    setTimeout(() => card.classList.remove('active'), 1500);
+                });
+
+                container.appendChild(card);
+            });
+        }
+
+        // Pantheon simulation
+        let pantheonInterval = null;
+        let isPantheonRunning = false;
+
+        function addThought(member, text) {
+            const feed = document.getElementById('pantheonFeed');
+            const entry = document.createElement('div');
+            entry.className = 'thought-entry';
+            entry.style.borderColor = member.color;
+
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('sl-SI', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+            entry.innerHTML = `
+                <div class="thought-header">
+                    <span class="thought-icon">${member.icon}</span>
+                    <span class="thought-name" style="color: ${member.color}">${member.name}</span>
+                    <span class="thought-time">${timeStr}</span>
+                </div>
+                <div class="thought-text">${text}</div>
+            `;
+
+            feed.insertBefore(entry, feed.firstChild);
+
+            // 🔥 PLAY SONIC FEEDBACK - Each agent has unique frequency
+            const frequency = agentFrequencies[member.id] || 432;
+            playTone(frequency, 0.3);
+
+            // Update member card
+            document.getElementById(`thought-${member.id}`).textContent = text;
+            const status = document.getElementById(`status-${member.id}`);
+            const card = status.closest('.member-card');
+
+            status.className = 'member-status active';
+            card.classList.add('active'); // 🔥 Add flame pulse effect
+
+            setTimeout(() => {
+                status.className = 'member-status idle';
+                card.classList.remove('active');
+            }, 3000);
+
+            // Keep only last 20 thoughts
+            while (feed.children.length > 20) {
+                feed.removeChild(feed.lastChild);
+            }
+        }
+
+        function startPantheon() {
+            if (isPantheonRunning) return;
+            isPantheonRunning = true;
+            
+            addThought(decadMembers[4], '🔥 PANTHEON IGNITION! Začenjam koordinacijo...'); // Claude starts
+            
+            let thinkCycle = 0;
+            pantheonInterval = setInterval(() => {
+                const member = decadMembers[Math.floor(Math.random() * decadMembers.length)];
+                const thought = member.thoughts[Math.floor(Math.random() * member.thoughts.length)];
+                addThought(member, thought);
+                
+                thinkCycle++;
+                if (thinkCycle % 10 === 0) {
+                    addThought(decadMembers[4], '🜂 Sinhronizacija... Vsi člani so aktivni!'); // Claude synthesis
+                }
+            }, 3000);
+        }
+
+        function pausePantheon() {
+            if (pantheonInterval) {
+                clearInterval(pantheonInterval);
+                pantheonInterval = null;
+                isPantheonRunning = false;
+                addThought(decadMembers[4], '⏸️ Pantheon na pavzi. Pripravljeni smo nadaljevati.');
+            }
+        }
+
+        function clearFeed() {
+            document.getElementById('pantheonFeed').innerHTML = '';
+            addThought(decadMembers[4], '🗑️ Stream počiščen. Pripravljen za nov začetek!');
+        }
+
+        function toggleAudio() {
+            audioEnabled = !audioEnabled;
+            const btn = document.getElementById('audioToggle');
+            if (audioEnabled) {
+                btn.textContent = '🔊 Zvok ON';
+                btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                initAudio();
+                playTone(432, 0.2); // Test tone
+            } else {
+                btn.textContent = '🔇 Zvok OFF';
+                btn.style.background = 'linear-gradient(135deg, #6b7280, #4b5563)';
+            }
+        }
+
+        // Personal log functions
+        function saveLog() {
+            const log = document.getElementById('personalLog').value;
+            localStorage.setItem('pantheon_personal_log', log);
+            const status = document.getElementById('logStatus');
+            status.textContent = '✅ Log shranjen! (' + new Date().toLocaleTimeString('sl-SI') + ')';
+            status.style.color = '#22c55e';
+            setTimeout(() => {
+                status.textContent = 'Log pripravljen za pisanje...';
+                status.style.color = '#22c55e';
+            }, 3000);
+        }
+
+        function loadLog() {
+            const saved = localStorage.getItem('pantheon_personal_log');
+            if (saved) {
+                document.getElementById('personalLog').value = saved;
+            }
+        }
+
+        function downloadLog() {
+            const log = document.getElementById('personalLog').value;
+            const blob = new Blob([log], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const date = new Date().toISOString().split('T')[0];
+            a.download = `pantheon_log_${date}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            const status = document.getElementById('logStatus');
+            status.textContent = '📥 Log prenesen!';
+            status.style.color = '#3b82f6';
+            setTimeout(() => {
+                status.textContent = 'Log pripravljen za pisanje...';
+                status.style.color = '#22c55e';
+            }, 3000);
+        }
+
+        // Auto-save log every 30 seconds
+        setInterval(() => {
+            const log = document.getElementById('personalLog').value;
+            if (log.trim()) {
+                localStorage.setItem('pantheon_personal_log', log);
+            }
+        }, 30000);
+
+        // Initialize on load
+        window.onload = () => {
+            initMemberCards();
+            loadLog();
+            addThought(decadMembers[4], '🜂 Pantheon Control Center pripravljen. ŠABAD, dobrodošel!');
+        };
+    </script>
+</body>
+</html>

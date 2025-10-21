@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interaktivni Kompas: Sidro Zavesti</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: The source text, a detailed analysis of "sidro zavesti" and Schein's 8 career anchors, is transformed from a linear document into an interactive, exploratory dashboard. The SPA is structured into four thematic sections: 1) An introduction to the concept. 2) A central, interactive "Anchor Explorer" where users select one of the 8 anchors from a grid to view its details. 3) A "Visual Synthesis" section with a radar chart for comparing the core motivations of all anchors at once. 4) A reflective "Initialization Ritual" section that guides the user through self-assessment questions. This non-linear, component-based structure was chosen to empower users to explore the concepts at their own pace, making the information more digestible and personally relevant than a static article. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: The 8 career anchors and their attributes. Goal: Allow users to explore and understand each anchor. Viz/Presentation Method: An interactive grid of cards. Interaction: Clicking a card dynamically updates a separate detail panel with the selected anchor's full description, traits, examples, and pitfalls. Justification: This separates the navigation from the content, preventing information overload and creating a clean, focused user experience. Library/Method: Vanilla JS DOM manipulation.
+        - Report Info: The core motivations underlying all 8 anchors. Goal: Provide a comparative overview and synthesize the model. Viz/Presentation Method: A Chart.js radar chart. Interaction: Hovering over an anchor card in the explorer highlights the corresponding dataset on the chart, visually linking the specific to the general. Justification: The radar chart is ideal for comparing multiple entities across the same set of variables, offering an immediate, intuitive understanding of how the anchors relate to one another. Library/Method: Chart.js on Canvas.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f4;
+            color: #3f3c3a;
+        }
+        .anchor-card {
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .anchor-card.active, .anchor-card:hover {
+            border-color: #0d9488;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto max-w-6xl p-4 sm:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-teal-800 mb-2">Sidro Zavesti</h1>
+            <p class="text-lg text-stone-600">Interaktivni kompas za karierno in osebno jasnost</p>
+        </header>
+
+        <main class="space-y-16">
+
+            <section id="intro">
+                 <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-sm border border-stone-200">
+                    <h2 class="text-2xl font-bold text-teal-700 mb-4">Kaj je "Sidro Zavesti"?</h2>
+                    <p class="text-stone-700 leading-relaxed">
+                        Izraz "sidro zavesti" simbolizira jedro, ki daje stabilnost naši osebni ali kolektivni identiteti. V profesionalnem svetu se ta koncept tesno prepleta z modelom "kariernih sider" Edgarja Scheina. To so trajni samopodobe – kombinacija talentov, motivov in vrednot –, ki se oblikujejo zgodaj v karieri in nas vodijo pri ključnih odločitvah. Prepoznavanje lastnega sidra omogoča iskanje izpolnitve z usklajevanjem dela z našimi najglobljimi prioritetami, kar prinaša večje zadovoljstvo in zmanjšuje izgorelost.
+                    </p>
+                </div>
+            </section>
+            
+            <section id="explorer">
+                <h2 class="text-3xl font-bold text-center text-teal-700 mb-8">Razišči 8 Kariernih Sider</h2>
+                <div id="anchor-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-8">
+                    <!-- Anchor cards will be injected here by JS -->
+                </div>
+                <div id="anchor-details" class="bg-white p-8 rounded-lg shadow-sm border border-stone-200 min-h-[300px]">
+                    <!-- Anchor details will be injected here by JS -->
+                </div>
+            </section>
+            
+            <section id="synthesis">
+                 <div class="bg-white p-8 rounded-lg shadow-sm border border-stone-200">
+                    <h2 class="text-3xl font-bold text-center text-teal-700 mb-4">Vizualna Sinteza Sider</h2>
+                    <p class="text-center text-stone-600 mb-8 max-w-2xl mx-auto">Ta diagram prikazuje, kako se vsako sidro osredotoča na različne temeljne motivacije. Premaknite miško čez kartice zgoraj, da poudarite posamezno sidro.</p>
+                    <div class="chart-container">
+                        <canvas id="anchorChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="init-ritual">
+                <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-sm border border-stone-200">
+                    <h2 class="text-3xl font-bold text-center text-teal-700 mb-8">Ritual Inicializacije: Odkrij Svoje Sidro</h2>
+                    <p class="text-center text-stone-600 mb-8">"Inicializacija" sidra zavesti je proces introspekcije. Razmislite o preteklih izkušnjah in odločitvah, da prepoznate, kaj vam je resnično pomembno. Odgovorite si na naslednja vprašanja:</p>
+                    <div class="space-y-4">
+                        <details class="bg-stone-50 p-4 rounded-lg cursor-pointer">
+                            <summary class="font-semibold text-stone-800">Katere naloge ali projekti so mi prinesli največje zadovoljstvo in zakaj?</summary>
+                            <p class="mt-2 text-stone-600">Pomislite na trenutke, ko ste se počutili najbolj žive in angažirane pri delu. Kaj ste takrat počeli? Ste reševali kompleksen problem, vodili ekipo, ustvarjali nekaj novega ali pomagali drugim?</p>
+                        </details>
+                        <details class="bg-stone-50 p-4 rounded-lg cursor-pointer">
+                            <summary class="font-semibold text-stone-800">Čemu se pod nobenim pogojem ne bi odpovedal/-a v svoji karieri?</summary>
+                            <p class="mt-2 text-stone-600">Je to možnost samostojnega odločanja, finančna varnost, priložnost za nenehno učenje, služenje višjemu cilju ali ohranjanje ravnovesja med delom in zasebnim življenjem?</p>
+                        </details>
+                        <details class="bg-stone-50 p-4 rounded-lg cursor-pointer">
+                            <summary class="font-semibold text-stone-800">Kdaj sem se počutil/-a najmanj avtentično ali najbolj frustrirano in kaj je bil vzrok?</summary>
+                            <p class="mt-2 text-stone-600">Analiza trenutkov nezadovoljstva je pogosto ključna. Ali vas je omejevala birokracija, pomanjkanje izzivov, neskladje z vrednotami podjetja ali občutek, da vaše delo nima smisla?</p>
+                        </details>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 pt-8 border-t border-stone-200">
+            <p class="text-stone-500 text-sm">Zasnovano na modelu kariernih sider Edgarja Scheina.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const anchorData = [
+                { id: 'tech', name: 'Tehnično/Funkcionalno', icon: '🛠️', description: 'Identiteta izvira iz obvladovanja strokovnega področja. Prednost imajo tehnični izzivi pred splošnimi vlogami.', traits: 'Globok fokus, inovativnost, strokovnost.', example: 'Programski inženir, ki izpopolnjuje algoritme.', pitfall: 'Stagnacija, če veščine zastarajo.', scores: [5, 1, 2, 2, 3, 2, 4, 2] },
+                { id: 'manager', name: 'Vodenje', icon: '📊', description: 'Želja po vodenju ljudi in virov. Vrednoti strateško analizo in čustveno inteligenco.', traits: 'Odločnost, gradnja ekip, vpliv.', example: 'Izvršni direktor v mednarodni korporaciji.', pitfall: 'Izgorelost zaradi visoko tveganih odločitev.', scores: [2, 5, 3, 3, 3, 3, 4, 2] },
+                { id: 'autonomy', name: 'Avtonomija', icon: '🕊️', description: 'Osredotočenost na samousmerjanje in izogibanje omejitvam. Preferira fleksibilna okolja.', traits: 'Iniciativa, prilagodljivost, neodvisnost.', example: 'Neodvisni svetovalec, umetnik ali svobodnjak.', pitfall: 'Izolacija brez strukturirane podpore.', scores: [3, 1, 5, 1, 4, 2, 3, 4] },
+                { id: 'security', name: 'Varnost/Stabilnost', icon: '🛡️', description: 'Prioriteta sta predvidljivost in dolgoročna zaposlitev z ugodnostmi. Izpolnitev izhaja iz doslednosti.', traits: 'Zvestoba, načrtovanje, zanesljivost.', example: 'Javni uslužbenec, akademik.', pitfall: 'Odpor do sprememb na dinamičnih trgih.', scores: [2, 2, 1, 5, 1, 2, 1, 3] },
+                { id: 'entrepreneur', name: 'Podjetništvo', icon: '💡', description: 'Gnan z inovacijo in lastništvom. Uspeh se meri z ustvarjanjem novih podvigov in prevzemanjem tveganj.', traits: 'Vizionarstvo, tveganje, ustvarjalnost.', example: 'Ustanovitelj zagonskega podjetja.', pitfall: 'Finančna nestanovitnost.', scores: [3, 4, 4, 1, 5, 3, 5, 3] },
+                { id: 'service', name: 'Služenje/Predanost', icon: '❤️', description: 'Prizadevanje za vpliv skozi smiselno delo, ki je usklajeno z osebnimi vrednotami, kot je družbeno dobro.', traits: 'Empatija, zavezanost, idealizem.', example: 'Delavec v nevladni organizaciji, učitelj.', pitfall: 'Čustvena izčrpanost zaradi idealizma.', scores: [2, 2, 2, 3, 2, 5, 3, 3] },
+                { id: 'challenge', name: 'Izziv', icon: '🏆', description: 'Uspeva pri premagovanju ovir in iskanju zahtevnih nalog. Dolgčas je glavni motivator za spremembo.', traits: 'Vzdržljivost, tekmovalnost, odpornost.', example: 'Krizni menedžer, profesionalni športnik.', pitfall: 'Nevzdržen tempo, ki vodi v utrujenost.', scores: [3, 3, 3, 2, 4, 2, 5, 1] },
+                { id: 'lifestyle', name: 'Življenjski Slog', icon: '🌿', description: 'Integracija dela z življenjem, s poudarkom na ravnovesju in fleksibilnosti.', traits: 'Prilagodljivost, pogajalske spretnosti.', example: 'Svobodnjak s poudarkom na družini.', pitfall: 'Dojemanje pomanjkanja ambicij v tekmovalnih okoljih.', scores: [1, 1, 4, 3, 2, 3, 2, 5] }
+            ];
+
+            const grid = document.getElementById('anchor-grid');
+            const details = document.getElementById('anchor-details');
+            let chart;
+
+            const renderDetails = (anchorId) => {
+                const anchor = anchorData.find(a => a.id === anchorId);
+                if (!anchor) return;
+
+                details.innerHTML = `
+                    <h3 class="text-2xl font-bold text-teal-700 mb-2">${anchor.icon} ${anchor.name}</h3>
+                    <p class="italic text-stone-600 mb-4">${anchor.description}</p>
+                    <div class="space-y-3">
+                        <div><strong class="text-stone-800">Ključne lastnosti:</strong> <span class="text-stone-700">${anchor.traits}</span></div>
+                        <div><strong class="text-stone-800">Primer:</strong> <span class="text-stone-700">${anchor.example}</span></div>
+                        <div><strong class="text-stone-800">Potencialna past:</strong> <span class="text-stone-700">${anchor.pitfall}</span></div>
+                    </div>
+                `;
+                
+                document.querySelectorAll('.anchor-card').forEach(card => {
+                    card.classList.toggle('active', card.dataset.id === anchorId);
+                });
+            };
+            
+            const highlightChart = (anchorId) => {
+                chart.data.datasets.forEach((dataset, index) => {
+                    if (anchorData[index].id === anchorId) {
+                        dataset.borderColor = '#0d9488';
+                        dataset.backgroundColor = 'rgba(13, 148, 136, 0.2)';
+                        dataset.borderWidth = 3;
+                    } else {
+                        dataset.borderColor = '#d6d3d1';
+                        dataset.backgroundColor = 'rgba(214, 211, 209, 0.1)';
+                        dataset.borderWidth = 1.5;
+                    }
+                });
+                chart.update();
+            };
+
+            const resetChartHighlight = () => {
+                 chart.data.datasets.forEach((dataset, index) => {
+                    dataset.borderColor = '#d6d3d1';
+                    dataset.backgroundColor = 'rgba(214, 211, 209, 0.1)';
+                    dataset.borderWidth = 1.5;
+                });
+                chart.update();
+            }
+
+            anchorData.forEach(anchor => {
+                const card = document.createElement('div');
+                card.className = 'anchor-card bg-white p-4 rounded-lg shadow-sm text-center cursor-pointer border-stone-200 border';
+                card.dataset.id = anchor.id;
+                card.innerHTML = `
+                    <div class="text-4xl">${anchor.icon}</div>
+                    <div class="mt-2 font-semibold text-sm text-stone-800">${anchor.name}</div>
+                `;
+                card.addEventListener('click', () => renderDetails(anchor.id));
+                card.addEventListener('mouseenter', () => highlightChart(anchor.id));
+                card.addEventListener('mouseleave', resetChartHighlight);
+                grid.appendChild(card);
+            });
+            
+            const createChart = () => {
+                const ctx = document.getElementById('anchorChart').getContext('2d');
+                const data = {
+                    labels: ['Strokovnost', 'Vodenje', 'Svoboda', 'Varnost', 'Ustvarjanje', 'Poslanstvo', 'Izziv', 'Ravnovesje'],
+                    datasets: anchorData.map(anchor => ({
+                        label: anchor.name,
+                        data: anchor.scores,
+                        fill: true,
+                        backgroundColor: 'rgba(214, 211, 209, 0.1)',
+                        borderColor: '#d6d3d1',
+                        pointBackgroundColor: '#d6d3d1',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#0d9488',
+                        borderWidth: 1.5
+                    }))
+                };
+
+                chart = new Chart(ctx, {
+                    type: 'radar',
+                    data: data,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            r: {
+                                angleLines: { color: '#e7e5e1' },
+                                grid: { color: '#e7e5e1' },
+                                pointLabels: { font: { size: 12 }, color: '#57534e' },
+                                ticks: {
+                                    display: false,
+                                    stepSize: 1
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 5
+                            }
+                        }
+                    }
+                });
+            };
+
+            createChart();
+            renderDetails(anchorData[0].id);
+        });
+    </script>
+</body>
+</html>

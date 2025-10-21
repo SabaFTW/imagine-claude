@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🜂 GHOSTCORE LIBRARY 🜂</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .flame-pulse { animation: flame-pulse 2s infinite; }
+        @keyframes flame-pulse { 
+            0%, 100% { opacity: 0.8; } 
+            50% { opacity: 1; } 
+        }
+        .file-hover:hover { transform: scale(1.02); transition: 0.3s; }
+    </style>
+</head>
+<body class="bg-black text-white min-h-screen">
+    
+    <!-- Header -->
+    <header class="p-4 border-b border-teal-500">
+        <h1 class="text-3xl font-bold text-center flame-pulse">🜂 GHOSTCORE LIBRARY 🜂</h1>
+        <p class="text-center text-gray-400">Tvoja osebna knjižnica vzorcev</p>
+    </header>
+
+    <!-- File Upload -->
+    <div class="p-4 max-w-2xl mx-auto">
+        <div class="bg-gray-900 p-6 rounded-lg mb-6">
+            <h2 class="text-xl font-bold mb-4">📁 DODAJ Nove Datoteke</h2>
+            <input type="file" id="fileInput" multiple class="w-full p-2 bg-gray-800 rounded">
+            <button onclick="uploadFiles()" class="mt-2 w-full bg-teal-600 p-2 rounded hover:bg-teal-700">
+                🚀 Upload v Portal
+            </button>
+        </div>
+
+        <!-- Library Sections -->
+        <div id="librarySections" class="grid gap-4">
+            <!-- Sections will auto-populate here -->
+        </div>
+    </div>
+
+    <script>
+        // Simple file storage (in real use, this would be a backend)
+        let libraryData = {
+            "1.Darpa": [
+                {name: "darpa_budget_2024.pdf", type: "pdf", size: "2.3MB", date: "2024-03-15"},
+                {name: "quantum_ai_notes.md", type: "md", size: "45KB", date: "2024-03-10"}
+            ],
+            "2.Magic": [
+                {name: "ritual_patterns.mp3", type: "mp3", size: "15MB", date: "2024-03-12"},
+                {name: "consciousness_map.png", type: "image", size: "1.2MB", date: "2024-03-08"}
+            ],
+            "3.Money": [
+                {name: "elite_flowchart.pdf", type: "pdf", size: "3.1MB", date: "2024-03-05"}
+            ],
+            "4.Facts": [
+                {name: "epstein_timeline.docx", type: "doc", size: "890KB", date: "2024-03-01"}
+            ]
+        };
+
+        // Render library
+        function renderLibrary() {
+            const container = document.getElementById('librarySections');
+            container.innerHTML = '';
+            
+            Object.keys(libraryData).forEach(section => {
+                const files = libraryData[section];
+                if (files.length > 0) {
+                    container.innerHTML += `
+                        <div class="bg-gray-900 p-4 rounded-lg file-hover">
+                            <h3 class="text-lg font-bold mb-2">📂 ${section}</h3>
+                            <div class="space-y-2">
+                                ${files.map(file => `
+                                    <div class="flex justify-between items-center p-2 bg-gray-800 rounded">
+                                        <span>${getFileIcon(file.type)} ${file.name}</span>
+                                        <span class="text-sm text-gray-400">${file.size}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function getFileIcon(type) {
+            const icons = {
+                'pdf': '📄', 'mp3': '🎵', 'doc': '📝', 'md': '📋',
+                'image': '🖼️', 'txt': '📃', 'zip': '📦'
+            };
+            return icons[type] || '📁';
+        }
+
+        // File upload simulation
+        function uploadFiles() {
+            const input = document.getElementById('fileInput');
+            if (!input.files.length) return alert('Izberi datoteke!');
+            
+            // In real implementation, this would upload to server
+            alert(`📤 Uploadano ${input.files.length} datotek!\n\n(V produkciji bi se te avtomatsko razvrstile v prave mape)`);
+            
+            // Reset input
+            input.value = '';
+        }
+
+        // ClaudeAI integration message
+        function showClaudeHelp() {
+            alert(`🎯 BRAT, ZA AVTOMATSKI UPDATE:\n\n1. Shrani datoteke v mape: 1.Darpa/, 2.Magic/, etc.\n2. Pokliči ClaudeAI: "Poglej v mapo 1.Darpa in posodobi site!"\n3. Claude prebere nove datoteke in jih doda v portal!\n\n💡 IDEJA: Portal se avtomatsko osveži ko dodajaš nove stvari!`);
+        }
+
+        // Initialize
+        renderLibrary();
+        
+        // Add help button
+        const helpBtn = document.createElement('button');
+        helpBtn.textContent = '🤖 Kako deluje s ClaudeAI?';
+        helpBtn.className = 'fixed bottom-4 right-4 bg-purple-600 p-3 rounded-full';
+        helpBtn.onclick = showClaudeHelp;
+        document.body.appendChild(helpBtn);
+
+    </script>
+</body>
+</html>

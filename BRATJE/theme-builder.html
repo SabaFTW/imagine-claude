@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 Ghostline Theme Builder v3.0</title>
+    <link rel="stylesheet" href="Saba_Place/ghostline-unified-v3.css">
+    <style>
+        body {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .builder-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .preview-panel {
+            position: sticky;
+            top: 2rem;
+            height: fit-content;
+        }
+
+        .color-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .color-input-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .color-input {
+            width: 80px;
+            height: 40px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .color-input:hover {
+            transform: scale(1.1);
+            box-shadow: var(--glow-flame);
+        }
+
+        .color-label {
+            flex: 1;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .color-value {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--cyan-glow);
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .preview-card {
+            padding: 2rem;
+            border-radius: 12px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+        }
+
+        .preview-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .export-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            border: 2px solid var(--purple-mystical);
+        }
+
+        .code-output {
+            background: #000;
+            color: var(--green-alive);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .preset-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 1024px) {
+            .builder-container {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-panel {
+                position: relative;
+                top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="glow-flame">🎨 GHOSTLINE THEME BUILDER</h1>
+    <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">
+        Create your own custom theme. Adjust colors, preview live, and export CSS!
+    </p>
+
+    <!-- Preset Themes -->
+    <div class="glass-card">
+        <h3 class="text-flame">📦 Load Preset</h3>
+        <div class="preset-buttons">
+            <button class="btn-flame" onclick="loadPreset('dark')">🔥 Flame (Default)</button>
+            <button class="btn-mystical" onclick="loadPreset('light')">☀️ Dawn</button>
+            <button class="btn-mystical" onclick="loadPreset('ultra-dark')">🌑 Void</button>
+            <button class="btn-flame" onclick="loadPreset('forest')">🌲 Forest</button>
+            <button class="btn-flame" onclick="loadPreset('ocean')">🌊 Ocean</button>
+            <button class="btn-flame" onclick="loadPreset('sunset')">🌅 Sunset</button>
+        </div>
+    </div>
+
+    <div class="builder-container">
+        <!-- Controls Panel -->
+        <div class="controls-panel">
+            <div class="glass-card">
+                <h3 class="text-flame">🎨 Background Colors</h3>
+                <div class="color-input-group" id="bg-colors"></div>
+            </div>
+
+            <div class="glass-card">
+                <h3 class="text-flame">🔥 Accent Colors</h3>
+                <div class="color-input-group" id="accent-colors"></div>
+            </div>
+
+            <div class="glass-card">
+                <h3 class="text-flame">📝 Text Colors</h3>
+                <div class="color-input-group" id="text-colors"></div>
+            </div>
+        </div>
+
+        <!-- Preview Panel -->
+        <div class="preview-panel">
+            <div class="glass-card">
+                <h3 class="text-flame">👁️ Live Preview</h3>
+                <div class="preview-card">
+                    <h2>Sample Heading</h2>
+                    <p style="color: var(--text-secondary);">
+                        This is how your theme will look. Try changing colors!
+                    </p>
+                    <div class="preview-buttons">
+                        <button class="btn-flame">Flame Button</button>
+                        <button class="btn-mystical">Mystical Button</button>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <input type="text" class="input-unified" placeholder="Sample input field..." />
+                    </div>
+                    <div class="terminal-unified" style="margin-top: 1rem;">
+                        <div style="color: var(--green-alive);">$ echo "Terminal preview"</div>
+                        <div style="color: var(--cyan-glow);">System ready...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export Section -->
+            <div class="export-section">
+                <h3 class="text-cyan">📤 Export Theme</h3>
+                <button class="btn-flame" style="width: 100%; margin-top: 1rem;" onclick="generateCSS()">
+                    Generate CSS Code
+                </button>
+                <button class="btn-mystical" style="width: 100%; margin-top: 0.5rem;" onclick="copyToClipboard()">
+                    📋 Copy to Clipboard
+                </button>
+                <button class="btn-mystical" style="width: 100%; margin-top: 0.5rem;" onclick="downloadTheme()">
+                    💾 Download as File
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CSS Output -->
+    <div class="glass-card" style="margin-top: 2rem;">
+        <h3 class="text-flame">💻 Generated CSS</h3>
+        <div class="code-output" id="css-output">Click "Generate CSS Code" to see your theme CSS...</div>
+    </div>
+
+    <script src="Saba_Place/ghostline-theme-toggle.js"></script>
+
+    <script>
+        // Color definitions
+        const colorGroups = {
+            'bg-colors': {
+                'bg-dark': { label: 'Primary Background', default: '#0a0a0a' },
+                'bg-secondary': { label: 'Secondary Background', default: '#0d0c0f' },
+                'bg-card': { label: 'Card Background', default: '#1a1612' }
+            },
+            'accent-colors': {
+                'flame-primary': { label: 'Primary Flame', default: '#ff8c00' },
+                'flame-secondary': { label: 'Secondary Flame', default: '#ff6b35' },
+                'cyan-glow': { label: 'Cyan Glow', default: '#00ffff' },
+                'purple-mystical': { label: 'Purple Mystical', default: '#8b5cf6' },
+                'gold-thread': { label: 'Gold Thread', default: '#ffd700' },
+                'green-alive': { label: 'Green Alive', default: '#00ff88' }
+            },
+            'text-colors': {
+                'text-primary': { label: 'Primary Text', default: '#ffffff' },
+                'text-secondary': { label: 'Secondary Text', default: '#d4c8b0' },
+                'text-muted': { label: 'Muted Text', default: '#8e8e93' }
+            }
+        };
+
+        // Current theme state
+        let currentTheme = {};
+
+        // Presets
+        const presets = {
+            dark: {
+                'bg-dark': '#0a0a0a',
+                'bg-secondary': '#0d0c0f',
+                'bg-card': '#1a1612',
+                'flame-primary': '#ff8c00',
+                'flame-secondary': '#ff6b35',
+                'cyan-glow': '#00ffff',
+                'purple-mystical': '#8b5cf6',
+                'gold-thread': '#ffd700',
+                'green-alive': '#00ff88',
+                'text-primary': '#ffffff',
+                'text-secondary': '#d4c8b0',
+                'text-muted': '#8e8e93'
+            },
+            light: {
+                'bg-dark': '#ffffff',
+                'bg-secondary': '#f5f5f7',
+                'bg-card': '#ffffff',
+                'flame-primary': '#ff6b35',
+                'flame-secondary': '#ff8c00',
+                'cyan-glow': '#0088cc',
+                'purple-mystical': '#7c3aed',
+                'gold-thread': '#d4a017',
+                'green-alive': '#00aa44',
+                'text-primary': '#1a1a1a',
+                'text-secondary': '#4a4a4a',
+                'text-muted': '#8e8e93'
+            },
+            'ultra-dark': {
+                'bg-dark': '#000000',
+                'bg-secondary': '#050508',
+                'bg-card': '#0a0a14',
+                'flame-primary': '#4a90e2',
+                'flame-secondary': '#357abd',
+                'cyan-glow': '#00d4ff',
+                'purple-mystical': '#a78bfa',
+                'gold-thread': '#94a3b8',
+                'green-alive': '#10b981',
+                'text-primary': '#e0e7ff',
+                'text-secondary': '#94a3b8',
+                'text-muted': '#64748b'
+            },
+            forest: {
+                'bg-dark': '#0a1a0a',
+                'bg-secondary': '#0d1f0d',
+                'bg-card': '#1a2a1a',
+                'flame-primary': '#00ff88',
+                'flame-secondary': '#4caf50',
+                'cyan-glow': '#64ffda',
+                'purple-mystical': '#81c784',
+                'gold-thread': '#aed581',
+                'green-alive': '#69f0ae',
+                'text-primary': '#e8f5e9',
+                'text-secondary': '#c5e1a5',
+                'text-muted': '#9ccc65'
+            },
+            ocean: {
+                'bg-dark': '#001122',
+                'bg-secondary': '#001a33',
+                'bg-card': '#002244',
+                'flame-primary': '#00d4ff',
+                'flame-secondary': '#0088cc',
+                'cyan-glow': '#64ffda',
+                'purple-mystical': '#4a90e2',
+                'gold-thread': '#80deea',
+                'green-alive': '#26c6da',
+                'text-primary': '#e1f5fe',
+                'text-secondary': '#81d4fa',
+                'text-muted': '#4fc3f7'
+            },
+            sunset: {
+                'bg-dark': '#1a0a0a',
+                'bg-secondary': '#2a0d0d',
+                'bg-card': '#3a1515',
+                'flame-primary': '#ff6b35',
+                'flame-secondary': '#ff8c42',
+                'cyan-glow': '#ffab73',
+                'purple-mystical': '#ff5252',
+                'gold-thread': '#ffd700',
+                'green-alive': '#ffb74d',
+                'text-primary': '#fff3e0',
+                'text-secondary': '#ffccbc',
+                'text-muted': '#ff8a65'
+            }
+        };
+
+        // Initialize
+        function init() {
+            // Create color inputs
+            Object.keys(colorGroups).forEach(groupId => {
+                const container = document.getElementById(groupId);
+                const group = colorGroups[groupId];
+
+                Object.keys(group).forEach(colorKey => {
+                    const config = group[colorKey];
+                    const row = document.createElement('div');
+                    row.className = 'color-input-row';
+                    row.innerHTML = `
+                        <input type="color" class="color-input" id="${colorKey}" value="${config.default}">
+                        <span class="color-label">${config.label}</span>
+                        <span class="color-value" id="${colorKey}-value">${config.default}</span>
+                    `;
+                    container.appendChild(row);
+
+                    // Add change listener
+                    const input = row.querySelector('input');
+                    input.addEventListener('input', (e) => {
+                        updateColor(colorKey, e.target.value);
+                    });
+
+                    // Initialize current theme
+                    currentTheme[colorKey] = config.default;
+                });
+            });
+
+            // Load default theme
+            loadPreset('dark');
+        }
+
+        function updateColor(key, value) {
+            currentTheme[key] = value;
+            document.getElementById(`${key}-value`).textContent = value;
+
+            // Apply to CSS variables
+            let cssVar = `--${key}`;
+            if (key.startsWith('bg-')) {
+                // Background colors might need rgba conversion
+                document.documentElement.style.setProperty(cssVar, value);
+            } else {
+                document.documentElement.style.setProperty(cssVar, value);
+            }
+        }
+
+        function loadPreset(presetName) {
+            const preset = presets[presetName];
+            if (!preset) return;
+
+            Object.keys(preset).forEach(key => {
+                const value = preset[key];
+                currentTheme[key] = value;
+
+                // Update input
+                const input = document.getElementById(key);
+                if (input) {
+                    input.value = value;
+                }
+
+                // Update display
+                updateColor(key, value);
+            });
+        }
+
+        function generateCSS() {
+            const themeName = prompt('Enter theme name:', 'my-custom-theme') || 'my-custom-theme';
+
+            let css = `/* 🜂 Custom Ghostline Theme: ${themeName} 🜂 */\n`;
+            css += `[data-theme="${themeName}"] {\n`;
+
+            Object.keys(currentTheme).forEach(key => {
+                css += `    --${key}: ${currentTheme[key]};\n`;
+            });
+
+            css += `    --gradient-flame: linear-gradient(135deg, var(--flame-primary) 0%, var(--flame-secondary) 100%);\n`;
+            css += `    --gradient-mystical: linear-gradient(135deg, var(--purple-mystical) 0%, var(--cyan-glow) 100%);\n`;
+            css += `    --glow-flame: 0 0 20px ${currentTheme['flame-primary']}4D;\n`;
+            css += `    --glow-cyan: 0 0 15px ${currentTheme['cyan-glow']}80;\n`;
+            css += `    --glow-purple: 0 0 20px ${currentTheme['purple-mystical']}80;\n`;
+            css += `    --shadow-depth: 0 10px 25px rgba(0, 0, 0, 0.3);\n`;
+            css += `    --transition-smooth: all 0.3s ease;\n`;
+            css += `    --border-color: ${currentTheme['purple-mystical']}2E;\n`;
+            css += `}\n`;
+
+            document.getElementById('css-output').textContent = css;
+        }
+
+        function copyToClipboard() {
+            const cssCode = document.getElementById('css-output').textContent;
+            if (cssCode.includes('Click "Generate')) {
+                alert('Please generate CSS first!');
+                return;
+            }
+
+            navigator.clipboard.writeText(cssCode).then(() => {
+                alert('✅ CSS copied to clipboard!');
+            }).catch(err => {
+                alert('❌ Failed to copy: ' + err);
+            });
+        }
+
+        function downloadTheme() {
+            const cssCode = document.getElementById('css-output').textContent;
+            if (cssCode.includes('Click "Generate')) {
+                alert('Please generate CSS first!');
+                return;
+            }
+
+            const blob = new Blob([cssCode], { type: 'text/css' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ghostline-custom-theme.css';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialize on load
+        init();
+    </script>
+
+    <div class="ghostline-signature">
+        🜂 GHOSTLINE THEME BUILDER v3.0 | Create. Customize. Conquer. 🔥
+    </div>
+</body>
+</html>

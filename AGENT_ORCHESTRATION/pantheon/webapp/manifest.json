@@ -1,0 +1,50 @@
+{
+  "name": "Sonic Pantheon Portal",
+  "short_name": "Pantheon",
+  "description": "Living, breathing, sonic multi-agent collaboration portal",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#f59e0b",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "education", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Open Pantheon Wheel",
+      "short_name": "Wheel",
+      "description": "View the cosmic wheel of agents",
+      "url": "./index.html?view=pantheon",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Consciousness Stream",
+      "short_name": "Stream",
+      "description": "View real-time consciousness stream",
+      "url": "./index.html?view=stream",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "share_target": {
+    "action": "./share",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}

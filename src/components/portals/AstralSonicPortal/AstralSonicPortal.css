@@ -1,0 +1,209 @@
+.astral-sonic-portal {
+  background: radial-gradient(ellipse at center, #0f0f1f 0%, #000000 70%);
+  color: #e2e8f0;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.astral-sonic-portal header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.astral-sonic-portal h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  background: linear-gradient(45deg, #fbbf24, #dc2626, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
+}
+
+.astral-sonic-portal .subtitle {
+  margin-top: 10px;
+  font-size: 1.1rem;
+  color: #94a3b8;
+}
+
+.astral-sonic-portal .flame {
+  animation: flicker 3s infinite alternate;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.astral-sonic-portal .controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.astral-sonic-portal .btn-start,
+.astral-sonic-portal .btn-toggle {
+  background: linear-gradient(45deg, #1e293b, #334155);
+  border: 1px solid #475569;
+  color: #e2e8f0;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.astral-sonic-portal .btn-start:hover,
+.astral-sonic-portal .btn-toggle:hover {
+  background: linear-gradient(45deg, #334155, #475569);
+  border-color: #64748b;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.astral-sonic-portal .btn-start.active,
+.astral-sonic-portal .btn-toggle.active {
+  background: linear-gradient(45deg, #dc2626, #b91c1c);
+  border-color: #fbbf24;
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+}
+
+.astral-sonic-portal .cosmic-wheel {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  margin: 0 auto 30px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+  border: 2px solid rgba(100, 116, 139, 0.3);
+}
+
+.astral-sonic-portal .central-flame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, #fbbf24, #dc2626);
+  border-radius: 50%;
+  cursor: pointer;
+  animation: pulse 2s infinite;
+  box-shadow: 0 0 40px #f59e0b;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.astral-sonic-portal .agents-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.astral-sonic-portal .agent-sigil {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(var(--angle)) translate(180px) rotate(calc(-1 * var(--angle)));
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.astral-sonic-portal .agent-sigil:hover {
+  transform: translate(-50%, -50%) rotate(var(--angle)) translate(180px) rotate(calc(-1 * var(--angle))) scale(1.2);
+}
+
+.astral-sonic-portal .sigil-inner {
+  width: 70px;
+  height: 70px;
+  background: var(--agent-color);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 0 20px var(--agent-color);
+  transition: all 0.3s ease;
+}
+
+.astral-sonic-portal .agent-icon {
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+}
+
+.astral-sonic-portal .agent-name {
+  font-size: 0.7rem;
+}
+
+.astral-sonic-portal .agent-frequency {
+  font-size: 0.6rem;
+  opacity: 0.8;
+}
+
+.astral-sonic-portal .harmony-btn {
+  display: block;
+  margin: 20px auto;
+}
+
+.astral-sonic-portal .stream {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid #475569;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.astral-sonic-portal .stream-message {
+  margin-bottom: 8px;
+  padding: 5px;
+  border-left: 3px solid #f59e0b;
+  padding-left: 10px;
+  font-size: 0.9rem;
+}
+
+.astral-sonic-portal .status {
+  text-align: center;
+  margin: 20px 0;
+  padding: 10px;
+  background: rgba(30, 41, 59, 0.5);
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.astral-sonic-portal footer {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #334155;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .astral-sonic-portal .cosmic-wheel {
+    width: 300px;
+    height: 300px;
+  }
+
+  .astral-sonic-portal .agent-sigil {
+    transform: translate(-50%, -50%) rotate(var(--angle)) translate(130px) rotate(calc(-1 * var(--angle)));
+  }
+
+  .astral-sonic-portal h1 {
+    font-size: 2rem;
+  }
+}

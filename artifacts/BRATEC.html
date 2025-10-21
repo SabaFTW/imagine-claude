@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="MISSION CONTROL">
+    <title>🜂 MISSION CONTROL</title>
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTUlTU0lPTiBDT05UUk9MIiwic2hvcnRfbmFtZSI6Ik1JU1NJT04iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMDAwMDAwIiwidGhlbWVfY29sb3IiOiIjZmYyYTZkIn0=">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --serpent: linear-gradient(135deg, #ff2a6d, #ff7e5f);
+            --ves: linear-gradient(135deg, #00f9ff, #00ff87);
+            --trop: linear-gradient(135deg, #05ffa1, #aaff00);
+            --drop: linear-gradient(135deg, #ff00aa, #ff5500);
+            --chaos: linear-gradient(135deg, #9c27b0, #e91e63);
+            --projects: linear-gradient(135deg, #2196f3, #21cbf3);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+            color: white;
+            min-height: 100vh;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff2a6d, #00f9ff, #05ffa1);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .mission-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+
+        .mission-card {
+            height: 140px;
+            border-radius: 25px;
+            padding: 20px;
+            background: var(--gradient);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 2px solid transparent;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mission-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 25px;
+        }
+
+        .mission-card:active {
+            transform: scale(0.95);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        .mission-card:active::before {
+            opacity: 1;
+        }
+
+        .mission-card h2 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .mission-card p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            line-height: 1.3;
+        }
+
+        .mission-card .status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #00ff00;
+            box-shadow: 0 0 10px #00ff00;
+            animation: pulse 2s infinite;
+        }
+
+        .quick-actions {
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+
+        .quick-actions h3 {
+            margin-bottom: 15px;
+            color: #ccc;
+            font-size: 1.1rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .action-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .action-btn:active {
+            background: rgba(255,255,255,0.2);
+            transform: scale(0.95);
+        }
+
+        .file-drop-zone {
+            margin: 20px;
+            padding: 30px;
+            border: 2px dashed rgba(255,255,255,0.3);
+            border-radius: 20px;
+            text-align: center;
+            background: rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .file-drop-zone.dragover {
+            border-color: #00f9ff;
+            background: rgba(0,249,255,0.1);
+            transform: scale(1.02);
+        }
+
+        .status-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            border-radius: 15px;
+            padding: 10px 15px;
+            font-size: 0.8rem;
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.1); }
+        }
+
+        /* iPhone 15 Pro specific optimizations */
+        @media (max-width: 430px) {
+            .mission-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .mission-card {
+                height: 120px;
+                padding: 15px;
+            }
+
+            .mission-card h2 {
+                font-size: 1.1rem;
+            }
+
+            .mission-card p {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Large cards for single-column important actions */
+        .mission-card.full-width {
+            grid-column: 1 / -1;
+            height: 100px;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .mission-card.full-width h2 {
+            margin-bottom: 0;
+            margin-right: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🜂 MISSION CONTROL</h1>
+        <p class="subtitle">Živo Command Center • iPhone 15 Pro</p>
+    </div>
+
+    <div class="mission-grid">
+        <div class="mission-card" style="background: var(--serpent);" onclick="launchMission('serpent')" data-mission="serpent">
+            <div class="status"></div>
+            <h2>🐍 SERPENT</h2>
+            <p>Arch SSH + Project Launcher</p>
+        </div>
+
+        <div class="mission-card" style="background: var(--ves);" onclick="launchMission('ves')" data-mission="ves">
+            <div class="status"></div>
+            <h2>🌌 VES</h2>
+            <p>Script Orchestra Hub</p>
+        </div>
+
+        <div class="mission-card" style="background: var(--trop);" onclick="launchMission('trop')" data-mission="trop">
+            <div class="status"></div>
+            <h2>🏝 TROP</h2>
+            <p>Group Sync + Comms</p>
+        </div>
+
+        <div class="mission-card" style="background: var(--drop);" onclick="launchMission('dropzone')" data-mission="dropzone">
+            <div class="status"></div>
+            <h2>📤 DROP</h2>
+            <p>File Upload + Auto-Organize</p>
+        </div>
+
+        <div class="mission-card full-width" style="background: var(--chaos);" onclick="launchMission('chaos-navigator')" data-mission="chaos">
+            <h2>🗺️ CHAOS NAVIGATOR</h2>
+            <p>Find & organize your scattered projects</p>
+        </div>
+
+        <div class="mission-card full-width" style="background: var(--projects);" onclick="launchMission('active-projects')" data-mission="projects">
+            <h2>🚀 ACTIVE PROJECTS</h2>
+            <p>Quick access to current work</p>
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <h3>Quick Actions</h3>
+        <div class="action-buttons">
+            <button class="action-btn" onclick="quickAction('ssh-status')">📡 SSH Status</button>
+            <button class="action-btn" onclick="quickAction('sync-now')">🔄 Sync Now</button>
+            <button class="action-btn" onclick="quickAction('project-status')">📊 Project Status</button>
+            <button class="action-btn" onclick="quickAction('backup')">💾 Quick Backup</button>
+        </div>
+    </div>
+
+    <div class="file-drop-zone" id="dropZone">
+        <h3>📱 Quick File Upload</h3>
+        <p>Tap to select files or drag & drop</p>
+        <input type="file" id="fileInput" multiple style="display: none;" accept="*/*">
+    </div>
+
+    <div class="status-bar" id="statusBar">
+        Ready for action...
+    </div>
+
+    <script>
+        // Mission launch system with Apple Shortcuts integration
+        function launchMission(mission) {
+            showStatus(`Launching ${mission.toUpperCase()}...`);
+
+            const shortcuts = {
+                'serpent': 'shortcuts://run-shortcut?name=SSH-Serpent-Launch',
+                'ves': 'shortcuts://run-shortcut?name=VES-Project-Start',
+                'trop': 'shortcuts://run-shortcut?name=TROP-Connect',
+                'dropzone': '#file-upload',
+                'chaos-navigator': createChaosNavigator,
+                'active-projects': showActiveProjects
+            };
+
+            const action = shortcuts[mission];
+
+            if (typeof action === 'string') {
+                if (action.startsWith('shortcuts://')) {
+                    // Try to launch Apple Shortcut
+                    window.location.href = action;
+
+                    // Fallback for web testing
+                    setTimeout(() => {
+                        showStatus(`${mission} shortcut executed`);
+                    }, 1000);
+                } else if (action.startsWith('#')) {
+                    // Internal app action
+                    document.getElementById('fileInput').click();
+                }
+            } else if (typeof action === 'function') {
+                // Run internal function
+                action();
+            }
+        }
+
+        // Quick actions
+        function quickAction(action) {
+            showStatus(`Executing ${action}...`);
+
+            const actions = {
+                'ssh-status': () => {
+                    // Check SSH connection status
+                    fetch('/api/ssh-status').then(r => r.json()).then(data => {
+                        showStatus(`SSH: ${data.status}`);
+                    }).catch(() => {
+                        showStatus('SSH: Checking connections...');
+                    });
+                },
+                'sync-now': () => {
+                    // Trigger immediate sync
+                    showStatus('Syncing files...');
+                    // Call sync API or trigger shortcut
+                },
+                'project-status': () => {
+                    showProjectStatus();
+                },
+                'backup': () => {
+                    showStatus('Creating backup...');
+                    // Trigger backup process
+                }
+            };
+
+            if (actions[action]) {
+                actions[action]();
+            }
+        }
+
+        // File upload handling
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            handleFileUpload(files);
+        });
+
+        // Drag and drop
+        const dropZone = document.getElementById('dropZone');
+
+        dropZone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            handleFileUpload(files);
+        });
+
+        dropZone.addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+
+        function handleFileUpload(files) {
+            showStatus(`Uploading ${files.length} file(s)...`);
+
+            files.forEach(file => {
+                // Auto-categorize files
+                const category = categorizeFile(file);
+                showStatus(`Organizing ${file.name} → ${category}`);
+
+                // Here you would implement actual upload logic
+                // For now, just simulate
+                setTimeout(() => {
+                    showStatus(`✅ ${file.name} organized`);
+                }, 1000);
+            });
+        }
+
+        function categorizeFile(file) {
+            const ext = file.name.split('.').pop().toLowerCase();
+            const categories = {
+                'py': 'Python Projects',
+                'js': 'Web Projects',
+                'html': 'Web Projects',
+                'css': 'Web Projects',
+                'md': 'Documentation',
+                'txt': 'Notes',
+                'pdf': 'Documents',
+                'jpg': 'Images',
+                'png': 'Images',
+                'mp4': 'Media',
+                'zip': 'Archives'
+            };
+            return categories[ext] || 'General';
+        }
+
+        // Chaos Navigator - find scattered projects
+        function createChaosNavigator() {
+            showStatus('Scanning for scattered projects...');
+
+            // This would integrate with your file scanner
+            const scannedProjects = [
+                { name: 'SERPENT v1', path: '~/Projects/serpent1/', type: 'PWA' },
+                { name: 'SERPENT v2', path: '~/Desktop/serpent/', type: 'PWA' },
+                { name: 'VES System', path: '~/Documents/ves/', type: 'Scripts' },
+                { name: 'Unknown HTML', path: '~/Downloads/project.html', type: 'Web' }
+            ];
+
+            let html = '<div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 1000; padding: 20px; overflow-y: auto;">';
+            html += '<h2>🗺️ Found Projects</h2>';
+
+            scannedProjects.forEach(project => {
+                html += `
+                    <div style="background: rgba(255,255,255,0.1); margin: 10px 0; padding: 15px; border-radius: 10px;">
+                        <h3>${project.name}</h3>
+                        <p>${project.path}</p>
+                        <span style="background: var(--serpent); padding: 5px 10px; border-radius: 15px; font-size: 0.8rem;">${project.type}</span>
+                    </div>
+                `;
+            });
+
+            html += '<button onclick="this.parentElement.remove()" style="background: #ff2a6d; border: none; color: white; padding: 15px 30px; border-radius: 25px; margin-top: 20px;">Close</button>';
+            html += '</div>';
+
+            document.body.insertAdjacentHTML('beforeend', html);
+        }
+
+        function showActiveProjects() {
+            showStatus('Loading active projects...');
+
+            // Integration point for your actual project list
+            const activeProjects = JSON.parse(localStorage.getItem('activeProjects') || '[]');
+
+            if (activeProjects.length === 0) {
+                showStatus('No active projects found. Add some!');
+                return;
+            }
+
+            // Show projects in overlay
+            let html = '<div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 1000; padding: 20px; overflow-y: auto;">';
+            html += '<h2>🚀 Active Projects</h2>';
+
+            activeProjects.forEach(project => {
+                html += `
+                    <div style="background: rgba(255,255,255,0.1); margin: 10px 0; padding: 15px; border-radius: 10px;" onclick="window.open('${project.url}')">
+                        <h3>${project.name}</h3>
+                        <p>${project.description}</p>
+                    </div>
+                `;
+            });
+
+            html += '<button onclick="this.parentElement.remove()" style="background: #2196f3; border: none; color: white; padding: 15px 30px; border-radius: 25px; margin-top: 20px;">Close</button>';
+            html += '</div>';
+
+            document.body.insertAdjacentHTML('beforeend', html);
+        }
+
+        function showProjectStatus() {
+            const status = {
+                serpent: Math.random() > 0.5 ? 'active' : 'idle',
+                ves: Math.random() > 0.5 ? 'active' : 'idle',
+                trop: Math.random() > 0.5 ? 'active' : 'idle'
+            };
+
+            let statusText = '';
+            Object.entries(status).forEach(([project, state]) => {
+                statusText += `${project.toUpperCase()}: ${state} `;
+            });
+
+            showStatus(statusText);
+        }
+
+        function showStatus(message) {
+            const statusBar = document.getElementById('statusBar');
+            statusBar.textContent = message;
+            statusBar.style.display = 'block';
+
+            setTimeout(() => {
+                statusBar.style.display = 'none';
+            }, 3000);
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            showStatus('🜂 Mission Control Ready');
+
+            // Update status indicators based on project health
+            updateMissionStatus();
+        });
+
+        function updateMissionStatus() {
+            // This would check actual project status
+            const missions = document.querySelectorAll('.mission-card[data-mission]');
+
+            missions.forEach(mission => {
+                const statusDot = mission.querySelector('.status');
+                // Simulate status check
+                const isActive = Math.random() > 0.3;
+                statusDot.style.background = isActive ? '#00ff00' : '#ff6600';
+                statusDot.style.boxShadow = `0 0 10px ${isActive ? '#00ff00' : '#ff6600'}`;
+            });
+        }
+
+        // Refresh status every 30 seconds
+        setInterval(updateMissionStatus, 30000);
+
+        // PWA install prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            showStatus('📱 Tap to install as app');
+        });
+
+        // Service worker for offline capability
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {
+                console.log('SW registration failed');
+            });
+        }
+    </script>
+</body>
+</html>

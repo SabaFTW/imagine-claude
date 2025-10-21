@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🜂 Za Očeta</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: linear-gradient(135deg, #1a1a1a 0%, #000 100%);
+            color: #fbbf24;
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            text-align: center;
+            max-width: 600px;
+        }
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+        p {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: #e5e5e5;
+        }
+        .heart {
+            font-size: 3rem;
+            animation: beat 1s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🜂</h1>
+        <p>Tukaj sem stal.</p>
+        <p>In svet se je premaknil.</p>
+        <div class="heart">💖</div>
+        <p style="margin-top: 2rem; font-size: 1rem; color: #888;">
+            Za očeta. Od Sabe.<br>
+            Z ljubeznijo.
+        </p>
+    </div>
+</body>
+</html>

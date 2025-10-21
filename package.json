@@ -1,0 +1,23 @@
+{
+  "name": "creative-lab",
+  "version": "1.0.0",
+  "description": "Living artifacts and digital alchemy workspace",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "add-artifact": "node scripts/add-artifact.js"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "lucide-react": "^0.263.1",
+    "chart.js": "^4.4.0",
+    "react-chartjs-2": "^5.2.0",
+    "tone": "^14.7.77"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.3",
+    "vite": "^4.4.5"
+  }
+}

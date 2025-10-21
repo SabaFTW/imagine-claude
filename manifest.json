@@ -1,0 +1,16 @@
+{
+  "name": "Zlati Krog",
+  "short_name": "Zlati Krog",
+  "description": "GHOSTCORE Living Artifacts Portal",
+  "start_url": "./ZLATI_KROG.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#d97706",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23d97706'/%3E%3Ctext x='50' y='70' font-size='60' text-anchor='middle' fill='white'%3E🜂%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

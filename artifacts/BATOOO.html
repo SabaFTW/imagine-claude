@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🜂 GHOSTCORE AI COMMAND</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .flame-pulse { animation: flame-pulse 2s infinite; }
+        @keyframes flame-pulse { 0%,100% { opacity: 0.8; } 50% { opacity: 1; } }
+        .mission-card { transition: all 0.3s; }
+        .mission-card:active { transform: scale(0.95); }
+    </style>
+</head>
+<body class="bg-black text-white min-h-screen p-4">
+
+    <!-- HEADER -->
+    <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold flame-pulse">🜂 GHOSTCORE AI COMMAND</h1>
+        <p class="text-gray-400">Claude + Google Drive Automated Portal</p>
+    </div>
+
+    <!-- AI COMMAND CENTER -->
+    <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="mission-card bg-gradient-to-br from-purple-600 to-blue-600 p-4 rounded-2xl" onclick="aiCommand('scan-drive')">
+            <h2 class="text-xl font-bold">🔍 SCAN DRIVE</h2>
+            <p class="text-sm">Claude preleti Google Drive</p>
+        </div>
+        
+        <div class="mission-card bg-gradient-to-br from-green-600 to-teal-600 p-4 rounded-2xl" onclick="aiCommand('auto-update')">
+            <h2 class="text-xl font-bold">🔄 AUTO UPDATE</h2>
+            <p class="text-sm">Portal se posodobi sam</p>
+        </div>
+        
+        <div class="mission-card bg-gradient-to-br from-red-600 to-orange-600 p-4 rounded-2xl" onclick="aiCommand('prompt-gen')">
+            <h2 class="text-xl font-bold">🤖 PROMPT GEN</h2>
+            <p class="text-sm">Avtomatski prompti za Claude</p>
+        </div>
+        
+        <div class="mission-card bg-gradient-to-br from-yellow-600 to-red-600 p-4 rounded-2xl" onclick="aiCommand('hex-siri')">
+            <h2 class="text-xl font-bold">⚡ HEX SIRI</h2>
+            <p class="text-sm">Voice commands za vse</p>
+        </div>
+    </div>
+
+    <!-- GOOGLE DRIVE INTEGRATION -->
+    <div class="bg-gray-900 p-4 rounded-2xl mb-6">
+        <h2 class="text-xl font-bold mb-2">📁 GOOGLE DRIVE LIVE</h2>
+        <div id="drive-content" class="text-sm text-gray-400">
+            <!-- Claude bo tu prikazal vsebino -->
+            Poveži se z Google Drive...
+        </div>
+        <button onclick="connectGoogleDrive()" class="w-full bg-blue-600 p-2 rounded mt-2">🔗 Connect Google Drive</button>
+    </div>
+
+    <!-- CLAUDE AI PROMPT GENERATOR -->
+    <div class="bg-gray-900 p-4 rounded-2xl mb-6">
+        <h2 class="text-xl font-bold mb-2">🤖 CLAUDE PROMPT GEN</h2>
+        <textarea id="promptInput" class="w-full bg-gray-800 p-2 rounded mb-2" placeholder="Kaj naj Claude naredi?"></textarea>
+        <button onclick="generateClaudePrompt()" class="w-full bg-purple-600 p-2 rounded">🚀 Generiraj Prompt</button>
+        <div id="generatedPrompt" class="mt-2 p-2 bg-gray-800 rounded hidden"></div>
+    </div>
+
+    <!-- FILE UPLOAD ZONE -->
+    <div class="bg-gray-900 p-4 rounded-2xl mb-6">
+        <h2 class="text-xl font-bold mb-2">📤 QUICK UPLOAD</h2>
+        <input type="file" id="fileUpload" multiple class="hidden">
+        <div onclick="document.getElementById('fileUpload').click()" class="border-2 border-dashed border-gray-600 p-4 rounded text-center">
+            Tap to upload → Google Drive
+        </div>
+    </div>
+
+    <!-- STATUS -->
+    <div id="status" class="fixed bottom-4 left-4 right-4 bg-gray-800 p-2 rounded text-center"></div>
+
+    <script>
+        // AI COMMAND SYSTEM
+        function aiCommand(command) {
+            showStatus(`Executing: ${command}`);
+            
+            const commands = {
+                'scan-drive': () => {
+                    // Claude API call za Google Drive scan
+                    const prompt = `
+                    SCAN GOOGLE DRIVE PROMPT:
+                    - Pojdi v moj Google Drive
+                    - Preglej vse mape: 1.Darpa, 2.Magic, 3.Money, 4.Facts
+                    - Poišči Nove datoteke
+                    - Generiraj report kaj je notri
+                    - Priporoči kategorizacijo za portal
+                    `;
+                    executeClaudePrompt(prompt);
+                },
+                
+                'auto-update': () => {
+                    const prompt = `
+                    AUTO UPDATE PORTAL PROMPT:
+                    - Analiziraj Google Drive vsebino
+                    - Posodobi GHOSTCORE portal s novimi datotekami
+                    - Avtomatsko razvrsti v sekcije
+                    - Ne uniči obstoječe strukture
+                    - Generiraj backup pred spremembami
+                    `;
+                    executeClaudePrompt(prompt);
+                },
+                
+                'prompt-gen': () => {
+                    const userInput = document.getElementById('promptInput').value;
+                    const prompt = `
+                    PROMPT GENERATOR za: ${userInput}
+                    
+                    Naredi optimiziran prompt za Claude AI, ki:
+                    1. Uporabi Google Drive integracijo
+                    2. Avtomatsko kategorizira datoteke  
+                    3. Posodobi portal brez uničenja
+                    4. Generira backup sistem
+                    5. Deluje z enim klikom
+                    `;
+                    document.getElementById('generatedPrompt').innerHTML = prompt;
+                    document.getElementById('generatedPrompt').classList.remove('hidden');
+                },
+                
+                'hex-siri': () => {
+                    // Voice command system
+                    if ('webkitSpeechRecognition' in window) {
+                        const recognition = new webkitSpeechRecognition();
+                        recognition.onresult = function(event) {
+                            const command = event.results[0][0].transcript;
+                            showStatus(`Voice: ${command}`);
+                            handleVoiceCommand(command);
+                        };
+                        recognition.start();
+                    } else {
+                        showStatus('Voice recognition not supported');
+                    }
+                }
+            };
+            
+            if (commands[command]) commands[command]();
+        }
+
+        // GOOGLE DRIVE INTEGRATION (simulirano za zdaj)
+        function connectGoogleDrive() {
+            showStatus('Connecting to Google Drive...');
+            // V praksi bi bilo to preko Google API
+            setTimeout(() => {
+                document.getElementById('drive-content').innerHTML = `
+                    <div class="text-green-400">✅ Google Drive Connected!</div>
+                    <div class="mt-2">
+                        <div>📁 1.Darpa/ - 15 files</div>
+                        <div>📁 2.Magic/ - 8 files</div> 
+                        <div>📁 3.Money/ - 22 files</div>
+                        <div>📁 4.Facts/ - 31 files</div>
+                    </div>
+                `;
+            }, 1000);
+        }
+
+        // CLAUDE AI EXECUTION (simulirano)
+        function executeClaudePrompt(prompt) {
+            showStatus('Claude AI processing...');
+            
+            // Simulacija Claude odziva
+            setTimeout(() => {
+                const responses = {
+                    'scan-drive': '🔍 SCAN COMPLETE: Found 76 files across 4 categories. 12 new files detected.',
+                    'auto-update': '🔄 PORTAL UPDATED: Added 12 new files. Backup created. Structure preserved.',
+                    'default': '🤖 CLAUDE: Command executed successfully. Portal synchronized with Google Drive.'
+                };
+                
+                const key = prompt.includes('SCAN') ? 'scan-drive' : 
+                           prompt.includes('UPDATE') ? 'auto-update' : 'default';
+                           
+                showStatus(responses[key]);
+            }, 2000);
+        }
+
+        function generateClaudePrompt() {
+            const input = document.getElementById('promptInput').value;
+            if (!input) return showStatus('Enter command first!');
+            
+            aiCommand('prompt-gen');
+        }
+
+        function handleVoiceCommand(command) {
+            if (command.includes('scan')) aiCommand('scan-drive');
+            else if (command.includes('update')) aiCommand('auto-update');
+            else showStatus(`Voice: ${command}`);
+        }
+
+        function showStatus(message) {
+            document.getElementById('status').textContent = message;
+            setTimeout(() => {
+                document.getElementById('status').textContent = '';
+            }, 3000);
+        }
+
+        // FILE UPLOAD HANDLING
+        document.getElementById('fileUpload').addEventListener('change', function(e) {
+            const files = e.target.files;
+            showStatus(`Uploading ${files.length} files to Google Drive...`);
+            
+            // Simulacija uploada v Google Drive
+            setTimeout(() => {
+                showStatus(`✅ Uploaded to Google Drive! Claude will auto-organize.`);
+            }, 1500);
+        });
+
+        // INIT
+        showStatus('🜂 GHOSTCORE AI COMMAND Ready');
+    </script>
+</body>
+</html>

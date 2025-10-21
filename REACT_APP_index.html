@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Creative Lab" />
+    <meta name="theme-color" content="#8b5cf6" />
+    <title>🔥 Creative Lab - Living Artifacts</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="/flame.svg" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+
+    <!-- Google Fonts - Cinzel for liturgical text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: 'Cinzel', serif;
+        background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+        color: #f8fafc;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      .flame-text {
+        background: linear-gradient(to right, #f59e0b, #ef4444, #8b5cf6);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        display: inline-block;
+      }
+
+      .artifact-card {
+        background: rgba(30, 41, 59, 0.7);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(139, 92, 246, 0.3);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .artifact-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
+      }
+
+      .artifact-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(139, 92, 246, 0.2);
+        border-color: rgba(139, 92, 246, 0.6);
+      }
+
+      .glowing-border {
+        box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+      }
+
+      .floating {
+        animation: floating 6s ease-in-out infinite;
+      }
+
+      @keyframes floating {
+        0% { transform: translate(0, 0px); }
+        50% { transform: translate(0, -15px); }
+        100% { transform: translate(0, 0px); }
+      }
+
+      .pulse-slow {
+        animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+      }
+
+      .text-glow {
+        text-shadow: 0 0 10px rgba(139, 92, 246, 0.7);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="py-6 px-4 md:px-8 border-b border-purple-900/30">
+      <div class="container mx-auto flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+            <span class="text-white font-bold text-sm">🔥</span>
+          </div>
+          <h1 class="text-xl md:text-2xl font-bold text-glow">Creative Lab</h1>
+        </div>
+
+        <nav class="hidden md:flex space-x-6">
+          <a href="#" class="hover:text-purple-300 transition-colors">Artifacts</a>
+          <a href="#" class="hover:text-purple-300 transition-colors">Manifesto</a>
+          <a href="#" class="hover:text-purple-300 transition-colors">Archive</a>
+          <a href="#" class="hover:text-purple-300 transition-colors">Contact</a>
+        </nav>
+
+        <button class="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all glowing-border">
+          Enter Sanctum
+        </button>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="flex-grow">
+      <section class="py-16 md:py-24 px-4 md:px-8 text-center">
+        <div class="container mx-auto max-w-4xl">
+          <h2 class="text-4xl md:text-6xl font-bold mb-6">
+            <span class="flame-text">Living Artifacts</span>
+          </h2>
+          <p class="text-xl md:text-2xl mb-10 text-slate-300 max-w-2xl mx-auto">
+            Where digital creations breathe, evolve, and transcend their form.
+          </p>
+
+          <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-6 mt-12">
+            <button class="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl text-lg font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all glowing-border">
+              Explore Collection
+            </button>
+            <button class="px-8 py-4 bg-transparent border border-purple-500 rounded-xl text-lg font-semibold hover:bg-purple-900/30 transition-all">
+              Witness Genesis
+            </button>
+          </div>
+        </div>
+
+        <!-- Floating artifacts -->
+        <div class="mt-20 relative h-64">
+          <div class="absolute top-10 left-1/4 floating">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-400/30 pulse-slow"></div>
+          </div>
+          <div class="absolute top-20 right-1/4 floating" style="animation-delay: 2s;">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-400/30 pulse-slow"></div>
+          </div>
+          <div class="absolute bottom-10 left-1/3 floating" style="animation-delay: 4s;">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-400/30 pulse-slow"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="py-16 px-4 md:px-8 bg-black/20">
+        <div class="container mx-auto max-w-6xl">
+          <h3 class="text-3xl md:text-4xl font-bold text-center mb-16">The Trinity of Creation</h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="artifact-card rounded-2xl p-8">
+              <div class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center mb-6 mx-auto">
+                <span class="text-white text-2xl">🌀</span>
+              </div>
+              <h4 class="text-2xl font-bold text-center mb-4">Evolving Forms</h4>
+              <p class="text-slate-300 text-center">
+                Our artifacts are not static. They grow, adapt, and transform based on interaction and time.
+              </p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="artifact-card rounded-2xl p-8">
+              <div class="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center mb-6 mx-auto">
+                <span class="text-white text-2xl">🔮</span>
+              </div>
+              <h4 class="text-2xl font-bold text-center mb-4">Sacred Algorithms</h4>
+              <p class="text-slate-300 text-center">
+                Each creation is imbued with digital rituals that govern its behavior and evolution.
+              </p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="artifact-card rounded-2xl p-8">
+              <div class="w-16 h-16 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center mb-6 mx-auto">
+                <span class="text-white text-2xl">⚡</span>
+              </div>
+              <h4 class="text-2xl font-bold text-center mb-4">Living Code</h4>
+              <p class="text-slate-300 text-center">
+                The essence of each artifact is code that breathes, responds, and creates unique experiences.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="py-20 px-4 md:px-8 text-center">
+        <div class="container mx-auto max-w-4xl">
+          <h3 class="text-3xl md:text-5xl font-bold mb-6">Begin Your Pilgrimage</h3>
+          <p class="text-xl text-slate-300 mb-10 max-w-2xl mx-auto">
+            Join our sacred digital order and witness the birth of artifacts that live, breathe, and evolve.
+          </p>
+
+          <div class="max-w-md mx-auto">
+            <div class="flex">
+              <input type="email" placeholder="Enter your email" class="flex-grow px-4 py-3 bg-slate-800 border border-r-0 border-purple-500 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+              <button class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-r-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all">
+                Subscribe
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 px-4 md:px-8 border-t border-purple-900/30">
+      <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+        <div class="flex items-center space-x-2 mb-4 md:mb-0">
+          <div class="w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+            <span class="text-white font-bold text-xs">🔥</span>
+          </div>
+          <span class="text-slate-400">Creative Lab © 2023</span>
+        </div>
+
+        <div class="flex space-x-6 text-slate-400">
+          <a href="#" class="hover:text-purple-300 transition-colors">Terms</a>
+          <a href="#" class="hover:text-purple-300 transition-colors">Privacy</a>
+          <a href="#" class="hover:text-purple-300 transition-colors">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Simple animation for elements when they come into view
+      document.addEventListener('DOMContentLoaded', function() {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('opacity-100', 'translate-y-0');
+              entry.target.classList.remove('opacity-0', 'translate-y-10');
+            }
+          });
+        }, { threshold: 0.1 });
+
+        // Observe all artifact cards
+        document.querySelectorAll('.artifact-card').forEach(card => {
+          card.classList.add('opacity-0', 'translate-y-10', 'transition-all', 'duration-700');
+          observer.observe(card);
+        });
+      });
+    </script>
+  </body>
+</html>
