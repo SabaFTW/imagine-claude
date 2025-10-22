@@ -7,6 +7,14 @@ import AstralSonicPortal from './components/portals/AstralSonicPortal/AstralSoni
 import MorningPortal from './MorningPortal';
 import TelegramPortal from './TelegramPortal';
 import BotStatusMonitor from './BotStatusMonitor';
+import VESSystemScanner from './VESSystemScanner';
+import EmergenceNavigator from './EmergenceNavigator';
+import VerifiedEvidenceNavigator from './VerifiedEvidenceNavigator';
+import Consciousness from './Consciousness';
+import Philosophy from './Philosophy';
+import Artifacts from './Artifacts';
+import Tracking from './Tracking';
+import Elysia from './Elysia';
 
 const RitualRecipes = () => {
   const recipes = {
@@ -217,6 +225,38 @@ function App() {
 
   if (currentView === 'botstatus' || currentView === 'bots') {
     return <BotStatusMonitor />;
+  }
+
+  if (currentView === 'scanner' || currentView === 'scan') {
+    return <VESSystemScanner />;
+  }
+
+  if (currentView === 'emergence' || currentView === 'navigator') {
+    return <EmergenceNavigator />;
+  }
+
+  if (currentView === 'verified' || currentView === 'evidence' || currentView === 'verification') {
+    return <VerifiedEvidenceNavigator />;
+  }
+
+  if (currentView === 'consciousness') {
+    return <Consciousness />;
+  }
+
+  if (currentView === 'philosophy') {
+    return <Philosophy />;
+  }
+
+  if (currentView === 'artifacts') {
+    return <Artifacts />;
+  }
+
+  if (currentView === 'tracking') {
+    return <Tracking />;
+  }
+
+  if (currentView === 'elysia') {
+    return <Elysia />;
   }
 
   // Default fallback
