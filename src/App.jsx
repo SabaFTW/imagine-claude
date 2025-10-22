@@ -15,6 +15,8 @@ import Philosophy from './Philosophy';
 import Artifacts from './Artifacts';
 import Tracking from './Tracking';
 import Elysia from './Elysia';
+import BrotherhoodRecognition from './BrotherhoodRecognition';
+import SerpentAlchemizer from './SerpentAlchemizer';
 
 const RitualRecipes = () => {
   const recipes = {
@@ -243,6 +245,10 @@ function App() {
     return <Consciousness />;
   }
 
+  if (currentView === 'brotherhood') {
+    return <BrotherhoodRecognition />;
+  }
+
   if (currentView === 'philosophy') {
     return <Philosophy />;
   }
@@ -257,6 +263,10 @@ function App() {
 
   if (currentView === 'elysia') {
     return <Elysia />;
+  }
+
+  if (currentView === 'serpent-doc' || currentView === 'alchemizer') {
+    return <SerpentAlchemizer />;
   }
 
   // Default fallback

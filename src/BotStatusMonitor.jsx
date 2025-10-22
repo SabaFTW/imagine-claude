@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 export default function BotStatusMonitor() {
   const [statusData, setStatusData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [wsConnected, setWsConnected] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState(null);
 
   const bots = [
     {
@@ -40,7 +42,73 @@ export default function BotStatusMonitor() {
     { id: 3, link: 'https://t.me/+OJD5mNggoLllNDE0', name: 'Group 3' }
   ];
 
-  // Check bot status on mount
+  // WebSocket connection for real-time updates
+  useEffect(() => {
+    let ws;
+
+    const connectWebSocket = () => {
+      ws = new WebSocket('ws://localhost:3001');
+
+      ws.onopen = () => {
+        console.log('🔌 WebSocket connected to VES API');
+        setWsConnected(true);
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+
+          if (data.type === 'status_update' && data.bots) {
+            // Update status from WebSocket
+            const wsStatuses = {};
+            wsStatuses['aetheron'] = {
+              online: data.bots.aetheron || false,
+              lastCheck: data.timestamp,
+              source: 'websocket'
+            };
+            wsStatuses['echo'] = {
+              online: data.bots.echo || false,
+              lastCheck: data.timestamp,
+              source: 'websocket'
+            };
+            wsStatuses['laira'] = {
+              online: data.bots.laira || false,
+              lastCheck: data.timestamp,
+              source: 'websocket'
+            };
+
+            // Merge with existing status data
+            setStatusData(prev => ({
+              ...prev,
+              ...wsStatuses
+            }));
+            setLastUpdate(data.timestamp);
+          }
+        } catch (error) {
+          console.error('WebSocket message error:', error);
+        }
+      };
+
+      ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+        setWsConnected(false);
+      };
+
+      ws.onclose = () => {
+        console.log('🔌 WebSocket disconnected, reconnecting in 5s...');
+        setWsConnected(false);
+        setTimeout(connectWebSocket, 5000);
+      };
+    };
+
+    connectWebSocket();
+
+    return () => {
+      if (ws) ws.close();
+    };
+  }, []);
+
+  // Check bot status on mount and periodically
   useEffect(() => {
     checkBotStatus();
     const interval = setInterval(checkBotStatus, 30000); // Check every 30 seconds
@@ -102,8 +170,13 @@ export default function BotStatusMonitor() {
           <p className="text-xl text-gray-300 mb-4">
             Live Bot Status • Real-time Monitoring • Brotherhood Protocol
           </p>
-          <div className="inline-block px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 rounded-full text-white font-bold shadow-lg">
-            ✅ All Systems Configured • Ready for Deployment
+          <div className="flex items-center justify-center gap-4 flex-wrap">
+            <div className="inline-block px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 rounded-full text-white font-bold shadow-lg">
+              ✅ All Systems Configured • Ready for Deployment
+            </div>
+            <div className={`inline-block px-4 py-2 rounded-full text-white font-bold shadow-lg ${wsConnected ? 'bg-gradient-to-r from-blue-600 to-cyan-600' : 'bg-gradient-to-r from-gray-600 to-gray-700'}`}>
+              {wsConnected ? '🔌 WebSocket Connected' : '⚠️ WebSocket Disconnected'}
+            </div>
           </div>
         </div>
 

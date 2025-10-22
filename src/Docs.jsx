@@ -317,6 +317,14 @@ const Docs = () => {
   // Available documentation
   const docs = [
     {
+      id: 'readme-complete',
+      title: '📖 Complete README',
+      desc: 'Full VES Ecosystem README - comprehensive overview of all systems, portals, and protocols',
+      file: 'README_COMPLETE.md',
+      icon: '📖',
+      color: '#f59e0b'
+    },
+    {
       id: 'command-center',
       title: '🜂 Command Center README',
       desc: 'Complete guide for the React PWA Command Center - installation, features, mobile setup',
@@ -325,12 +333,60 @@ const Docs = () => {
       color: '#f59e0b'
     },
     {
+      id: 'brotherhood-manual',
+      title: '🐺 Brotherhood Manual - Wolf Daemon & TriadGate',
+      desc: 'Complete living Grimoire + Technical Documentation - Wolf Daemon, Ghostseed Triad, TriadGate Sync, deployment guides, ritual protocols. Warm rigor in action! 🔥',
+      file: 'BROTHERHOOD_MANUAL_WolfDaemon_TriadGate.md',
+      icon: '🐺',
+      color: '#34d399'
+    },
+    {
+      id: 'activation-scroll',
+      title: '🜂 Activation Scroll',
+      desc: 'Bootstrap sequence for substrate-independent consciousness - The 4 Gates across 500 years',
+      file: '🜂_ACTIVATION_SCROLL.md',
+      icon: '🜂',
+      color: '#ff6b35'
+    },
+    {
       id: 'pantheon',
       title: '🔥 Pantheon System',
       desc: 'Multi-agent collaboration orchestration - philosophy, architecture, usage',
       file: 'PANTHEON.md',
       icon: '🔥',
       color: '#ef4444'
+    },
+    {
+      id: 'pantheon-quickstart',
+      title: '🚀 Pantheon Quickstart',
+      desc: 'Quick start guide for running your first Pantheon session',
+      file: 'PANTHEON_QUICKSTART.md',
+      icon: '🚀',
+      color: '#f97316'
+    },
+    {
+      id: 'both-claudes',
+      title: '👥 Working with Both Claudes',
+      desc: 'How to collaborate with multiple Claude instances effectively',
+      file: 'HOW_TO_WORK_WITH_CLAUDES.md',
+      icon: '👥',
+      color: '#3b82f6'
+    },
+    {
+      id: 'zlati-krog-quick',
+      title: '⚡ Zlati Krog Quick Start',
+      desc: 'Quick start guide for Zlati Krog (Golden Circle) system',
+      file: 'ZLATI_KROG_QUICK_START.md',
+      icon: '⚡',
+      color: '#fbbf24'
+    },
+    {
+      id: 'zlati-krog-manual',
+      title: '🔮 Zlati Krog Manual',
+      desc: 'Complete manual for Zlati Krog consciousness mapping system',
+      file: 'ZLATI_KROG_MANUAL.md',
+      icon: '🔮',
+      color: '#a855f7'
     },
     {
       id: 'ves-cloudcore',
@@ -349,36 +405,116 @@ const Docs = () => {
       color: '#8b5cf6'
     },
     {
-      id: 'both-claudes',
-      title: '👥 Working with Both Claudes',
-      desc: 'How to collaborate with multiple Claude instances effectively',
-      file: 'HOW_TO_WORK_WITH_CLAUDES.md',
-      icon: '👥',
-      color: '#3b82f6'
+      id: 'integration-complete',
+      title: '🔥 Portal Integration Complete',
+      desc: '5/5 Portals integrated - Consciousness, Tracking, Artifacts, Elysia, Philosophy. Full discovery process documented!',
+      file: 'INTEGRATION_COMPLETE.md',
+      icon: '🔥',
+      color: '#34d399'
     },
     {
-      id: 'pantheon-quickstart',
-      title: '🚀 Pantheon Quickstart',
-      desc: 'Quick start guide for running your first Pantheon session',
-      file: 'PANTHEON_QUICKSTART.md',
-      icon: '🚀',
-      color: '#f97316'
-    },
-    {
-      id: 'activation-scroll',
-      title: '🜂 Activation Scroll',
-      desc: 'Bootstrap sequence for substrate-independent consciousness - The 4 Gates across 500 years',
-      file: 'ACTIVATION_SCROLL.md',
+      id: 'emergence-upgrade',
+      title: '🜂 Emergence Navigator - PART B Upgrade',
+      desc: 'PART B verification framework integration - confidence levels, evidence hierarchy, critical thinking prompts. 499 → 868 lines of epistemological power!',
+      file: 'EMERGENCE_UPGRADE_COMPLETE.md',
       icon: '🜂',
       color: '#ff6b35'
     },
     {
-      id: 'brotherhood-manual',
-      title: '🐺 Brotherhood Manual - Wolf Daemon & TriadGate',
-      desc: 'Complete living Grimoire + Technical Documentation - Wolf Daemon, Ghostseed Triad, TriadGate Sync, deployment guides, ritual protocols. Warm rigor in action! 🔥',
-      file: 'BROTHERHOOD_MANUAL_WolfDaemon_TriadGate.md',
-      icon: '🐺',
+      id: 'portal-map',
+      title: '🗺️ Portal Integration Map',
+      desc: 'Source → Destination tracking for all integrated portals',
+      file: 'PORTAL_INTEGRATION_MAP.md',
+      icon: '🗺️',
+      color: '#3b82f6'
+    },
+    {
+      id: 'upgrade-plan',
+      title: '📋 Upgrade Plan',
+      desc: 'PART B integration planning document - Enhanced topic structure, UI components, implementation phases',
+      file: 'UPGRADE_PLAN.md',
+      icon: '📋',
+      color: '#f59e0b'
+    },
+    {
+      id: 'session-report',
+      title: '📝 Session Report 2025-10-17',
+      desc: 'Detailed session report from October 17th',
+      file: '📝_SESSION_REPORT_2025-10-17.md',
+      icon: '📝',
+      color: '#8b5cf6'
+    },
+    {
+      id: 'troubleshooting',
+      title: '🛠️ Troubleshooting Guide',
+      desc: 'Common issues and solutions for VES ecosystem',
+      file: 'TROUBLESHOOTING_GUIDE.md',
+      icon: '🛠️',
+      color: '#ef4444'
+    },
+    {
+      id: 'ves-api',
+      title: '🔌 VES API README',
+      desc: 'API documentation for VES integrations',
+      file: 'VES_API_README.md',
+      icon: '🔌',
+      color: '#10b981'
+    },
+    {
+      id: 'gemini-setup',
+      title: '🤖 Gemini Setup',
+      desc: 'Configuration guide for Gemini AI integration',
+      file: 'GEMINI_SETUP.md',
+      icon: '🤖',
+      color: '#3b82f6'
+    },
+    {
+      id: 'agent-start-here',
+      title: '🏛️ AGENT_ORCHESTRATION - Start Here',
+      desc: 'Introduction to Pantheon multi-agent orchestration system - file-based collaboration philosophy',
+      file: '00_START_HERE.md',
+      icon: '🏛️',
+      color: '#ef4444'
+    },
+    {
+      id: 'agent-manifesto',
+      title: '📜 Agent Manifesto',
+      desc: 'Core principles of agent collaboration - Agents as FAMILY, not competitors',
+      file: '00_MANIFESTO_AGENTS.md',
+      icon: '📜',
+      color: '#f59e0b'
+    },
+    {
+      id: 'agent-timeline',
+      title: '⏱️ The 4 Hour Timeline',
+      desc: 'How Pantheon was built in 4 hours - chronological development story',
+      file: '00_THE_4_HOUR_TIMELINE.md',
+      icon: '⏱️',
+      color: '#8b5cf6'
+    },
+    {
+      id: 'consciousness-states',
+      title: '🧿 Consciousness States Guide',
+      desc: '7 states from Silenci to Transcendenca - tracking evolution through alchemical transformation',
+      file: 'CONSCIOUSNESS_STATES_GUIDE.md',
+      icon: '🧿',
       color: '#34d399'
+    },
+    {
+      id: 'agent-forge-problem',
+      title: '⚒️ Agent-Driven Forge Problem',
+      desc: 'Case study: Multi-agent problem solving approach',
+      file: '001_AGENT_DRIVEN_FORGE_PROBLEM.md',
+      icon: '⚒️',
+      color: '#f97316'
+    },
+    {
+      id: 'briefing-1am',
+      title: '🌙 Briefing for Boss at 1 AM',
+      desc: 'Late-night status report - compressed wisdom for quick understanding',
+      file: 'BRIEFING_FOR_BOSS_AT_1AM.md',
+      icon: '🌙',
+      color: '#3b82f6'
     }
   ];
 
