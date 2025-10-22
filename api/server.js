@@ -35,6 +35,9 @@ const GHOSTSEED_PATH = '/home/saba/VES/SHABAD_CloudCore/Ghostseed_BotPack_1';
 const WOLF_INBOX = path.join(process.env.HOME, 'Downloads', 'wolf_inbox');
 const WOLF_LOG = path.join(WOLF_DAEMON_PATH, 'logs', 'wolf_daemon.log');
 
+// 🜂 SERPENT PROTOCOL: Command tracking
+const COMMAND_LOG = '/tmp/ves-command-log.json';
+
 // Express app
 const app = express();
 const server = http.createServer(app);
@@ -237,6 +240,98 @@ app.get('/api/bots/status', async (req, res) => {
         online: statuses.filter(b => b.running).length,
         total: bots.length
       }
+    });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
+});
+
+// ============================================================================
+// 🜂 SERPENT PROTOCOL: COMMAND TRACKING ROUTES
+// ============================================================================
+
+// Helper: Read command log
+async function readCommandLog() {
+  try {
+    if (!await fileExists(COMMAND_LOG)) {
+      return [];
+    }
+    const content = await fs.readFile(COMMAND_LOG, 'utf-8');
+    return JSON.parse(content);
+  } catch (error) {
+    console.error('Error reading command log:', error.message);
+    return [];
+  }
+}
+
+// Helper: Write command log
+async function writeCommandLog(entries) {
+  try {
+    await fs.writeFile(COMMAND_LOG, JSON.stringify(entries, null, 2));
+    return true;
+  } catch (error) {
+    console.error('Error writing command log:', error.message);
+    return false;
+  }
+}
+
+// GET /api/commands/log - Get command history
+app.get('/api/commands/log', async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 100;
+    const entries = await readCommandLog();
+
+    res.json({
+      status: 'success',
+      commands: entries.slice(-limit).reverse(), // Most recent first
+      count: entries.length
+    });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
+});
+
+// POST /api/commands/log - Add command entry
+app.post('/api/commands/log', async (req, res) => {
+  try {
+    const { command, reason, type = 'command', status = 'executed' } = req.body;
+
+    if (!command) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Command is required'
+      });
+    }
+
+    const entries = await readCommandLog();
+
+    entries.push({
+      timestamp: new Date().toISOString(),
+      command,
+      reason,
+      type, // webapp, command, bot, service
+      status // started, stopped, executed, error
+    });
+
+    await writeCommandLog(entries);
+
+    res.json({
+      status: 'success',
+      message: 'Command logged',
+      entry: entries[entries.length - 1]
+    });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: error.message });
+  }
+});
+
+// DELETE /api/commands/log - Clear command log
+app.delete('/api/commands/log', async (req, res) => {
+  try {
+    await writeCommandLog([]);
+    res.json({
+      status: 'success',
+      message: 'Command log cleared'
     });
   } catch (error) {
     res.status(500).json({ status: 'error', message: error.message });

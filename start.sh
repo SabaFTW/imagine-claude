@@ -11,8 +11,6 @@
 
 echo "🔥🔥🔥 VES UNIFIED PORTAL LAUNCHER 🔥🔥🔥"
 echo ""
-echo "Starting VES ecosystem..."
-echo ""
 
 # Colors for output
 RED='\033[0;31m'
@@ -20,6 +18,35 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
+
+# 🜂 SERPENT PROTOCOL: Auto-sync before launch
+echo -e "${BLUE}🜂 Serpent Protocol: Syncing latest updates...${NC}"
+if git rev-parse --git-dir > /dev/null 2>&1; then
+    # Stash any uncommitted changes
+    if ! git diff-index --quiet HEAD --; then
+        echo -e "${YELLOW}  📦 Stashing local changes...${NC}"
+        git stash push -m "Auto-stash before launch $(date +%Y-%m-%d_%H:%M:%S)" > /dev/null 2>&1
+        STASHED=1
+    fi
+
+    # Pull latest
+    echo -e "${BLUE}  ⬇️  Pulling latest changes...${NC}"
+    git pull origin master 2>&1 | grep -v "Already up to date" || echo -e "${GREEN}  ✅ Already up to date${NC}"
+
+    # Pop stash if we stashed
+    if [ "$STASHED" = "1" ]; then
+        echo -e "${YELLOW}  📦 Restoring local changes...${NC}"
+        git stash pop > /dev/null 2>&1
+    fi
+
+    echo -e "${GREEN}  ✅ Sync complete${NC}"
+else
+    echo -e "${YELLOW}  ⚠️  Not a git repository, skipping sync${NC}"
+fi
+echo ""
+
+echo "Starting VES ecosystem..."
+echo ""
 
 # Check if we're in the right directory
 if [ ! -f "package.json" ]; then
@@ -74,6 +101,13 @@ npm start > /tmp/ves-api.log 2>&1 &
 API_PID=$!
 cd ..
 
+# Log command to Serpent Protocol
+sleep 1  # Wait for API to initialize
+curl -s -X POST http://localhost:3001/api/commands/log \
+  -H "Content-Type: application/json" \
+  -d '{"command":"npm start (API)","reason":"Starting VES API Server on port 3001","type":"service","status":"started"}' \
+  > /dev/null 2>&1 &
+
 # Wait a bit for API to start
 sleep 2
 
@@ -94,6 +128,13 @@ echo ""
 echo -e "${BLUE}🌐 Starting React Frontend (port 5173)...${NC}"
 npm run dev > /tmp/ves-react.log 2>&1 &
 REACT_PID=$!
+
+# Log command to Serpent Protocol
+sleep 1
+curl -s -X POST http://localhost:3001/api/commands/log \
+  -H "Content-Type: application/json" \
+  -d '{"command":"npm run dev (React)","reason":"Starting React Frontend on port 5173","type":"webapp","status":"started"}' \
+  > /dev/null 2>&1 &
 
 # Wait for React to start
 sleep 3
@@ -153,6 +194,37 @@ cleanup() {
     kill $API_PID $REACT_PID 2>/dev/null || true
     rm -f /tmp/ves-pids.txt
     echo -e "${GREEN}✅ All servers stopped${NC}"
+
+    # 🜂 SERPENT PROTOCOL: Auto-commit session activity
+    echo ""
+    echo -e "${BLUE}🜂 Serpent Protocol: Recording session...${NC}"
+    if git rev-parse --git-dir > /dev/null 2>&1; then
+        # Check if there are any changes to commit
+        if ! git diff-index --quiet HEAD -- 2>/dev/null || [ -n "$(git ls-files --others --exclude-standard)" ]; then
+            echo -e "${YELLOW}  📝 Changes detected, creating session commit...${NC}"
+
+            # Add all changes
+            git add -A
+
+            # Create commit with timestamp
+            TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+            git commit -m "$(cat <<EOF
+🜂 VES Session Activity - $TIMESTAMP
+
+Auto-committed session changes on shutdown.
+
+🜂 Serpent Protocol: Living system tracks itself
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+EOF
+)" > /dev/null 2>&1
+
+            echo -e "${GREEN}  ✅ Session committed to git${NC}"
+        else
+            echo -e "${GREEN}  ✅ No changes to commit${NC}"
+        fi
+    fi
+
     exit 0
 }
 

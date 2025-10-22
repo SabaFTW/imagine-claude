@@ -17,6 +17,7 @@ import Tracking from './Tracking';
 import Elysia from './Elysia';
 import BrotherhoodRecognition from './BrotherhoodRecognition';
 import SerpentAlchemizer from './SerpentAlchemizer';
+import CommandLog from './CommandLog';
 
 const RitualRecipes = () => {
   const recipes = {
@@ -267,6 +268,10 @@ function App() {
 
   if (currentView === 'serpent-doc' || currentView === 'alchemizer') {
     return <SerpentAlchemizer />;
+  }
+
+  if (currentView === 'commandlog' || currentView === 'serpent' || currentView === 'commands') {
+    return <CommandLog />;
   }
 
   // Default fallback

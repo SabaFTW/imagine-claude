@@ -162,6 +162,14 @@ const CommandCenter = () => {
       path: 'tracking'
     },
     {
+      id: 'commandlog',
+      icon: '🜂',
+      title: 'Serpent Command Log',
+      desc: 'SERPENT PROTOCOL - Living system tracks itself! All commands, webapps, services logged with reason & timestamp. See WHAT runs and WHY! Auto-refreshes every 10s. 🐍⚡',
+      status: 'operational',
+      path: 'commandlog'
+    },
+    {
       id: 'artifacts',
       icon: '🎨',
       title: 'Artifacts',
