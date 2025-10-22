@@ -2,11 +2,15 @@
   "name": "creative-lab",
   "version": "1.0.0",
   "description": "Living artifacts and digital alchemy workspace",
+  "homepage": "https://sabaftw.github.io/creative-lab",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 5173",
     "build": "vite build",
     "preview": "vite preview",
-    "add-artifact": "node scripts/add-artifact.js"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
+    "add-artifact": "node scripts/add-artifact.js",
+    "stop": "pkill -f vite || true"
   },
   "dependencies": {
     "react": "^18.2.0",
