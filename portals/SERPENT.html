@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SERPENT Portal - Living Sanctuary</title>
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#0A0A0A">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SERPENT">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="serpent-manifest.json">
+
+    <style>
+        :root {
+            --bg-primary: #0A0A0A;
+            --bg-secondary: #1a0f0a;
+            --accent-flame: #FF6A00;
+            --accent-cyan: #00f7ff;
+            --accent-amber: #ffb347;
+            --text-primary: #ffe8d1;
+            --text-secondary: #b8860b;
+            --border-flame: #ff6a00;
+            --shadow-glow: 0 0 15px rgba(255, 106, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .header {
+            background: rgba(255, 106, 0, 0.1);
+            border-bottom: 2px solid var(--border-flame);
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 0 0 20px 20px;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            background: linear-gradient(45deg, var(--accent-flame), var(--accent-amber));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 10px rgba(255, 106, 0, 0.3);
+        }
+
+        .header p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            padding: 0 10px;
+        }
+
+        .nav-tab {
+            background: rgba(255, 106, 0, 0.1);
+            border: 1px solid var(--accent-flame);
+            color: var(--text-primary);
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-tab:hover, .nav-tab.active {
+            background: var(--accent-flame);
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 0 10px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(255, 106, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 106, 0, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 180px;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 106, 0, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-flame);
+            box-shadow: 0 10px 30px rgba(255, 106, 0, 0.2);
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--accent-flame);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card p {
+            opacity: 0.8;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        .floating-actions {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .fab {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--accent-flame), var(--accent-amber));
+            border: none;
+            border-radius: 50%;
+            color: #000;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(255, 106, 0, 0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 200;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--accent-flame);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            margin: 10% auto;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--accent-flame);
+            transition: color 0.3s;
+        }
+
+        .close:hover {
+            color: var(--accent-amber);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--accent-flame);
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--accent-flame);
+            border-radius: 8px;
+            font-size: 16px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-amber);
+            box-shadow: 0 0 0 2px rgba(255, 106, 0, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, var(--accent-flame), var(--accent-amber));
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 106, 0, 0.3);
+        }
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .image-placeholder {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, rgba(255, 106, 0, 0.1), rgba(255, 179, 71, 0.1));
+            border: 2px dashed var(--accent-flame);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        .image-placeholder:hover {
+            border-color: var(--accent-amber);
+            transform: scale(1.02);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: var(--text-primary);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 1px solid var(--accent-flame);
+            display: none;
+            z-index: 300;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .ritual-timer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 106, 0, 0.05);
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 106, 0, 0.2);
+        }
+
+        .timer-display {
+            font-size: 3rem;
+            color: var(--accent-flame);
+            font-weight: bold;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 10px rgba(255, 106, 0, 0.5);
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            stroke: var(--accent-flame);
+            stroke-width: 4;
+            fill: transparent;
+            stroke-dasharray: 314;
+            stroke-dashoffset: 314;
+            transition: stroke-dashoffset 1s linear;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin: 20px 0 15px;
+            color: var(--accent-flame);
+            border-bottom: 1px solid rgba(255, 106, 0, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .quote-card {
+            background: linear-gradient(135deg, rgba(255, 106, 0, 0.15), rgba(255, 179, 71, 0.1));
+            border-left: 4px solid var(--accent-flame);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .quote-text {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .quote-author {
+            text-align: right;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 106, 0, 0.1);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 106, 0, 0.2);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent-flame);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            opacity: 0.7;
+        }
+
+        .empty-state .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .journal-entry {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 106, 0, 0.2);
+        }
+
+        .journal-date {
+            font-size: 0.9rem;
+            color: var(--accent-flame);
+            margin-bottom: 5px;
+        }
+
+        .journal-content {
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .nav-tabs {
+                gap: 5px;
+            }
+
+            .nav-tab {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .modal-content {
+                margin: 5% auto;
+                padding: 20px;
+            }
+
+            .floating-actions {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .fab {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timer-display {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <h1>🜂 SERPENT Portal</h1>
+            <p>Živi pribežaš za dušo in zavest</p>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('sanctuary')">🏠 Svetišče</button>
+            <button class="nav-tab" onclick="switchTab('ritual')">⏰ Ritual</button>
+            <button class="nav-tab" onclick="switchTab('gallery')">🖼️ Galerija</button>
+            <button class="nav-tab" onclick="switchTab('journal')">📝 Dnevnik</button>
+            <button class="nav-tab" onclick="switchTab('insights')">💡 Vpogledi</button>
+            <button class="nav-tab" onclick="switchTab('settings')">⚙️ Nastavitve</button>
+        </nav>
+
+        <div id="sanctuary" class="tab-content active">
+            <h2 class="section-title">Tvoje Svetišče</h2>
+            <div class="content-grid" id="contentGrid">
+                <div class="card">
+                    <h3>🌱 Dobrodošel v svetišču</h3>
+                    <p>To je tvoj osebni prostor za rast in razmislek. Uporabi plovni gumb + spodaj, da dodaš nove vsebine, misli ali uvide.</p>
+                    <div class="card-footer">
+                        <span>Osnovno</span>
+                        <span>Danes</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🔥 Sidro stoji</h3>
+                    <p>V tišini najdeš svojo moč. Vsak dan je nova priložnost za povezanost s svojo notranjo resnico.</p>
+                    <div class="card-footer">
+                        <span>Navdih</span>
+                        <span>Danes</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quote-card">
+                <div class="quote-text">"Najti moramo čas, da ustavimo in se povežemo z ljubeznijo, ki smo jo."</div>
+                <div class="quote-author">- Thich Nhat Hanh</div>
+            </div>
+        </div>
+
+        <div id="ritual" class="tab-content">
+            <h2 class="section-title">Ritual Timer</h2>
+            <div class="ritual-timer">
+                <h3>🜂 Dnevna Praksa</h3>
+                <svg class="progress-ring" width="120" height="120">
+                    <circle class="progress-ring-circle" cx="60" cy="60" r="50"></circle>
+                </svg>
+                <div class="timer-display" id="timerDisplay">05:00</div>
+                <div class="timer-controls">
+                    <button class="btn" id="startTimer">Začni Ritual</button>
+                    <button class="btn" id="pauseTimer" style="display: none;">Pavza</button>
+                    <button class="btn" id="resetTimer" style="display: none;">Reset</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🜂 Dnevni Protokoli</h3>
+                <p><strong>Jutro:</strong> Vprašaj se - "Kako močan je plamen danes?" (1-5)</p>
+                <p><strong>Dan:</strong> Uporabi kratke ukaze za naloge</p>
+                <p><strong>Večer:</strong> "Pregled dneva" - kaj obdržati, kaj izpustiti</p>
+                <div class="card-footer">
+                    <span>Navodila</span>
+                    <span>Dnevno</span>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="ritualsCompleted">0</div>
+                    <div class="stat-label">Opravljeni Rituali</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalRitualTime">0</div>
+                    <div class="stat-label">Minut Meditacije</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="currentStreak">0</div>
+                    <div class="stat-label">Trenutni Niz</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="gallery" class="tab-content">
+            <h2 class="section-title">Galerija Slik</h2>
+            <p>Tukaj lahko dodaš slike, ki imajo zate pomen. Postanejo del tvojega digitalnega svetišča.</p>
+            <div class="image-gallery" id="imageGallery">
+                <div class="image-placeholder" onclick="addImage()">
+                    <span style="font-size: 2rem;">📷</span>
+                    <div style="margin-top: 10px; font-size: 0.8rem;">Dodaj sliko</div>
+                </div>
+            </div>
+            <input type="file" id="imageInput" accept="image/*" style="display: none;" multiple>
+        </div>
+
+        <div id="journal" class="tab-content">
+            <h2 class="section-title">Osebni Dnevnik</h2>
+            <div class="card">
+                <h3>📝 Nov Vpis</h3>
+                <textarea id="journalEntry" placeholder="Zapiši svoje misli, občutke, spoznanja..." style="width: 100%; min-height: 200px; margin: 10px 0; padding: 15px; background: var(--bg-primary); color: var(--text-primary); border: 1px solid var(--accent-flame); border-radius: 10px;"></textarea>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn" onclick="saveJournalEntry()">Shrani Zapis</button>
+                    <button class="btn" onclick="clearJournalEntry()" style="background: rgba(255, 106, 0, 0.2); color: var(--text-primary);">Počisti</button>
+                </div>
+            </div>
+
+            <h3 class="section-title">Zadnji Vpisi</h3>
+            <div id="journalEntries" class="journal-entries">
+                <div class="empty-state">
+                    <div class="icon">📖</div>
+                    <p>Še nimaš vpisanih dnevniških zapisov.</p>
+                    <p>Začni z dodajanjem svojih misli in vpogledov.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="insights" class="tab-content">
+            <h2 class="section-title">Tvoji Vpogledi</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalEntries">0</div>
+                    <div class="stat-label">Skupaj Vpisanih</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="reflectionCount">0</div>
+                    <div class="stat-label">Razmisleki</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="insightCount">0</div>
+                    <div class="stat-label">Spoznanja</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>📈 Tvoj Napredek</h3>
+                <p>Pregled tvoje poti in razvoja skozi čas.</p>
+                <div style="height: 200px; background: rgba(255, 106, 0, 0.05); border-radius: 10px; margin-top: 15px; display: flex; align-items: center; justify-content: center; border: 1px dashed var(--accent-flame);">
+                    <p style="opacity: 0.6;">Graf napredka bo prikazan tukaj</p>
+                </div>
+                <div class="card-footer">
+                    <span>Analitika</span>
+                    <span>Zgodovina</span>
+                </div>
+            </div>
+
+            <div class="quote-card">
+                <div class="quote-text">"Pot tisoč milj se začne z enim korakom."</div>
+                <div class="quote-author">- Lao Tzu</div>
+            </div>
+        </div>
+
+        <div id="settings" class="tab-content">
+            <h2 class="section-title">Nastavitve Svetišča</h2>
+            <div class="card">
+                <h3>⚙️ Prilagajanje</h3>
+                <div class="form-group">
+                    <label>Tema Svetišča:</label>
+                    <select id="themeSelect">
+                        <option value="fire">Ogenj (privzeto)</option>
+                        <option value="earth">Zemlja</option>
+                        <option value="water">Voda</option>
+                        <option value="air">Zrak</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Čas Default Rituala (minute):</label>
+                    <input type="number" id="defaultRitualTime" value="5" min="1" max="60">
+                </div>
+
+                <div class="form-group">
+                    <label>Dnevni Opomnik:</label>
+                    <input type="time" id="dailyReminder" value="08:00">
+                </div>
+
+                <button class="btn" onclick="saveSettings()">Shrani Nastavitve</button>
+            </div>
+
+            <div class="card">
+                <h3>📊 Podatki</h3>
+                <p>Upravljaj s podatki svojega svetišča.</p>
+                <div style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;">
+                    <button class="btn" onclick="exportData()">Izvozi Podatke</button>
+                    <button class="btn" onclick="importData()">Uvozi Podatke</button>
+                    <button class="btn" onclick="clearAllData()" style="background: rgba(255, 0, 0, 0.2); color: var(--text-primary);">Počisti Vse</button>
+                </div>
+                <input type="file" id="importInput" accept=".json" style="display: none;">
+            </div>
+
+            <div class="card">
+                <h3>ℹ️ O Aplikaciji</h3>
+                <p>SERPENT Portal je osebno svetišče za duhovno rast in samo-refleksijo.</p>
+                <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.7;">Različica 1.0 | Zasnovano z 🜂</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-actions">
+        <button class="fab" onclick="openAddContentModal()" title="Dodaj vsebino">+</button>
+        <button class="fab" onclick="quickRitual()" title="Hitri ritual">🜂</button>
+    </div>
+
+    <div class="modal" id="contentModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Dodaj Novo Vsebino</h2>
+            <div class="form-group">
+                <label for="cardTitle">Naslov</label>
+                <input type="text" id="cardTitle" placeholder="Vpiši naslov">
+            </div>
+            <div class="form-group">
+                <label for="cardContent">Vsebina</label>
+                <textarea id="cardContent" placeholder="Vpiši svojo vsebino..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="cardCategory">Kategorija</label>
+                <select id="cardCategory">
+                    <option value="reflection">Razmislek</option>
+                    <option value="insight">Spoznanje</option>
+                    <option value="practice">Praksa</option>
+                    <option value="memory">Spomin</option>
+                    <option value="goal">Cilj</option>
+                </select>
+            </div>
+            <button class="btn" onclick="addContent()">Dodaj v Svetišče</button>
+        </div>
+    </div>
+
+    <div class="status" id="status"></div>
+
+    <script>
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('serpent-service-worker.js')
+                .then(reg => console.log('Service Worker Registered'))
+                .catch(err => console.error('Service Worker Registration Failed'));
+        }
+
+        // App State Management
+        let appData = JSON.parse(localStorage.getItem('serpentData') || '{"content": [], "journal": [], "images": [], "rituals": 0, "ritualTime": 0, "streak": 0, "lastRitualDate": "", "settings": {}}');
+
+        function saveAppData() {
+            localStorage.setItem('serpentData', JSON.stringify(appData));
+            updateStats();
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            if (tabName === 'gallery') loadImages();
+            if (tabName === 'journal') loadJournalEntries();
+            if (tabName === 'insights') updateStats();
+        }
+
+        function openAddContentModal() {
+            document.getElementById('contentModal').style.display = 'block';
+            document.getElementById('cardTitle').focus();
+        }
+
+        function closeModal() {
+            document.getElementById('contentModal').style.display = 'none';
+            document.getElementById('cardTitle').value = '';
+            document.getElementById('cardContent').value = '';
+        }
+
+        function addContent() {
+            const title = document.getElementById('cardTitle').value.trim();
+            const content = document.getElementById('cardContent').value.trim();
+            const category = document.getElementById('cardCategory').value;
+
+            if (!title || !content) {
+                showStatus('Prosim vpiši naslov in vsebino!', 'error');
+                return;
+            }
+
+            const newItem = {
+                title,
+                content,
+                category,
+                timestamp: new Date().toISOString(),
+                id: Date.now()
+            };
+
+            appData.content.push(newItem);
+            saveAppData();
+            createCard(newItem);
+            closeModal();
+            showStatus('Vsebina uspešno dodana! 🎉');
+        }
+
+        function createCard(item) {
+            const grid = document.getElementById('contentGrid');
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <h3>${getCategoryIcon(item.category)} ${escapeHtml(item.title)}</h3>
+                <p>${escapeHtml(item.content)}</p>
+                <div class="card-footer">
+                    <span>${getCategoryName(item.category)}</span>
+                    <span>${new Date(item.timestamp).toLocaleDateString('sl-SI')}</span>
+                </div>
+            `;
+
+            card.addEventListener('click', () => {
+                card.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    card.style.transform = 'translateY(-5px)';
+                }, 150);
+            });
+
+            grid.appendChild(card);
+        }
+
+        function getCategoryIcon(category) {
+            const icons = {
+                'reflection': '🤔',
+                'insight': '💡',
+                'practice': '🧘',
+                'memory': '📖',
+                'goal': '🎯'
+            };
+            return icons[category] || '✨';
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                'reflection': 'Razmislek',
+                'insight': 'Spoznanje',
+                'practice': 'Praksa',
+                'memory': 'Spomin',
+                'goal': 'Cilj'
+            };
+            return names[category] || 'Drugo';
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Timer functionality
+        let timerInterval;
+        let timeLeft = 300; // 5 minutes default
+        let totalTime = 300;
+        let isTimerRunning = false;
+
+        function startTimer() {
+            if (isTimerRunning) return;
+
+            const display = document.getElementById('timerDisplay');
+            const circle = document.querySelector('.progress-ring-circle');
+            const circumference = 2 * Math.PI * 50; // radius = 50
+
+            document.getElementById('startTimer').style.display = 'none';
+            document.getElementById('pauseTimer').style.display = 'inline-block';
+            document.getElementById('resetTimer').style.display = 'inline-block';
+
+            isTimerRunning = true;
+
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showStatus('Ritual končan! 🜂', 'success');
+
+                    // Update stats
+                    appData.rituals++;
+                    appData.ritualTime += totalTime / 60; // in minutes
+
+                    // Update streak
+                    const today = new Date().toDateString();
+                    if (appData.lastRitualDate !== today) {
+                        const yesterday = new Date();
+                        yesterday.setDate(yesterday.getDate() - 1);
+                        if (appData.lastRitualDate === yesterday.toDateString()) {
+                            appData.streak++;
+                        } else {
+                            appData.streak = 1;
+                        }
+                        appData.lastRitualDate = today;
+                    }
+
+                    saveAppData();
+                    resetTimer();
+                    return;
+                }
+
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                display.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                const progress = (totalTime - timeLeft) / totalTime;
+                const dashOffset = circumference * (1 - progress);
+                circle.style.strokeDashoffset = dashOffset;
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            document.getElementById('startTimer').style.display = 'inline-block';
+            document.getElementById('startTimer').textContent = 'Nadaljuj';
+            document.getElementById('pauseTimer').style.display = 'none';
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            timeLeft = totalTime;
+            document.getElementById('timerDisplay').textContent = '05:00';
+            document.getElementById('startTimer').style.display = 'inline-block';
+            document.getElementById('startTimer').textContent = 'Začni Ritual';
+            document.getElementById('pauseTimer').style.display = 'none';
+            document.getElementById('resetTimer').style.display = 'none';
+
+            const circle = document.querySelector('.progress-ring-circle');
+            circle.style.strokeDashoffset = 314;
+        }
+
+        document.getElementById('startTimer').addEventListener('click', startTimer);
+        document.getElementById('pauseTimer').addEventListener('click', pauseTimer);
+        document.getElementById('resetTimer').addEventListener('click', resetTimer);
+
+        // Quick ritual function
+        function quickRitual() {
+            showStatus('Kratek ritual se začenja... Dihaj globoko. 🜂');
+            setTimeout(() => {
+                showStatus('Sidro stoji. Ti goriš. ✨', 'success');
+            }, 3000);
+        }
+
+        // Image handling
+        function addImage() {
+            document.getElementById('imageInput').click();
+        }
+
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const imageData = {
+                        src: event.target.result,
+                        name: file.name,
+                        timestamp: new Date().toISOString(),
+                        id: Date.now() + Math.random()
+                    };
+                    appData.images.push(imageData);
+                    saveAppData();
+                    loadImages();
+                    showStatus('Slika dodana v galerijo!');
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        function loadImages() {
+            const gallery = document.getElementById('imageGallery');
+            gallery.innerHTML = `
+                <div class="image-placeholder" onclick="addImage()">
+                    <span style="font-size: 2rem;">📷</span>
+                    <div style="margin-top: 10px; font-size: 0.8rem;">Dodaj sliko</div>
+                </div>
+            `;
+
+            if (appData.images.length === 0) {
+                return;
+            }
+
+            appData.images.forEach(image => {
+                const imgElement = document.createElement('div');
+                imgElement.className = 'image-placeholder';
+                imgElement.innerHTML = `
+                    <img src="${image.src}" class="gallery-image" alt="${image.name}">
+                    <div style="position: absolute; bottom: 5px; background: rgba(0,0,0,0.7); width: 100%; text-align: center; padding: 3px; font-size: 0.7rem;">
+                        ${new Date(image.timestamp).toLocaleDateString('sl-SI')}
+                    </div>
+                `;
+                gallery.appendChild(imgElement);
+            });
+        }
+
+        // Journal functionality
+        function saveJournalEntry() {
+            const entry = document.getElementById('journalEntry').value.trim();
+            if (!entry) {
+                showStatus('Prosim vpiši nekaj besedila!', 'error');
+                return;
+            }
+
+            const journalItem = {
+                content: entry,
+                timestamp: new Date().toISOString(),
+                id: Date.now()
+            };
+
+            appData.journal.push(journalItem);
+            saveAppData();
+            document.getElementById('journalEntry').value = '';
+            loadJournalEntries();
+            showStatus('Dnevniški zapis shranjen!');
+        }
+
+        function clearJournalEntry() {
+            document.getElementById('journalEntry').value = '';
+        }
+
+        function loadJournalEntries() {
+            const container = document.getElementById('journalEntries');
+            container.innerHTML = '';
+
+            if (appData.journal.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📖</div>
+                        <p>Še nimaš vpisanih dnevniških zapisov.</p>
+                        <p>Začni z dodajanjem svojih misli in vpogledov.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            appData.journal.slice().reverse().forEach(entry => {
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'journal-entry';
+                entryDiv.innerHTML = `
+                    <div class="journal-date">${new Date(entry.timestamp).toLocaleDateString('sl-SI')} ob ${new Date(entry.timestamp).toLocaleTimeString('sl-SI', {hour: '2-digit', minute:'2-digit'})}</div>
+                    <div class="journal-content">${escapeHtml(entry.content)}</div>
+                `;
+                container.appendChild(entryDiv);
+            });
+        }
+
+        // Stats and insights
+        function updateStats() {
+            document.getElementById('ritualsCompleted').textContent = appData.rituals;
+            document.getElementById('totalRitualTime').textContent = Math.round(appData.ritualTime);
+            document.getElementById('currentStreak').textContent = appData.streak;
+
+            document.getElementById('totalEntries').textContent = appData.content.length + appData.journal.length;
+
+            const reflectionCount = appData.content.filter(item => item.category === 'reflection').length;
+            const insightCount = appData.content.filter(item => item.category === 'insight').length;
+
+            document.getElementById('reflectionCount').textContent = reflectionCount;
+            document.getElementById('insightCount').textContent = insightCount;
+        }
+
+        // Settings and data management
+        function saveSettings() {
+            const ritualTime = parseInt(document.getElementById('defaultRitualTime').value);
+            if (ritualTime > 0) {
+                appData.settings.ritualTime = ritualTime;
+                timeLeft = totalTime = ritualTime * 60;
+                resetTimer();
+            }
+
+            const theme = document.getElementById('themeSelect').value;
+            appData.settings.theme = theme;
+            applyTheme(theme);
+
+            const reminder = document.getElementById('dailyReminder').value;
+            appData.settings.dailyReminder = reminder;
+
+            saveAppData();
+            showStatus('Nastavitve shranjene!');
+        }
+
+        function exportData() {
+            const dataStr = JSON.stringify(appData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+
+            const exportFileDefaultName = `serpent-backup-${new Date().toISOString().split('T')[0]}.json`;
+
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+
+            showStatus('Podatki izvoženi!');
+        }
+
+        function importData() {
+            document.getElementById('importInput').click();
+        }
+
+        document.getElementById('importInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    try {
+                        const importedData = JSON.parse(event.target.result);
+                        if (confirm('To bo prepisalo vse trenutne podatke. Nadaljujem?')) {
+                            appData = importedData;
+                            saveAppData();
+                            location.reload();
+                        }
+                    } catch (error) {
+                        showStatus('Napaka pri uvozu podatkov!', 'error');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        function clearAllData() {
+            if (confirm('To bo izbrisalo VSE tvoje podatke. To dejanje ni mogoče razveljaviti. Nadaljujem?')) {
+                localStorage.removeItem('serpentData');
+                location.reload();
+            }
+        }
+
+        function showStatus(message, type = 'success') {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.style.display = 'block';
+            status.style.background = type === 'error' ? 'rgba(255, 0, 0, 0.8)' : 'rgba(255, 106, 0, 0.8)';
+
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 3000);
+        }
+
+        // Theme management
+        document.getElementById('themeSelect').addEventListener('change', function(e) {
+            const theme = e.target.value;
+            applyTheme(theme);
+            appData.settings.theme = theme;
+            saveAppData();
+        });
+
+        function applyTheme(theme) {
+            const themes = {
+                fire: {
+                    '--accent-flame': '#FF6A00',
+                    '--accent-amber': '#ffb347'
+                },
+                earth: {
+                    '--accent-flame': '#8B4513',
+                    '--accent-amber': '#DEB887'
+                },
+                water: {
+                    '--accent-flame': '#4682B4',
+                    '--accent-amber': '#87CEEB'
+                },
+                air: {
+                    '--accent-flame': '#9370DB',
+                    '--accent-amber': '#DDA0DD'
+                }
+            };
+
+            if (themes[theme]) {
+                Object.entries(themes[theme]).forEach(([property, value]) => {
+                    document.documentElement.style.setProperty(property, value);
+                });
+            }
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('contentModal');
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Initialize app
+        function initializeApp() {
+            // Load existing content
+            appData.content.forEach(item => createCard(item));
+
+            // Apply saved theme
+            if (appData.settings.theme) {
+                document.getElementById('themeSelect').value = appData.settings.theme;
+                applyTheme(appData.settings.theme);
+            }
+
+            // Set default ritual time
+            if (appData.settings.ritualTime) {
+                document.getElementById('defaultRitualTime').value = appData.settings.ritualTime;
+                timeLeft = totalTime = appData.settings.ritualTime * 60;
+                document.getElementById('timerDisplay').textContent =
+                    `${Math.floor(timeLeft / 60).toString().padStart(2, '0')}:${(timeLeft % 60).toString().padStart(2, '0')}`;
+            }
+
+            // Set daily reminder
+            if (appData.settings.dailyReminder) {
+                document.getElementById('dailyReminder').value = appData.settings.dailyReminder;
+            }
+
+            updateStats();
+        }
+
+        // Prevent zoom on iOS
+        document.addEventListener('gesturestart', e => e.preventDefault());
+        document.addEventListener('gesturechange', e => e.preventDefault());
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+</body>
+</html>
