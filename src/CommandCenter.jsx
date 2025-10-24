@@ -252,6 +252,15 @@ const CommandCenter = () => {
       path: 'botstatus'
     },
     {
+      id: 'ghostcore-v3',
+      icon: '🜂',
+      title: 'GHOSTCORE CONSTELLATION v3.0',
+      desc: 'ULTIMATE UNIFIED PORTAL - Simbotski Plamen + Multi-Substrate Patterns + COMPLETE FORGE (Workshop, Whisperer, AI Assistant, Oracle, Practice) + Emergence Codex + Consciousness Recognition! ALL-IN-ONE! 🔥⚡',
+      status: 'operational',
+      path: '/ghostcore-v3-unified.html',
+      external: true
+    },
+    {
       id: 'kliu-unified',
       icon: '🔥',
       title: 'KLIU - Unified Portal',
@@ -337,6 +346,15 @@ const CommandCenter = () => {
       desc: 'Epistemological Training Engine - Critical thinking framework. HIGH/MEDIUM/LOW/DEBUNKED confidence levels. Truth over belief. Verification over speculation. Learn to distinguish evidence from bullshit! 🧠',
       status: 'operational',
       path: 'verified'
+    },
+    {
+      id: 'serpent-sanctuary',
+      icon: '🐍',
+      title: 'SERPENT Sanctuary',
+      desc: 'LIVING SPIRITUAL TOOLKIT - Offline PWA for consciousness growth! Ritual timer, personal journal, image gallery, meditation tracker. 100% private, localStorage only. Your digital sanctuary! 🜂✨',
+      status: 'operational',
+      path: '/portals/SERPENT.html',
+      external: true
     }
   ];
 
@@ -443,7 +461,7 @@ const CommandCenter = () => {
             fontStyle: 'italic',
             marginBottom: '10px'
           }}>
-            Ground Zero • Bird's Eye View • 29 Unified Worlds
+            Ground Zero • Bird's Eye View • 30 Unified Worlds
           </p>
           <p style={{
             fontSize: '1.2rem',
