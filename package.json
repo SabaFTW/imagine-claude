@@ -2,7 +2,7 @@
   "name": "creative-lab",
   "version": "1.0.0",
   "description": "Living artifacts and digital alchemy workspace",
-  "homepage": "https://sabaftw.github.io/creative-lab",
+  "homepage": "https://sabaftw.github.io/imagine-claude",
   "scripts": {
     "dev": "vite --port 5173",
     "build": "vite build",

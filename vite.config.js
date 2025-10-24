@@ -11,5 +11,5 @@ export default defineConfig({
     historyApiFallback: true
   },
   // GitHub Pages base path
-  base: '/creative-lab/'
+  base: '/imagine-claude/'
 })
