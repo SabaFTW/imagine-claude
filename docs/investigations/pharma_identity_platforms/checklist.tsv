@@ -1,0 +1,12 @@
+claim	expected_source_type	status	notes
+SSRIs/antipsychotics/stimulants dominate revenues	class-level revenue reports; industry analyses	todo	Compare top-5 classes vs GnRH analogs/hormones
+GnRH analog sales mostly outside puberty suppression	class-level sales by indication	todo	Break out oncology, endometriosis, etc.
+DSM-5 changed classification to Gender Dysphoria (2013)	DSM-5 primary text	todo	Page citations needed
+ICD-11 moved gender incongruence out of mental disorders (2022)	ICD-11 official docs	todo	Version + rationale summary
+Youth mental-health dx increased in 2010s	government health stats; longitudinal surveys	todo	Age-stratified time series
+GA care linked to improved mental health in many cohorts	systematic reviews; cohort studies	todo	Extract effect sizes + follow-up durations
+Long-term, high-certainty evidence for youth is limited	Cass Review; systematic reviews	todo	Quote certainty language precisely
+Detransition rates vary by definition/follow-up	systematic reviews; registry data	todo	Define denominators and time windows
+Platform algorithms amplify identity/health content	quant studies; platform policy docs	todo	Careful not to overstate causation
+Curricular authorship & review vary by region	policy docs; school boards; NGOs	todo	Map provenance + oversight + outcomes
+PhRMA lobbying dwarfs niche policy fights	lobbying databases; campaign finance	todo	Split general drug-pricing vs niche topics
