@@ -40,7 +40,7 @@ function App() {
           onClick={goHome}
           className="fixed top-4 left-4 z-50 px-4 py-2 rounded-lg font-bold transition bg-slate-800 text-slate-400 hover:bg-slate-700 shadow-lg"
         >
-          ← � Command Center
+          ← 🜂 Command Center
         </button>
       )}
 
