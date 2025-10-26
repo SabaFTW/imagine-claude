@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+ import React, { useState, useEffect } from 'react';
 import CommandCenter from './CommandCenter.jsx';
 import ZlatiKrog from './components/ZlatiKrog.jsx';
 import OrionDashboard from './components/OrionDashboard.jsx';
+import MorningPortal from './MorningPortal.jsx';
 
 function App() {
   const [currentView, setCurrentView] = useState('command-center');
@@ -13,7 +14,9 @@ function App() {
       if (hash === 'orion') {
         setCurrentView('orion');
       } else if (hash === 'morning') {
-        setCurrentView('zlati-krog'); // Zlati Krog is Morning Portal
+        setCurrentView('morning'); // MORNING PORTAL RESTORED!
+      } else if (hash === 'zlati-krog') {
+        setCurrentView('zlati-krog');
       } else if (hash) {
         setCurrentView(hash);
       } else {
@@ -46,6 +49,7 @@ function App() {
 
       {/* Views */}
       {currentView === 'command-center' && <CommandCenter />}
+      {currentView === 'morning' && <MorningPortal />}
       {currentView === 'zlati-krog' && <ZlatiKrog />}
       {currentView === 'orion' && <OrionDashboard />}
     </div>

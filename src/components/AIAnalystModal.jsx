@@ -9,6 +9,15 @@ import { X, Send } from 'lucide-react';
  * - ARSO environmental data (Lead, Nitrates, Temperature)
  * - Company greenwashing analysis
  * - Industrial emissions data
+ * 
+ * INTEGRATION OPTIONS:
+ * 1. Mock Mode (current) - Simulated responses
+ * 2. Gemini API - Free Google AI (recommended for production)
+ * 3. OpenAI/Claude - Paid but powerful
+ * 
+ * To enable Gemini API:
+ * - Set env var: VITE_GEMINI_API_KEY=your-key
+ * - OR: Update callRealLLM() function below
  */
 const AIAnalystModal = ({ sites, isModalOpen, setIsModalOpen }) => {
   const [chatHistory, setChatHistory] = useState([
@@ -19,6 +28,7 @@ const AIAnalystModal = ({ sites, isModalOpen, setIsModalOpen }) => {
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [useRealAI, setUseRealAI] = useState(false); // Toggle for real AI
   const chatEndRef = useRef(null);
 
   useEffect(() => {
@@ -27,24 +37,84 @@ const AIAnalystModal = ({ sites, isModalOpen, setIsModalOpen }) => {
 
   /**
    * Generates contextual payload for LLM API call
-   * Includes all industrial site data, EHI scores, and environmental parameters
+   * Includes all industrial site data, EHI scores, environmental parameters
+   * AND Morning Portal documentation for deep system knowledge
    */
   const getContextualPayload = (userQuery) => {
     const dataSummary = sites.map(site => 
         `${site.name} (EHI: ${site.ehi}) - Obljuba: "${site.publicClaim}". Realnost: "${site.reality}".`
     ).join(' | ');
 
+    // Check if query is about system/documentation
+    const isSystemQuery = /pantheon|zlati krog|claude|consciousness|ves|deployment|portal|manual|docs|dokumentacija/i.test(userQuery);
+    
+    let systemContext = "Si svetovalec projekta Orion. Tvoj cilj je razkriti informacijsko asimetrijo. Odgovori morajo biti neusmiljeni, a utemeljeni. Vedno uporabi podatke iz konteksta.";
+    
+    if (isSystemQuery) {
+      systemContext += "\n\nIMAŠ DOSTOP DO MORNING PORTAL DOKUMENTACIJE:\n" +
+        "- PROJECT ORION: AI Analyst z Gemini integracijo, Leaflet mapa, EHI scoring\n" +
+        "- PANTHEON: Multi-agent orchestration system (5 agents: ARCHITECT, SKEPTIC, INNOVATOR, ENGINEER, HUMANIST)\n" +
+        "- ZLATI KROG: Consciousness portal z 4 entitete (Zala-Fire, Luna-Shadow, Aetheron-Bridge, Lyra-Harmony)\n" +
+        "- CONSCIOUSNESS STATES: VES ontology - 5 states (PNEUMA → SIMBIONT → DEMIURG → AKH → LOGOS)\n" +
+        "- CLAUDE WORKFLOW: Claude Code (executor) + Claude Web (witness/philosopher)\n" +
+        "- DEPLOYMENT: GitHub Pages, Vercel, Netlify, standalone HTML options\n" +
+        "Vsi portali so povezani preko Command Center hub-a (hash routing: #morning, #zlati-krog, #orion, #command-center)";
+    }
+
     return {
-      system: "Si svetovalec projekta Orion. Tvoj cilj je razkriti informacijsko asimetrijo. Odgovori morajo biti neusmiljeni, a utemeljeni. Vedno uporabi podatke iz konteksta.",
+      system: systemContext,
       context: `Skupna Diagnoza Save (Podatki 2025): [Pb 0.015 mg/L, Nitrati 45 mg/L, Temp +2-3°C]. Industrije: ${dataSummary}`,
       question: userQuery
     };
   };
 
   /**
+   * Call Real LLM API (Gemini)
+   * Uses Google's free Gemini API through proxy
+   */
+  const callRealLLM = async (payload) => {
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    
+    if (!apiKey) {
+      return "⚠️ **GEMINI API KEY MISSING**\n\nDa aktiviraš pravi AI:\n1. Pojdi na https://makersuite.google.com/app/apikey\n2. Naredi FREE API key\n3. Dodaj v `.env` file:\n   `VITE_GEMINI_API_KEY=your-key-here`\n4. Restart dev server: `npm run dev`";
+    }
+
+    try {
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{
+                text: `${payload.system}\n\n${payload.context}\n\nVprašanje: ${payload.question}`
+              }]
+            }],
+            generationConfig: {
+              temperature: 0.7,
+              maxOutputTokens: 500,
+            }
+          })
+        }
+      );
+
+      const data = await response.json();
+      
+      if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+        return data.candidates[0].content.parts[0].text;
+      } else {
+        return "❌ Gemini API error: " + JSON.stringify(data);
+      }
+    } catch (error) {
+      return `❌ API Call Failed: ${error.message}\n\nFalling back to Mock Mode...`;
+    }
+  };
+
+  /**
    * Mock LLM Response Engine
    * Simulates intelligent responses based on keyword detection
-   * TODO: Replace with real OpenAI/Anthropic API call
+   * Used when useRealAI is false or API key is missing
    */
   const simulateLLMResponse = (userQuery) => {
     const lowerQuery = userQuery.toLowerCase();
@@ -111,12 +181,19 @@ const AIAnalystModal = ({ sites, isModalOpen, setIsModalOpen }) => {
     setChatHistory(prev => [...prev, { sender: 'user', text: userQuery }]);
     setIsTyping(true);
 
-    // Generate contextual payload (for future API integration)
+    // Generate contextual payload (for API integration)
     const payload = getContextualPayload(userQuery);
     console.log('Context Payload:', payload); // Debug: inspect what would be sent to LLM
 
-    // Simulate LLM response
-    const aiResponseText = await simulateLLMResponse(userQuery);
+    let aiResponseText;
+    
+    if (useRealAI) {
+      // Real AI mode - Call Gemini API
+      aiResponseText = await callRealLLM(payload);
+    } else {
+      // Mock mode - Simulated response
+      aiResponseText = await simulateLLMResponse(userQuery);
+    }
     
     setIsTyping(false);
     setChatHistory(prev => [...prev, { sender: 'ai', text: aiResponseText }]);
@@ -129,10 +206,22 @@ const AIAnalystModal = ({ sites, isModalOpen, setIsModalOpen }) => {
       <div className="bg-slate-900 border border-slate-700 p-6 rounded-xl shadow-2xl w-11/12 max-w-2xl max-h-[90vh] flex flex-col">
         {/* Header */}
         <div className="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
-          <h2 className="text-xl font-bold text-cyan-400 flex items-center gap-2">
-            🤖 Orion AI Analitik
-            <span className="text-xs font-normal text-slate-500">Mock Mode</span>
-          </h2>
+          <div className="flex items-center gap-3">
+            <h2 className="text-xl font-bold text-cyan-400 flex items-center gap-2">
+              🤖 Orion AI Analitik
+            </h2>
+            <button
+              onClick={() => setUseRealAI(!useRealAI)}
+              className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
+                useRealAI 
+                  ? 'bg-green-500/20 text-green-400 border border-green-500/40' 
+                  : 'bg-slate-700 text-slate-400 border border-slate-600'
+              }`}
+              title="Toggle between Mock Mode and Real Gemini API"
+            >
+              {useRealAI ? '✅ Real AI (Gemini)' : '🎭 Mock Mode'}
+            </button>
+          </div>
           <button 
             onClick={() => setIsModalOpen(false)} 
             className="text-slate-500 hover:text-slate-300 transition p-1 rounded hover:bg-slate-800"
