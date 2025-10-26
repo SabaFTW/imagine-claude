@@ -348,6 +348,14 @@ const CommandCenter = () => {
       path: 'verified'
     },
     {
+      id: 'orion',
+      icon: '🛰️',
+      title: 'ORION Svetilnik',
+      desc: 'Environmental Truth Platform - AI Analyst with EHI scoring! Real-time analysis of industrial sites (Holcim 0.89, SIJ 0.67), ARSO data (Pb 0.015 mg/L), Sava River monitoring. Interactive Leaflet map + contextual Q&A. Greenwashing detection protocol! 🔍⚡',
+      status: 'operational',
+      path: 'orion'
+    },
+    {
       id: 'serpent-sanctuary',
       icon: '🐍',
       title: 'SERPENT Sanctuary',

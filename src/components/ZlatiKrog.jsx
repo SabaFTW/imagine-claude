@@ -124,7 +124,7 @@ const ZlatiKrog = () => {
 
               <div className="p-4 bg-gray-800/50 rounded-lg border border-gray-700">
                 <h4 className="text-xl font-bold text-amber-400 mb-2">7. Ključne Neznanke</h4>
-                <p className="mb-2">Dolgotrajni izidi (>10 let); vzročna vloga socialnih medijev; globalno preverjanje. Stabilnost identitete ~80%, a luknje v socialni tranziciji in psihičnih učinkih.</p>
+                <p className="mb-2">Dolgotrajni izidi (&gt;10 let); vzročna vloga socialnih medijev; globalno preverjanje. Stabilnost identitete ~80%, a luknje v socialni tranziciji in psihičnih učinkih.</p>
                 <p className="text-sm text-gray-400 italic">Citat: Luknje v Cass Review (2024); Child Development (2025), DOI:10.1111/mono.12479.</p>
                 <p className="text-red-400 font-bold mt-2">Zaupanje: N/A (luknja)</p>
               </div>

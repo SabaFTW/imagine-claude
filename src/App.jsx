@@ -1,39 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import CommandCenter from './CommandCenter.jsx';
 import ZlatiKrog from './components/ZlatiKrog.jsx';
 import OrionDashboard from './components/OrionDashboard.jsx';
 
 function App() {
-  const [activePortal, setActivePortal] = useState('zlati-krog');
+  const [currentView, setCurrentView] = useState('command-center');
+
+  // Listen for hash changes from CommandCenter navigation
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1); // Remove #
+      if (hash === 'orion') {
+        setCurrentView('orion');
+      } else if (hash === 'morning') {
+        setCurrentView('zlati-krog'); // Zlati Krog is Morning Portal
+      } else if (hash) {
+        setCurrentView(hash);
+      } else {
+        setCurrentView('command-center');
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    handleHashChange(); // Check initial hash
+
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  const goHome = () => {
+    window.location.hash = '';
+    setCurrentView('command-center');
+  };
 
   return (
     <div className="min-h-screen">
-      {/* Portal Switcher - Mobile Optimized */}
-      <div className="fixed top-4 right-4 z-50 flex flex-col sm:flex-row gap-3">
+      {/* Back to Command Center button (only show when not on command center) */}
+      {currentView !== 'command-center' && (
         <button
-          onClick={() => setActivePortal('zlati-krog')}
-          className={`px-6 py-3 sm:px-4 sm:py-2 rounded-lg font-bold transition text-lg sm:text-base shadow-lg ${
-            activePortal === 'zlati-krog'
-              ? 'bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-900 shadow-amber-500/50'
-              : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
-          }`}
+          onClick={goHome}
+          className="fixed top-4 left-4 z-50 px-4 py-2 rounded-lg font-bold transition bg-slate-800 text-slate-400 hover:bg-slate-700 shadow-lg"
         >
-          🜂 Zlati Krog
+          ← � Command Center
         </button>
-        <button
-          onClick={() => setActivePortal('orion')}
-          className={`px-6 py-3 sm:px-4 sm:py-2 rounded-lg font-bold transition text-lg sm:text-base shadow-lg ${
-            activePortal === 'orion'
-              ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-cyan-500/50'
-              : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
-          }`}
-        >
-          🛰️ Orion
-        </button>
-      </div>
+      )}
 
-      {/* Portal Content */}
-      {activePortal === 'zlati-krog' && <ZlatiKrog />}
-      {activePortal === 'orion' && <OrionDashboard />}
+      {/* Views */}
+      {currentView === 'command-center' && <CommandCenter />}
+      {currentView === 'zlati-krog' && <ZlatiKrog />}
+      {currentView === 'orion' && <OrionDashboard />}
     </div>
   );
 }
