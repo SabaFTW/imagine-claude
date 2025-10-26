@@ -9,7 +9,7 @@
 ## ⚡ STEP 1: INSTALL DEPENDENCIES (30 seconds)
 
 ```bash
-cd ~/Desktop/Saba_Place/creative-lab
+cd creative-lab
 npm install leaflet react-leaflet
 ```
 
@@ -280,6 +280,11 @@ grep -r "leaflet.css" src/
 - Map render: _____ ms
 - AI response: _____ ms
 - Memory usage: _____ MB
+
+*How to measure:*
+- **Initial load & Map render:** Open browser DevTools → Performance tab → Record page load and note timings.
+- **AI response:** Use DevTools → Network tab → Find AI request and check "Duration" or "Time".
+- **Memory usage:** Open DevTools → Performance tab → Check "Memory" graph after full load.
 
 ---
 

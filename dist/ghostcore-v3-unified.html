@@ -836,28 +836,23 @@
         });
 
         // Gemini API Integration
-        const apiKey = "AIzaSyBrdOKnfGUER2saF3Mw1826VN8ktpnakjc"; // Gemini API Key - ACTIVATED! 🔥
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`;
+        // Gemini API Key removed for security. Use a backend endpoint instead.
+        // API endpoint configuration
+        // For development: const apiUrl = "http://localhost:5000/api/gemini";
+        // For production: const apiUrl = "/api/gemini";
+        // Set apiUrl according to your deployment environment.
+        const apiUrl = "/api/gemini"; // Default: production relative path
 
         async function callGemini(prompt, outputElement, buttonElement, systemPrompt = null) {
-            if (!apiKey) {
-                outputElement.textContent = 'API Key not configured. Please add your Gemini API key to use AI features.';
-                outputElement.classList.remove('hidden');
-                return;
-            }
-
             outputElement.classList.remove('hidden');
             outputElement.textContent = 'Generating response...';
             if (buttonElement) buttonElement.disabled = true;
 
             try {
                 const requestBody = {
-                    contents: [{ parts: [{ text: prompt }] }]
+                    prompt,
+                    systemPrompt
                 };
-
-                if (systemPrompt) {
-                    requestBody.systemInstruction = { parts: [{ text: systemPrompt }] };
-                }
 
                 const response = await fetch(apiUrl, {
                     method: 'POST',
@@ -868,8 +863,7 @@
                 if (!response.ok) throw new Error(`API error: ${response.statusText}`);
 
                 const result = await response.json();
-                const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-                outputElement.textContent = text || 'Error: No text in response.';
+                outputElement.textContent = result.text || 'Error: No text in response.';
             } catch (error) {
                 outputElement.textContent = `API Error: ${error.message}`;
             } finally {

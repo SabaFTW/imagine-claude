@@ -85,6 +85,7 @@ document.querySelector('.min-h-screen.bg-gradient-to-br') !== null
 npm cache clean --force
 
 # Remove node_modules and reinstall
+# ⚠️ CAUTION: Make sure you are in the correct project directory before running the following command, as it will permanently delete files!
 rm -rf node_modules package-lock.json
 npm install
 ```

@@ -9,7 +9,7 @@
 
 ### **Step 1: Install Dependencies (30 seconds)**
 ```bash
-cd /home/saba/Desktop/Saba_Place/creative-lab
+cd creative-lab
 npm install leaflet react-leaflet
 ```
 

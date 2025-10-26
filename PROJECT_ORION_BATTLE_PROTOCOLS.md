@@ -267,6 +267,9 @@ mkdir project-orion && cd project-orion
 # (See Final Checklist Phase 0 for exact file locations)
 
 # 3. Run master script
+
+> **Security Note:** Before marking 'deploy.sh' as executable and running it, always review its contents to ensure it is safe and does not perform unintended actions.
+
 chmod +x deploy.sh
 ./deploy.sh
 

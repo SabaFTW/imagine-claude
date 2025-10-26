@@ -32,7 +32,7 @@
 
 Create `.env` file in `creative-lab/` root:
 ```bash
-cd /home/saba/Desktop/Saba_Place/creative-lab
+cd creative-lab
 echo "VITE_GEMINI_API_KEY=AIzaSy..." > .env
 ```
 

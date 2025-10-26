@@ -256,6 +256,9 @@
             background: rgba(0, 0, 0, 0.2);
             border-radius: 8px;
         }
+        .toggle-content.visible {
+            display: block;
+        }
 
         .toggle-btn {
             background: var(--accent);
@@ -512,11 +515,7 @@
     <script>
         function toggleContent(id) {
             const content = document.getElementById(id);
-            if (content.style.display === "block") {
-                content.style.display = "none";
-            } else {
-                content.style.display = "block";
-            }
+            content.classList.toggle('visible');
         }
 
         document.addEventListener('DOMContentLoaded', function() {

@@ -139,7 +139,7 @@ As requested, I executed the **AI_FIRST** strategy, delivering the complete Orio
 ### **Quick Test (2 minutes)**
 ```bash
 # 1. Install dependencies
-cd /home/saba/Desktop/Saba_Place/creative-lab
+cd ./creative-lab
 npm install leaflet react-leaflet
 
 # 2. Start dev server
