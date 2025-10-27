@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import AIAnalystModal from './AIAnalystModal';
 import { MapPin, TrendingDown, Network, Target, AlertTriangle, CheckCircle, XCircle, Calendar, Building2 } from 'lucide-react';
 import { industrialSites, timeline, ehiThresholds, corporateNetworks, actionResources, communityAnnotations } from '../data/orionData';
+import { escapeHtml } from './SafeComponents';
 
 // Fix Leaflet marker icons (required for React-Leaflet)
 delete L.Icon.Default.prototype._getIconUrl;
@@ -139,10 +140,10 @@ const ZemljevidResnice = ({ sites, setIsModalOpen, selectedSite, setSelectedSite
               >
                 <Popup>
                   <div className="text-slate-900">
-                    <h3 className="font-bold text-cyan-700">{site.name}</h3>
-                    <p className="text-sm">{site.location}</p>
-                    <p className="text-xs mt-1">EHI: <strong>{site.ehi}</strong></p>
-                    <p className="text-xs text-red-600 mt-1">{site.reality}</p>
+                    <h3 className="font-bold text-cyan-700" dangerouslySetInnerHTML={{ __html: escapeHtml(site.name) }} />
+                    <p className="text-sm" dangerouslySetInnerHTML={{ __html: escapeHtml(site.location) }} />
+                    <p className="text-xs mt-1">EHI: <strong>{site.ehi.toFixed(2)}</strong></p>
+                    <p className="text-xs text-red-600 mt-1" dangerouslySetInnerHTML={{ __html: escapeHtml(site.reality) }} />
                   </div>
                 </Popup>
               </Marker>
@@ -329,28 +330,24 @@ const OrionDashboard = () => {
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="font-bold text-slate-200">{annotation.author}</span>
+                            <span className="font-bold text-slate-200" dangerouslySetInnerHTML={{ __html: escapeHtml(annotation.author) }} />
                             {annotation.verified && (
                               <span className="bg-green-900/50 text-green-400 text-xs px-2 py-0.5 rounded border border-green-700">
                                 ✓ Verificirano
                               </span>
                             )}
-                            <span className="bg-blue-900/50 text-blue-400 text-xs px-2 py-0.5 rounded">
-                              {annotation.category}
-                            </span>
+                            <span className="bg-blue-900/50 text-blue-400 text-xs px-2 py-0.5 rounded" dangerouslySetInnerHTML={{ __html: escapeHtml(annotation.category) }} />
                           </div>
                           <p className="text-xs text-slate-500 mt-1">{annotation.date}</p>
                         </div>
                       </div>
                     </div>
-                    <p className="text-slate-300 text-sm leading-relaxed mb-3">
-                      {annotation.observation}
-                    </p>
+                    <p className="text-slate-300 text-sm leading-relaxed mb-3" dangerouslySetInnerHTML={{ __html: escapeHtml(annotation.observation) }} />
                     <div className="flex gap-2 flex-wrap">
                       <span className="text-xs text-slate-400">Dokazi:</span>
                       {annotation.evidence.map((ev, idx) => (
                         <span key={idx} className="text-xs bg-slate-800 text-cyan-400 px-2 py-1 rounded border border-slate-700">
-                          📎 {ev}
+                          📎 <span dangerouslySetInnerHTML={{ __html: escapeHtml(ev) }} />
                         </span>
                       ))}
                     </div>
