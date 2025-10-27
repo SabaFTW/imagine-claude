@@ -752,21 +752,6 @@
 
     <div class="status" id="status"></div>
 
-    <!-- Clear Data Modal -->
-    <div class="modal" id="clearDataModal" style="display: none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeClearDataModal()">&times;</span>
-            <h2>Pozor: Počisti Vse Podatke</h2>
-            <p style="color: #ff0000; font-weight: bold;">To bo IZBRISALO VSE tvoje podatke. To dejanje ni mogoče razveljaviti.</p>
-            <div style="margin: 15px 0;">
-                <input type="checkbox" id="confirmClearCheckbox" onchange="handleClearCheckboxChange()">
-                <label for="confirmClearCheckbox">Potrjujem, da želim izbrisati vse podatke.</label>
-            </div>
-            <button class="btn" id="confirmClearBtn" onclick="confirmClearAllData()" disabled style="background: rgba(255, 0, 0, 0.8); color: #fff;">Počisti Vse</button>
-        </div>
-    </div>
-
-
     <script>
         // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {
@@ -1153,21 +1138,7 @@
         });
 
         function clearAllData() {
-            document.getElementById('clearDataModal').style.display = 'block';
-            document.getElementById('confirmClearCheckbox').checked = false;
-            document.getElementById('confirmClearBtn').disabled = true;
-        }
-
-        function closeClearDataModal() {
-            document.getElementById('clearDataModal').style.display = 'none';
-        }
-
-        function handleClearCheckboxChange() {
-            document.getElementById('confirmClearBtn').disabled = !document.getElementById('confirmClearCheckbox').checked;
-        }
-
-        function confirmClearAllData() {
-            if (window.confirm('Ali ste prepričani, da želite izbrisati VSE podatke? To dejanje ni mogoče razveljaviti.')) {
+            if (confirm('To bo izbrisalo VSE tvoje podatke. To dejanje ni mogoče razveljaviti. Nadaljujem?')) {
                 localStorage.removeItem('serpentData');
                 location.reload();
             }
