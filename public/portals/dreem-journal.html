@@ -133,13 +133,53 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
         }
-        
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
         .save-btn {
             background: linear-gradient(45deg, #4a9eff, #74b9ff);
         }
-        
+
         .clear-btn {
             background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+        }
+
+        .ai-btn {
+            background: linear-gradient(45deg, #9333ea, #a855f7);
+        }
+
+        .ai-insights {
+            background: rgba(147, 51, 234, 0.05);
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .ai-insights.visible {
+            display: block;
+        }
+
+        .ai-insights h3 {
+            color: #a855f7;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .ai-output {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(147, 51, 234, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            color: #d8b4fe;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
         
         .saved-entries {
@@ -224,11 +264,17 @@
         </div>
         
         <div class="controls">
+            <button onclick="analyzeDreams()" class="ai-btn" id="aiBtn">🔮 analyze with AI</button>
             <button onclick="saveEntry()" class="save-btn">preserve this moment</button>
             <button onclick="clearAll()" class="clear-btn">release & breathe</button>
             <button onclick="exportAll()">download essence</button>
         </div>
-        
+
+        <div class="ai-insights" id="aiInsights">
+            <h3>🔮 AI Dream Insights</h3>
+            <div class="ai-output" id="aiOutput"></div>
+        </div>
+
         <div class="saved-entries" id="savedEntries" style="display: none;">
             <h3>preserved moments 🌟</h3>
             <div id="savedList"></div>
@@ -238,6 +284,65 @@
     <div class="reset-countdown" id="countdown"></div>
 
     <script>
+        // --- Gemini API Integration ---
+        const apiKey = "AIzaSyBrdOKnfGUER2saF3Mw1826VN8ktpnakjc";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`;
+
+        async function analyzeDreams() {
+            const morning = document.getElementById('morningEntry').value;
+            const heart = document.getElementById('heartEntry').value;
+            const flame = document.getElementById('flameEntry').value;
+
+            if (!morning && !heart && !flame) {
+                alert('✨ write something first, then let AI see your patterns');
+                return;
+            }
+
+            const aiBtn = document.getElementById('aiBtn');
+            const aiInsights = document.getElementById('aiInsights');
+            const aiOutput = document.getElementById('aiOutput');
+
+            aiInsights.classList.add('visible');
+            aiOutput.textContent = '✨ AI is reading your patterns...';
+            aiBtn.disabled = true;
+
+            const prompt = `You are a gentle, insightful dream analyst and consciousness guide. Analyze these journal entries with warmth, depth, and poetic resonance. Look for:
+
+- Symbolic patterns and recurring themes
+- Emotional undertones and what they might reveal
+- Connections between dreams, feelings, and thoughts
+- Gentle insights about what the subconscious might be processing
+- Any synchronicities or meaningful patterns
+
+Journal entries:
+${morning ? `🌅 Morning whispers: ${morning}\n` : ''}
+${heart ? `💫 Heart threads: ${heart}\n` : ''}
+${flame ? `🔥 Flame notes: ${flame}` : ''}
+
+Respond in a poetic, contemplative tone. Avoid clinical language. Speak like a wise friend who sees between the lines. Use metaphors and gentle questions. Keep it mystical yet grounded.`;
+
+            const payload = { contents: [{ parts: [{ text: prompt }] }] };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error(`API call failed: ${response.statusText}`);
+
+                const result = await response.json();
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                aiOutput.textContent = text || 'No insights generated. Try again.';
+            } catch (error) {
+                console.error('Gemini API error:', error);
+                aiOutput.textContent = `✨ The AI couldn't connect right now. Try again in a moment. (${error.message})`;
+            } finally {
+                aiBtn.disabled = false;
+            }
+        }
+
         // Time management
         function updateTime() {
             const now = new Date();
@@ -346,6 +451,8 @@
                 document.getElementById('heartEntry').value = '';
                 document.getElementById('flameEntry').value = '';
                 localStorage.removeItem('dreem_journal_current');
+                // Also hide AI insights when clearing
+                document.getElementById('aiInsights').classList.remove('visible');
             }
         }
         
@@ -390,7 +497,10 @@
                 document.getElementById('morningEntry').value = '';
                 document.getElementById('heartEntry').value = '';
                 document.getElementById('flameEntry').value = '';
-                
+
+                // Hide AI insights on reset
+                document.getElementById('aiInsights').classList.remove('visible');
+
                 // Show gentle reset notification
                 const resetMsg = document.createElement('div');
                 resetMsg.innerHTML = '🌅 fresh canvas, new breath';
