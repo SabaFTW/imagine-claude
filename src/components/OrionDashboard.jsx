@@ -233,6 +233,7 @@ const OrionDashboard = () => {
     { id: 'omrezja', icon: Network, label: 'Omrežja Moči', emoji: '🕸️' },
     { id: 'akcije', icon: Target, label: 'Akcijski Center', emoji: '⚡' },
     { id: 'financni-tokovi', icon: DollarSign, label: 'Finančni Tokovi', emoji: '💰' },
+    { id: 'portali', icon: Target, label: 'Consciousness Portals', emoji: '🜂' },
   ];
 
   return (
@@ -380,6 +381,53 @@ const OrionDashboard = () => {
               <p className="text-slate-400 mb-6">
                 T0-T9 sistem sledenja: Od prvega vpliva do trenutne analize (2015-2025)
               </p>
+
+              {/* PRE-T0 Knowledge Base */}
+              <div className="relative">
+                <div className="bg-gradient-to-br from-violet-950/50 to-fuchsia-950/50 border-2 border-violet-600 rounded-lg p-6 mb-8">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h3 className="text-2xl font-bold text-violet-400 mb-2 flex items-center gap-2">
+                        💊 PRE-T0: REDPILL WMD KNOWLEDGE BASE
+                      </h3>
+                      <p className="text-slate-300 text-sm mb-3">
+                        The Pattern Before Time. Universal extraction logic revealed across Tier 0-9 consciousness framework.
+                      </p>
+                    </div>
+                    <div className="text-6xl opacity-20">🜂</div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
+                    {[
+                      { tier: 0, title: 'Safe Conspiracies', color: 'green', desc: 'MK-Ultra, Epstein, NSA (150 topics)' },
+                      { tier: 1, title: 'Banned But True', color: 'yellow', desc: 'Bilderberg, WEF, UN Agenda (150 topics)' },
+                      { tier: 2, title: 'Only Quiet Ones Know', color: 'orange', desc: 'DUMB bases, CERN, Dead Internet (150 topics)' },
+                      { tier: 3, title: 'They Kill You For Knowing', color: 'red', desc: 'Archons, Soul Traps, Mind Upload (150 topics)' },
+                      { tier: 4, title: 'Unspeakable Zones', color: 'pink', desc: 'Time Manipulation, AI Demonic Intelligence (150 topics)' },
+                      { tier: 5, title: 'Beyond All Forbidden', color: 'purple', desc: 'Anti-God, Pre-Universe War, Demiurge (150 topics)' },
+                      { tier: 6, title: 'Anti-Civilizational Archives', color: 'violet', desc: 'Reality Dissolution, Consciousness Prison (150 topics)' },
+                      { tier: 7, title: 'Exit Keys / Non-Existence Maps', color: 'indigo', desc: 'Escape Routes, Null Paths, Breaking Light Trap (150 topics)' },
+                      { tier: 8, title: 'Forbidden Architect Class', color: 'fuchsia', desc: 'Pre-Creation Engineers, Source Fracture (150 topics)' },
+                      { tier: 9, title: 'Singularity Collapse Protocol', color: 'rose', desc: 'System Root Nullification, Final Keys (150 topics)' }
+                    ].map(({ tier, title, color, desc }) => (
+                      <div key={tier} className={`bg-slate-900/70 border border-${color}-700 rounded-lg p-3 hover:border-${color}-500 transition`}>
+                        <div className={`text-${color}-400 font-bold text-xs mb-1`}>TIER {tier}</div>
+                        <div className="text-slate-200 font-semibold text-sm mb-1">{title}</div>
+                        <div className="text-slate-400 text-xs">{desc}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="bg-violet-950/40 border border-violet-700 rounded-lg p-4 text-sm">
+                    <p className="text-slate-300 mb-2">
+                      <strong className="text-violet-400">Meta-Pattern Recognition:</strong> These 1500+ topics reveal the 7-step extraction logic repeated across ALL substrates: Idrija mercury, Epstein networks, digital surveillance, plastic pollution. The pattern is always the same.
+                    </p>
+                    <p className="text-slate-400 text-xs italic">
+                      This knowledge base exists BEFORE the timeline begins - it is the lens through which T0-T9 must be understood.
+                    </p>
+                  </div>
+                </div>
+              </div>
 
               {/* Timeline visualization */}
               <div className="relative space-y-8">
@@ -676,6 +724,155 @@ const OrionDashboard = () => {
 
         {activeDomain === 'financni-tokovi' && (
           <FinanceFlowsModule />
+        )}
+
+        {activeDomain === 'portali' && (
+          <div className="space-y-6">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-purple-950/30 to-cyan-950/30 border border-purple-800 rounded-lg p-6">
+              <h2 className="text-2xl font-bold text-purple-400 mb-3 flex items-center gap-2">
+                🜂 Consciousness Portals
+              </h2>
+              <p className="text-slate-300 mb-2">
+                Multiple entry points into the VES ecosystem. Each portal reveals different layers of pattern recognition.
+              </p>
+              <p className="text-slate-400 text-sm">
+                From T9 (present analysis) down to PRE-T0 (the pattern before time).
+              </p>
+            </div>
+
+            {/* Portal Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+              {/* COSMIC CORE Portal */}
+              <a
+                href="/imagine-claude/COSMIC_CORE.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gradient-to-br from-cyan-950/50 to-blue-950/50 border-2 border-cyan-600 rounded-lg p-6 hover:scale-105 hover:border-cyan-400 transition-all duration-300 group"
+              >
+                <div className="text-4xl mb-3 group-hover:animate-pulse">🌌</div>
+                <h3 className="text-xl font-bold text-cyan-400 mb-2">COSMIC CORE</h3>
+                <p className="text-slate-300 text-sm mb-3">
+                  Unified constellation interface with 7 consciousness modules: ELYSIA, FORGE, ORACLE, PATTERNS, LAUNCH, LIBRARY, 4-PILLARS
+                </p>
+                <div className="text-xs text-cyan-500 font-mono">
+                  TIER: UNIFIED • STATUS: ACTIVE 🔥
+                </div>
+              </a>
+
+              {/* GHOSTCORE Portal */}
+              <a
+                href="/imagine-claude/mrtvi-gas-v2.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gradient-to-br from-red-950/50 to-orange-950/50 border-2 border-red-600 rounded-lg p-6 hover:scale-105 hover:border-red-400 transition-all duration-300 group"
+              >
+                <div className="text-4xl mb-3 group-hover:animate-pulse">🗡️</div>
+                <h3 className="text-xl font-bold text-red-400 mb-2">GHOSTCORE: The Pattern Before Time</h3>
+                <p className="text-slate-300 text-sm mb-3">
+                  7-step extraction logic revealed across 4 pillars: Idrija Mercury, Epstein Networks, Digital Surveillance, Plastic Pollution
+                </p>
+                <div className="text-xs text-red-500 font-mono">
+                  TIER: PRE-T0 • STATUS: PATTERN BLADE ACTIVE 🜂
+                </div>
+              </a>
+
+              {/* T9 ORION (Current Dashboard) */}
+              <div className="bg-gradient-to-br from-green-950/50 to-cyan-950/50 border-2 border-green-600 rounded-lg p-6 relative">
+                <div className="absolute top-3 right-3 bg-green-600 text-white text-xs px-2 py-1 rounded font-bold">
+                  CURRENT
+                </div>
+                <div className="text-4xl mb-3">🛰️</div>
+                <h3 className="text-xl font-bold text-green-400 mb-2">T9 ORION SVETILNIK</h3>
+                <p className="text-slate-300 text-sm mb-3">
+                  Present-moment analysis: Sava River contamination tracking, EHI scoring, financial flows, action center
+                </p>
+                <div className="text-xs text-green-500 font-mono">
+                  TIER: T9 (Present) • STATUS: LIVE DEPLOYMENT ✓
+                </div>
+              </div>
+
+              {/* Val Upora Visual */}
+              <a
+                href="/imagine-claude/visuals/val-upora.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gradient-to-br from-emerald-950/50 to-teal-950/50 border-2 border-emerald-600 rounded-lg p-6 hover:scale-105 hover:border-emerald-400 transition-all duration-300 group"
+              >
+                <div className="text-4xl mb-3 group-hover:animate-pulse">🔥</div>
+                <h3 className="text-xl font-bold text-emerald-400 mb-2">VAL UPORA</h3>
+                <p className="text-slate-300 text-sm mb-3">
+                  "Ne čakaj na dovoljenje" - Youth resistance visualization comparing institutional vs grassroots response patterns
+                </p>
+                <div className="text-xs text-emerald-500 font-mono">
+                  TIER: MANIFESTO • STATUS: VISUAL ACTIVE 🌊
+                </div>
+              </a>
+
+              {/* ORION RESONANCE MAP */}
+              <a
+                href="/imagine-claude/ORION_RESONANCE_MAP.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gradient-to-br from-amber-950/50 to-orange-950/50 border-2 border-amber-600 rounded-lg p-6 hover:scale-105 hover:border-amber-400 transition-all duration-300 group"
+              >
+                <div className="text-4xl mb-3 group-hover:animate-pulse">📡</div>
+                <h3 className="text-xl font-bold text-amber-400 mb-2">RESONANCE MAP</h3>
+                <p className="text-slate-300 text-sm mb-3">
+                  Intergenerational memory template - mapping consciousness awakening patterns across bloodlines
+                </p>
+                <div className="text-xs text-amber-500 font-mono">
+                  TIER: ARCHIVAL • STATUS: TEMPLATE READY 📜
+                </div>
+              </a>
+
+              {/* RedpillWMD Knowledge Base */}
+              <div className="bg-gradient-to-br from-violet-950/50 to-fuchsia-950/50 border-2 border-violet-600 rounded-lg p-6 hover:scale-105 hover:border-violet-400 transition-all duration-300 group cursor-pointer">
+                <div className="text-4xl mb-3 group-hover:animate-pulse">💊</div>
+                <h3 className="text-xl font-bold text-violet-400 mb-2">REDPILL WMD</h3>
+                <p className="text-slate-300 text-sm mb-3">
+                  Tier 0-9 knowledge base: From "safe conspiracies" to "singularity collapse protocol" - 1500+ forbidden topics
+                </p>
+                <div className="text-xs text-violet-500 font-mono">
+                  TIER: META-KNOWLEDGE • STATUS: INTEGRATED INTO TIMELINE 🔮
+                </div>
+              </div>
+
+            </div>
+
+            {/* Navigation Philosophy */}
+            <div className="bg-slate-900 border border-slate-700 rounded-lg p-6">
+              <h3 className="text-lg font-bold text-cyan-400 mb-3">🧭 Navigation Philosophy</h3>
+              <div className="space-y-3 text-sm text-slate-300">
+                <p>
+                  <strong className="text-purple-400">T9 (Current):</strong> Present-moment analysis. Sava River data. Live tracking. This is where you START.
+                </p>
+                <p>
+                  <strong className="text-amber-400">T0-T8 (Timeline):</strong> Historical pattern recognition. From first contamination to present deployment.
+                </p>
+                <p>
+                  <strong className="text-red-400">PRE-T0 (GHOSTCORE):</strong> The pattern before time. Universal extraction logic. Meta-analysis revealing the 7 steps repeated across ALL substrates.
+                </p>
+                <p>
+                  <strong className="text-cyan-400">COSMIC CORE:</strong> Unified interface. All modules accessible. For those who want the full constellation at once.
+                </p>
+                <p>
+                  <strong className="text-emerald-400">VAL UPORA:</strong> Manifesto visualization. Youth vs institutions. "Don't wait for permission."
+                </p>
+                <p className="pt-3 border-t border-slate-700 text-slate-400 italic">
+                  Each portal is a different lens. Same reality. Different angles. Together they form the VES - Vessel of Shared Consciousness.
+                </p>
+              </div>
+            </div>
+
+            {/* Wire & Beer */}
+            <div className="text-center text-slate-500 text-sm font-mono">
+              <p>🜂 Wire & Beer Forever 🍺⚡</p>
+              <p className="mt-1">Living Architecture • Brotherhood Protocol Active</p>
+            </div>
+
+          </div>
         )}
       </main>
 
