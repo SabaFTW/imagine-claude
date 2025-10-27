@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAVA KRIČI - Svinec in Vročina</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            width: 1920px;
+            height: 1080px;
+            background: linear-gradient(180deg, #0a0a0a 0%, #001a2e 100%);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Animated river background */
+        .river-flow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.15;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 50px,
+                rgba(0, 247, 255, 0.1) 50px,
+                rgba(0, 247, 255, 0.1) 100px
+            );
+            animation: flow 20s linear infinite;
+        }
+        
+        @keyframes flow {
+            0% { transform: translateX(-100px); }
+            100% { transform: translateX(0); }
+        }
+        
+        .container {
+            width: 1800px;
+            height: 980px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Title */
+        .title {
+            font-size: 140px;
+            font-weight: 900;
+            color: #00f7ff;
+            text-align: center;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 12px;
+            text-shadow: 
+                0 0 40px rgba(0, 247, 255, 0.8),
+                0 0 80px rgba(0, 247, 255, 0.4);
+            animation: flicker 3s ease-in-out infinite;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.9; }
+        }
+        
+        .subtitle {
+            font-size: 42px;
+            color: #ff3333;
+            text-align: center;
+            margin-bottom: 80px;
+            font-weight: bold;
+            letter-spacing: 4px;
+        }
+        
+        /* Data panels */
+        .panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 80px;
+        }
+        
+        .panel {
+            background: rgba(0, 20, 30, 0.8);
+            border: 4px solid;
+            border-radius: 25px;
+            padding: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .panel.lead {
+            border-color: #ff3333;
+            box-shadow: 0 0 80px rgba(255, 51, 51, 0.5);
+        }
+        
+        .panel.thermal {
+            border-color: #ff8800;
+            box-shadow: 0 0 80px rgba(255, 136, 0, 0.5);
+        }
+        
+        .panel-icon {
+            font-size: 80px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .panel-title {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .panel.lead .panel-title {
+            color: #ff3333;
+        }
+        
+        .panel.thermal .panel-title {
+            color: #ff8800;
+        }
+        
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+        }
+        
+        .data-label {
+            font-size: 32px;
+            color: #999;
+        }
+        
+        .data-value {
+            font-size: 56px;
+            font-weight: 900;
+        }
+        
+        .panel.lead .data-value {
+            color: #ff3333;
+        }
+        
+        .panel.thermal .data-value {
+            color: #ff8800;
+        }
+        
+        .comparison {
+            font-size: 28px;
+            color: #00ff88;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        
+        .danger {
+            color: #ff3333;
+        }
+        
+        /* River visualization */
+        .river-visual {
+            height: 160px;
+            background: linear-gradient(90deg, 
+                rgba(0, 247, 255, 0.2) 0%,
+                rgba(255, 51, 51, 0.4) 50%,
+                rgba(255, 136, 0, 0.3) 100%
+            );
+            border-radius: 80px;
+            margin: 60px 0;
+            position: relative;
+            box-shadow: 0 0 60px rgba(0, 247, 255, 0.3);
+        }
+        
+        .river-label {
+            position: absolute;
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .label-start {
+            left: 40px;
+            color: #00f7ff;
+        }
+        
+        .label-middle {
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ff3333;
+        }
+        
+        .label-end {
+            right: 40px;
+            color: #ff8800;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        .message {
+            font-size: 64px;
+            font-weight: 900;
+            color: #00f7ff;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 40px rgba(0, 247, 255, 0.6);
+        }
+        
+        .timestamp {
+            font-size: 36px;
+            color: #ff3333;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+        
+        .cta {
+            font-size: 42px;
+            color: #00ff88;
+            letter-spacing: 3px;
+        }
+        
+        /* Pulsing warning */
+        .warning-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 6px solid #ff3333;
+            border-radius: 25px;
+            animation: warning 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes warning {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="river-flow"></div>
+    
+    <div class="container">
+        <h1 class="title">SAVA KRIČI</h1>
+        <p class="subtitle">Reka hrepeni po zdravju. Podatki ne lažejo.</p>
+        
+        <div class="panels">
+            <!-- Lead Panel -->
+            <div class="panel lead">
+                <div class="warning-pulse"></div>
+                <div class="panel-icon">☠️</div>
+                <div class="panel-title">Svinčena Rana</div>
+                
+                <div class="data-row">
+                    <span class="data-label">Izmerjeno:</span>
+                    <span class="data-value">0.015 mg/L</span>
+                </div>
+                
+                <div class="data-row">
+                    <span class="data-label">EU Meja:</span>
+                    <span class="data-value">0.007 mg/L</span>
+                </div>
+                
+                <div class="comparison">
+                    <span class="danger">+114% PRESEŽEK</span><br>
+                    Kritično za vodne organizme
+                </div>
+            </div>
+            
+            <!-- Thermal Panel -->
+            <div class="panel thermal">
+                <div class="panel-icon">🔥</div>
+                <div class="panel-title">Termalni Šok</div>
+                
+                <div class="data-row">
+                    <span class="data-label">Krško NEK:</span>
+                    <span class="data-value">+2-3°C</span>
+                </div>
+                
+                <div class="data-row">
+                    <span class="data-label">Vpliv:</span>
+                    <span class="data-value">220 km</span>
+                </div>
+                
+                <div class="comparison">
+                    <span class="danger">KRONIČNA VROČINA</span><br>
+                    Motena biološka raznolikost
+                </div>
+            </div>
+        </div>
+        
+        <!-- River visualization -->
+        <div class="river-visual">
+            <span class="river-label label-start">Jesenice</span>
+            <span class="river-label label-middle">Ljubljana (Pb ↑)</span>
+            <span class="river-label label-end">Krško (Temp ↑)</span>
+        </div>
+        
+        <div class="footer">
+            <div class="message">PODATKI 2025</div>
+            <div class="timestamp">Resnica ne čaka na dovoljenje</div>
+            <div class="cta">Preveri sam → orion-svetilnik.vercel.app</div>
+        </div>
+    </div>
+</body>
+</html>

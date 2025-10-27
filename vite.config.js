@@ -10,6 +10,6 @@ export default defineConfig({
     // Fallback to index.html for all routes (SPA support)
     historyApiFallback: true
   },
-  // GitHub Pages base path
-  base: '/imagine-claude/'
+  // GitHub Pages base path (only for production builds)
+  base: process.env.NODE_ENV === 'production' ? '/imagine-claude/' : '/'
 })

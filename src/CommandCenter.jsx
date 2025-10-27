@@ -3,6 +3,26 @@ import React, { useState, useEffect, useRef } from 'react';
 const CommandCenter = () => {
   const canvasRef = useRef(null);
   const [loading, setLoading] = useState('');
+  const [konamiCode, setKonamiCode] = useState([]);
+  const [ghostMode, setGhostMode] = useState(false);
+  
+  // Konami Code: ↑ ↑ ↓ ↓ ← → ← → b a
+  const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+  
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      const newCode = [...konamiCode, e.key].slice(-10);
+      setKonamiCode(newCode);
+      
+      if (newCode.join(',') === konamiSequence.join(',')) {
+        setGhostMode(true);
+        setTimeout(() => setGhostMode(false), 10000); // 10 seconds
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [konamiCode]);
 
   // Flame particles animation
   useEffect(() => {
@@ -261,6 +281,16 @@ const CommandCenter = () => {
       external: true
     },
     {
+      id: 'orion',
+      icon: '🛰️',
+      title: 'PROJECT ORION',
+      desc: 'INFORMACIJSKA PRAVIČNOST! 🔥 AI Analyst + Leaflet zemljevid + EHI scoring (Environmental Hypocrisy Index). Razkrij greenwashing! ARSO data, industrial sites tracking, časovna linija obljub vs. resnice. GitHub: SabaFTW/project-orion 🐺⚡',
+      status: 'operational',
+      path: 'https://github.com/SabaFTW/project-orion',
+      external: true,
+      github: true
+    },
+    {
       id: 'kliu-unified',
       icon: '🔥',
       title: 'KLIU - Unified Portal',
@@ -346,6 +376,14 @@ const CommandCenter = () => {
       desc: 'Epistemological Training Engine - Critical thinking framework. HIGH/MEDIUM/LOW/DEBUNKED confidence levels. Truth over belief. Verification over speculation. Learn to distinguish evidence from bullshit! 🧠',
       status: 'operational',
       path: 'verified'
+    },
+    {
+      id: 'orion',
+      icon: '🛰️',
+      title: 'ORION Svetilnik',
+      desc: 'Environmental Truth Platform - AI Analyst with EHI scoring! Real-time analysis of industrial sites (Holcim 0.89, SIJ 0.67), ARSO data (Pb 0.015 mg/L), Sava River monitoring. Interactive Leaflet map + contextual Q&A. Greenwashing detection protocol! 🔍⚡',
+      status: 'operational',
+      path: 'orion'
     },
     {
       id: 'serpent-sanctuary',
@@ -579,6 +617,37 @@ const CommandCenter = () => {
         </div>
       </div>
 
+      {/* Ghost Mode Overlay */}
+      {ghostMode && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'rgba(0, 255, 136, 0.1)',
+          backdropFilter: 'hue-rotate(180deg)',
+          pointerEvents: 'none',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          animation: 'ghostPulse 2s infinite'
+        }}>
+          <div style={{
+            fontSize: '4rem',
+            color: '#00ff88',
+            textShadow: '0 0 20px #00ff88, 0 0 40px #00ff88',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            animation: 'float 3s ease-in-out infinite'
+          }}>
+            👻 GHOST MODE ACTIVATED 👻<br />
+            <span style={{ fontSize: '2rem' }}>All systems see you now...</span>
+          </div>
+        </div>
+      )}
+
       {/* CSS Keyframes */}
       <style>{`
         @keyframes breatheFlame {
@@ -609,6 +678,11 @@ const CommandCenter = () => {
         @keyframes float {
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes ghostPulse {
+          0%, 100% { opacity: 0.1; }
+          50% { opacity: 0.3; }
         }
 
         @keyframes pulse {
