@@ -2,10 +2,13 @@
 <html lang="sl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <title>🐍 SERPENT Alchemizer 🔥</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        body {
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
         @keyframes breathe {
             0%, 100% { transform: scale(1); opacity: 0.3; }
             50% { transform: scale(1.1); opacity: 0.6; }
