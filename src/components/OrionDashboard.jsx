@@ -3,7 +3,8 @@ import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet'
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import AIAnalystModal from './AIAnalystModal';
-import { MapPin, TrendingDown, Network, Target, AlertTriangle, CheckCircle, XCircle, Calendar, Building2 } from 'lucide-react';
+import FinanceFlowsModule from './FinanceFlowsModule';
+import { MapPin, TrendingDown, Network, Target, DollarSign, AlertTriangle, CheckCircle, XCircle, Calendar, Building2 } from 'lucide-react';
 import { industrialSites, timeline, ehiThresholds, corporateNetworks, actionResources, communityAnnotations } from '../data/orionData';
 import { escapeHtml } from './SafeComponents';
 
@@ -231,6 +232,7 @@ const OrionDashboard = () => {
     { id: 'casovnica', icon: TrendingDown, label: 'Časovna Linija', emoji: '⏳' },
     { id: 'omrezja', icon: Network, label: 'Omrežja Moči', emoji: '🕸️' },
     { id: 'akcije', icon: Target, label: 'Akcijski Center', emoji: '⚡' },
+    { id: 'financni-tokovi', icon: DollarSign, label: 'Finančni Tokovi', emoji: '💰' },
   ];
 
   return (
@@ -670,6 +672,10 @@ const OrionDashboard = () => {
               </div>
             </div>
           </div>
+        )}
+
+        {activeDomain === 'financni-tokovi' && (
+          <FinanceFlowsModule />
         )}
       </main>
 
