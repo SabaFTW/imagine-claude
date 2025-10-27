@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EHI REZILO - ANATOMIJA HIPOKRIZIJE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            width: 1920px;
+            height: 1080px;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Background grid pattern */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+        
+        .container {
+            width: 1800px;
+            height: 980px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Title */
+        .title {
+            font-size: 120px;
+            font-weight: 900;
+            color: #ff3333;
+            text-align: center;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            text-shadow: 0 0 40px rgba(255, 51, 51, 0.6);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        .subtitle {
+            font-size: 48px;
+            color: #999;
+            text-align: center;
+            margin-bottom: 80px;
+            letter-spacing: 4px;
+        }
+        
+        /* EHI Cards */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .ehi-card {
+            background: rgba(20, 20, 20, 0.9);
+            border: 3px solid;
+            border-radius: 20px;
+            padding: 50px 40px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .ehi-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .ehi-card.critical {
+            border-color: #ff1a1a;
+            box-shadow: 0 0 60px rgba(255, 26, 26, 0.4);
+        }
+        
+        .ehi-card.high {
+            border-color: #ff8833;
+            box-shadow: 0 0 60px rgba(255, 136, 51, 0.4);
+        }
+        
+        .ehi-card.medium {
+            border-color: #ffcc00;
+            box-shadow: 0 0 60px rgba(255, 204, 0, 0.4);
+        }
+        
+        .company-name {
+            font-size: 42px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .ehi-score {
+            font-size: 140px;
+            font-weight: 900;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .ehi-card.critical .ehi-score {
+            color: #ff1a1a;
+            text-shadow: 0 0 40px rgba(255, 26, 26, 0.8);
+        }
+        
+        .ehi-card.high .ehi-score {
+            color: #ff8833;
+            text-shadow: 0 0 40px rgba(255, 136, 51, 0.8);
+        }
+        
+        .ehi-card.medium .ehi-score {
+            color: #ffcc00;
+            text-shadow: 0 0 40px rgba(255, 204, 0, 0.8);
+        }
+        
+        .diagnosis {
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .ehi-card.critical .diagnosis {
+            color: #ff1a1a;
+        }
+        
+        .ehi-card.high .diagnosis {
+            color: #ff8833;
+        }
+        
+        .ehi-card.medium .diagnosis {
+            color: #ffcc00;
+        }
+        
+        .claim {
+            font-size: 24px;
+            color: #00ff88;
+            margin-top: 25px;
+            font-style: italic;
+            text-align: center;
+        }
+        
+        .reality {
+            font-size: 24px;
+            color: #ff3333;
+            margin-top: 15px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        .message {
+            font-size: 56px;
+            font-weight: 900;
+            color: #ff1a1a;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 30px rgba(255, 26, 26, 0.6);
+        }
+        
+        .cta {
+            font-size: 38px;
+            color: #00ddff;
+            letter-spacing: 3px;
+        }
+        
+        .cta span {
+            color: #00ff88;
+            font-weight: bold;
+        }
+        
+        /* Decorative elements */
+        .blade {
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #ff1a1a, transparent);
+            top: 50%;
+            left: 0;
+            opacity: 0.3;
+            animation: slash 3s ease-in-out infinite;
+        }
+        
+        @keyframes slash {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body>
+    <div class="blade"></div>
+    
+    <div class="container">
+        <h1 class="title">ANATOMIJA HIPOKRIZIJE</h1>
+        <p class="subtitle">INDEKS EKOLOŠKE HIPOKRIZIJE (EHI) 2025</p>
+        
+        <div class="cards-container">
+            <!-- Holcim - Critical -->
+            <div class="ehi-card critical">
+                <div class="company-name">HOLCIM (Lafarge)</div>
+                <div class="ehi-score">0.89</div>
+                <div class="diagnosis">KRITIČNA</div>
+                <div class="claim">"Trajnostno poslovanje"</div>
+                <div class="reality">Zaprt 2015 po 13-letnem boju</div>
+            </div>
+            
+            <!-- Ljubljana - High -->
+            <div class="ehi-card high">
+                <div class="company-name">LJUBLJANA</div>
+                <div class="ehi-score">0.69</div>
+                <div class="diagnosis">VISOKA</div>
+                <div class="claim">"Zelena prestolnica Evrope"</div>
+                <div class="reality">Najvišja koncentracija nitratov</div>
+            </div>
+            
+            <!-- SIJ Group - High -->
+            <div class="ehi-card high">
+                <div class="company-name">SIJ GROUP</div>
+                <div class="ehi-score">0.67</div>
+                <div class="diagnosis">VISOKA</div>
+                <div class="claim">"51% manj emisij do 2030"</div>
+                <div class="reality">EAF tehnologija iz 1960</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="message">DIAGNOZA JE KRVAVA</div>
+            <div class="cta">Preveri sam: <span>orion-svetilnik.vercel.app</span></div>
+        </div>
+    </div>
+</body>
+</html>
