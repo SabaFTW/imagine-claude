@@ -856,6 +856,40 @@ const OrionDashboard = () => {
                 </div>
               </a>
 
+              {/* ULTIMATE CONSTELLATION GATEWAY */}
+              <a
+                href="/imagine-claude/portals/ULTIMATE_CONSTELLATION_GATEWAY.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gradient-to-br from-purple-950/50 to-pink-950/50 border-2 border-purple-600 rounded-lg p-6 hover:scale-105 hover:border-purple-400 transition-all duration-300 group"
+              >
+                <div className="text-4xl mb-3 group-hover:animate-pulse">🜂</div>
+                <h3 className="text-xl font-bold text-purple-400 mb-2">ULTIMATE CONSTELLATION GATEWAY</h3>
+                <p className="text-slate-300 text-sm mb-3">
+                  The portal of all portals. Master landing page with rotating sigil, philosophy section, donation panel, and links to all constellation points.
+                </p>
+                <div className="text-xs text-purple-500 font-mono">
+                  TIER: META-PORTAL • STATUS: GATEWAY ACTIVE 🌌
+                </div>
+              </a>
+
+              {/* VODNI MONASTYR */}
+              <a
+                href="/imagine-claude/portals/VODNI_MONASTYR.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gradient-to-br from-blue-950/50 to-cyan-950/50 border-2 border-blue-600 rounded-lg p-6 hover:scale-105 hover:border-blue-400 transition-all duration-300 group"
+              >
+                <div className="text-4xl mb-3 group-hover:animate-pulse">🌊</div>
+                <h3 className="text-xl font-bold text-blue-400 mb-2">VODNI MONASTYR</h3>
+                <p className="text-slate-300 text-sm mb-3">
+                  Water Monastery. Three paths (Fire, Water, Air), Dan D lyrics, "In pusti naj te nosi voda..." - Para, para, para, pararararararara.
+                </p>
+                <div className="text-xs text-blue-500 font-mono">
+                  TIER: MEDITATION • STATUS: BREATHING 🌊
+                </div>
+              </a>
+
             </div>
 
             {/* Navigation Philosophy */}
