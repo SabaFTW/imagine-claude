@@ -3,7 +3,8 @@ import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet'
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import AIAnalystModal from './AIAnalystModal';
-import { MapPin, TrendingDown, Network, Target, AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
+import { MapPin, TrendingDown, Network, Target, AlertTriangle, CheckCircle, XCircle, Calendar, Building2 } from 'lucide-react';
+import { industrialSites, timeline, ehiThresholds } from '../data/orionData';
 
 // Fix Leaflet marker icons (required for React-Leaflet)
 delete L.Icon.Default.prototype._getIconUrl;
@@ -13,8 +14,8 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
 
-// --- Mock Industrial Sites Data ---
-const mockIndustrialSites = [
+// --- REAL Industrial Sites Data (from Drive: "Analiza Onesnaževanja Save") ---
+const realIndustrialSites = [
   { 
     id: 1, 
     name: "SIJ Acroni", 
@@ -222,7 +223,7 @@ const OrionDashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSite, setSelectedSite] = useState(null);
 
-  const avgEHI = (mockIndustrialSites.reduce((sum, site) => sum + site.ehi, 0) / mockIndustrialSites.length).toFixed(2);
+  const avgEHI = (industrialSites.reduce((sum, site) => sum + site.ehi, 0) / industrialSites.length).toFixed(2);
   
   const domains = [
     { id: 'zemljevid', icon: MapPin, label: 'Zemljevid Resnice', emoji: '🗺️' },
@@ -285,8 +286,8 @@ const OrionDashboard = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8">
         {activeDomain === 'zemljevid' && (
-          <ZemljevidResnice 
-            sites={mockIndustrialSites} 
+          <ZemljevidResnice
+            sites={industrialSites}
             setIsModalOpen={setIsModalOpen}
             selectedSite={selectedSite}
             setSelectedSite={setSelectedSite}
@@ -294,10 +295,81 @@ const OrionDashboard = () => {
         )}
         
         {activeDomain === 'casovnica' && (
-          <div className="bg-slate-900 rounded-lg border border-slate-800 p-12 text-center">
-            <TrendingDown className="w-16 h-16 mx-auto text-slate-600 mb-4" />
-            <h2 className="text-2xl font-bold text-slate-400 mb-2">Časovna Linija</h2>
-            <p className="text-slate-500">Vizualizacija emisijskih trendov v pripravi...</p>
+          <div className="space-y-6">
+            <div className="bg-slate-900 rounded-lg border border-slate-800 p-6">
+              <h2 className="text-2xl font-bold text-cyan-400 mb-4 flex items-center gap-2">
+                <Calendar className="w-6 h-6" />
+                Časovna Linija - Vzorci Hipokrizije
+              </h2>
+              <p className="text-slate-400 mb-6">
+                T0-T9 sistem sledenja: Od prvega vpliva do trenutne analize (2015-2025)
+              </p>
+
+              {/* Timeline visualization */}
+              <div className="relative space-y-8">
+                {/* Vertical line */}
+                <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-cyan-500 via-blue-500 to-purple-500" />
+
+                {timeline.map((event, index) => (
+                  <div key={event.id} className="relative flex gap-6 items-start">
+                    {/* Timeline marker */}
+                    <div className={`flex-shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold z-10 ${
+                      index <= 7 ? 'bg-cyan-500 border-cyan-400 text-white' :
+                      index === 8 ? 'bg-blue-500 border-blue-400 text-white' :
+                      'bg-purple-500 border-purple-400 text-white animate-pulse'
+                    }`}>
+                      {event.id.replace('T', '')}
+                    </div>
+
+                    {/* Event content */}
+                    <div className="flex-1 bg-slate-800/50 rounded-lg p-4 border border-slate-700 hover:border-cyan-500/50 transition">
+                      <div className="flex justify-between items-start mb-2">
+                        <span className="text-cyan-400 font-bold">{event.date}</span>
+                        <span className="text-xs text-slate-500">{event.id}</span>
+                      </div>
+                      <p className="text-slate-200">{event.event}</p>
+                      {index === 7 && (
+                        <div className="mt-3 text-xs text-amber-400 bg-amber-950/30 border border-amber-800 rounded p-2">
+                          🔍 <strong>TRENUTNA TOČKA:</strong> ORION analiza razkriva razkorak med obljubami in realnostjo
+                        </div>
+                      )}
+                      {index === 8 && (
+                        <div className="mt-3 text-xs text-green-400 bg-green-950/30 border border-green-800 rounded p-2">
+                          🚀 <strong>DEPLOYMENT:</strong> Platforma gre javno - podatki postanejo dostopni vsem
+                        </div>
+                      )}
+                      {index === 9 && (
+                        <div className="mt-3 text-xs text-purple-400 bg-purple-950/30 border border-purple-800 rounded p-2">
+                          💚 <strong>PRIHODNOST:</strong> Skupnostna verifikacija - Layer 2 aktivacija
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Pattern Recognition Section */}
+            <div className="bg-slate-900 rounded-lg border border-slate-800 p-6">
+              <h3 className="text-xl font-bold text-cyan-400 mb-4">🔍 Vzorci v Podatkih</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-slate-800/50 rounded-lg p-4 border border-red-800/50">
+                  <div className="text-2xl font-bold text-red-400 mb-2">2015-2020</div>
+                  <p className="text-sm text-slate-300">Holcim zaprt po boju. Ljubljana dobi nagrado "zelena prestolnica" kljub onesnaževanju.</p>
+                  <div className="mt-2 text-xs text-red-400">Vzorec: Nagrade kljub problemom</div>
+                </div>
+                <div className="bg-slate-800/50 rounded-lg p-4 border border-yellow-800/50">
+                  <div className="text-2xl font-bold text-yellow-400 mb-2">2020-2024</div>
+                  <p className="text-sm text-slate-300">SIJ obljubi 51% redukcijo. Cinkarna "zelena kemija". E-PRTR razkriva manjše izboljšave.</p>
+                  <div className="mt-2 text-xs text-yellow-400">Vzorec: Velike obljube, majhna realnost</div>
+                </div>
+                <div className="bg-slate-800/50 rounded-lg p-4 border border-cyan-800/50">
+                  <div className="text-2xl font-bold text-cyan-400 mb-2">2024-2025</div>
+                  <p className="text-sm text-slate-300">ORION analiza zbere 43 virov. EHI sistem razkriva razkorak. Platforma gre javno.</p>
+                  <div className="mt-2 text-xs text-cyan-400">Vzorec: Transparency through data</div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
         
@@ -325,10 +397,10 @@ const OrionDashboard = () => {
       </footer>
       
       {/* AI Modal Integration */}
-      <AIAnalystModal 
-        sites={mockIndustrialSites} 
-        isModalOpen={isModalOpen} 
-        setIsModalOpen={setIsModalOpen} 
+      <AIAnalystModal
+        sites={industrialSites}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
       />
     </div>
   );
