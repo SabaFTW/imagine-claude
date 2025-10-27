@@ -256,11 +256,192 @@ export const platformLayers = {
   }
 };
 
+// Corporate Power Networks (for T9 - Network visualization)
+export const corporateNetworks = [
+  {
+    id: "net-1",
+    company: "SIJ Group",
+    ownership: "KAD (Slovenian Sovereign Holding) 25%, Russian investors 25%",
+    connections: [
+      { to: "Slovenian Government", type: "Ownership", strength: 0.7 },
+      { to: "Russian Steel Industry", type: "Investment", strength: 0.5 },
+      { to: "EU Steel Lobby", type: "Trade Association", strength: 0.6 }
+    ],
+    lobbyingBudget: "€250,000/year (est.)",
+    politicalDonations: "Multiple Slovenian parties",
+    boardMembers: ["Former government officials", "Banking sector executives"]
+  },
+  {
+    id: "net-2",
+    company: "Holcim",
+    ownership: "Swiss multinational (Holcim Ltd)",
+    connections: [
+      { to: "World Business Council for Sustainable Development", type: "Membership", strength: 0.8 },
+      { to: "EU Cement Industry Lobby", type: "Trade Association", strength: 0.9 },
+      { to: "Global Infrastructure Funds", type: "Financial", strength: 0.7 }
+    ],
+    lobbyingBudget: "€4.5M/year (EU-wide)",
+    politicalDonations: "Not disclosed",
+    boardMembers: ["Former EU Commission officials", "Investment bank executives"]
+  },
+  {
+    id: "net-3",
+    company: "Cinkarna Celje",
+    ownership: "52% free float, 10% government funds, 38% institutional",
+    connections: [
+      { to: "Slovenian Chemical Industry Association", type: "Trade Association", strength: 0.8 },
+      { to: "European Chemical Industry Council (CEFIC)", type: "Lobbying", strength: 0.6 },
+      { to: "Local Municipality", type: "Tax Revenue Dependency", strength: 0.9 }
+    ],
+    lobbyingBudget: "€100,000/year (est.)",
+    politicalDonations: "Regional parties",
+    boardMembers: ["Local political figures", "Banking representatives"]
+  },
+  {
+    id: "net-4",
+    company: "NEK Krško",
+    ownership: "50% Slovenia (GEN Energija), 50% Croatia (HEP)",
+    connections: [
+      { to: "Slovenian Government", type: "Ownership", strength: 1.0 },
+      { to: "Croatian Government", type: "Ownership", strength: 1.0 },
+      { to: "Nuclear Industry Lobby (Foratom)", type: "Trade Association", strength: 0.7 },
+      { to: "Westinghouse (USA)", type: "Technology Provider", strength: 0.6 }
+    ],
+    lobbyingBudget: "€500,000/year (est. via trade associations)",
+    politicalDonations: "N/A (state-owned)",
+    boardMembers: ["Government appointees", "Energy sector executives"]
+  }
+];
+
+// Community Annotations (for T9 - Layer 2)
+// Example structure for community-contributed data
+export const communityAnnotations = [
+  {
+    id: "ann-1",
+    siteId: 1, // Links to SIJ Acroni
+    author: "Local Resident (Jesenice)",
+    date: "2024-10-15",
+    verified: true,
+    observation: "Strong metallic smell near Sava River in the mornings. Water has visible discoloration after heavy rain.",
+    evidence: ["Photo", "Water sample"],
+    votes: 23,
+    category: "Water Quality"
+  },
+  {
+    id: "ann-2",
+    siteId: 3, // Links to Ljubljana WWTP
+    author: "Environmental Scientist",
+    date: "2024-09-28",
+    verified: true,
+    observation: "ARSO data shows nitrate spikes correlate with heavy rainfall events. Combined sewer overflow likely cause.",
+    evidence: ["ARSO data analysis", "Rainfall correlation chart"],
+    votes: 45,
+    category: "Data Analysis"
+  },
+  {
+    id: "ann-3",
+    siteId: 2, // Links to Holcim Trbovlje
+    author: "Trbovlje Community Member",
+    date: "2024-08-12",
+    verified: false,
+    observation: "Soil samples from our garden still show elevated lead levels 9 years after closure. Where is the cleanup?",
+    evidence: ["Soil test results"],
+    votes: 67,
+    category: "Legacy Contamination"
+  }
+];
+
+// Action Center Resources (for T9 - Activist Toolkit)
+export const actionResources = {
+  contactPoints: [
+    {
+      name: "ARSO (Slovenian Environment Agency)",
+      role: "Water Quality Monitoring",
+      email: "gp.arso@gov.si",
+      phone: "+386 1 478 40 00",
+      action: "Request Sava River contamination data under Access to Information Act"
+    },
+    {
+      name: "Ministry of Environment",
+      role: "Policy & Enforcement",
+      email: "gp.mop@gov.si",
+      phone: "+386 1 478 70 00",
+      action: "File complaints about industrial permit violations"
+    },
+    {
+      name: "EU Commission - Environment",
+      role: "Water Framework Directive Enforcement",
+      email: "env-info@ec.europa.eu",
+      action: "Report Slovenia's non-compliance with EU water quality standards"
+    },
+    {
+      name: "Varuh Človekovih Pravic (Ombudsman)",
+      role: "Human Rights & Environment",
+      email: "vcp@varuh-rs.si",
+      phone: "+386 1 475 00 50",
+      action: "File complaints about environmental justice violations"
+    }
+  ],
+  legalTools: [
+    {
+      name: "Access to Information Act (ZDIJZ)",
+      description: "Right to request environmental data from government agencies",
+      howTo: "Submit written request citing ZDIJZ Article 4 - response required within 20 days",
+      template: "Zahtevan dostopa do okoljskih podatkov [template link]"
+    },
+    {
+      name: "Environmental Information Act (ZVO-1)",
+      description: "Specific right to environmental data",
+      howTo: "Request emissions data, monitoring results, permit conditions",
+      template: "Obrazec ZVO-1 [template link]"
+    },
+    {
+      name: "Aarhus Convention",
+      description: "EU/international right to participate in environmental decisions",
+      howTo: "Join public hearings, submit comments on industrial permits",
+      template: "Pripombe na CPVO postopek [template link]"
+    }
+  ],
+  communityActions: [
+    {
+      title: "Organize Water Quality Testing",
+      description: "Citizen science - collect Sava River samples for independent analysis",
+      difficulty: "Medium",
+      impact: "High",
+      resources: ["Water testing kits", "Lab partnership", "Documentation protocols"]
+    },
+    {
+      title: "Start Local Monitoring Group",
+      description: "Regular ARSO data checks + community observations",
+      difficulty: "Low",
+      impact: "Medium",
+      resources: ["ARSO website training", "Data collection templates", "Telegram group"]
+    },
+    {
+      title: "Launch FOIA Campaign",
+      description: "Mass requests for industrial emissions data to overwhelm secrecy",
+      difficulty: "Low",
+      impact: "High",
+      resources: ["Request templates", "Legal support contact", "Coordination group"]
+    },
+    {
+      title: "Mapping Corporate Connections",
+      description: "Crowdsource lobbying ties, board memberships, political donations",
+      difficulty: "High",
+      impact: "Very High",
+      resources: ["Company registry access", "Research protocols", "Visualization tools"]
+    }
+  ]
+};
+
 export default {
   industrialSites,
   contaminationZones,
   ehiThresholds,
   timeline,
   sources,
-  platformLayers
+  platformLayers,
+  corporateNetworks,
+  actionResources,
+  communityAnnotations
 };

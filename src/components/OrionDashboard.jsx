@@ -4,7 +4,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import AIAnalystModal from './AIAnalystModal';
 import { MapPin, TrendingDown, Network, Target, AlertTriangle, CheckCircle, XCircle, Calendar, Building2 } from 'lucide-react';
-import { industrialSites, timeline, ehiThresholds } from '../data/orionData';
+import { industrialSites, timeline, ehiThresholds, corporateNetworks, actionResources, communityAnnotations } from '../data/orionData';
 
 // Fix Leaflet marker icons (required for React-Leaflet)
 delete L.Icon.Default.prototype._getIconUrl;
@@ -286,12 +286,89 @@ const OrionDashboard = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8">
         {activeDomain === 'zemljevid' && (
-          <ZemljevidResnice
-            sites={industrialSites}
-            setIsModalOpen={setIsModalOpen}
-            selectedSite={selectedSite}
-            setSelectedSite={setSelectedSite}
-          />
+          <>
+            <ZemljevidResnice
+              sites={industrialSites}
+              setIsModalOpen={setIsModalOpen}
+              selectedSite={selectedSite}
+              setSelectedSite={setSelectedSite}
+            />
+
+            {/* Community Annotations - Layer 2 */}
+            <div className="mt-8 bg-gradient-to-br from-purple-950/30 to-blue-950/30 border border-purple-800 rounded-lg p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-xl font-bold text-purple-400 flex items-center gap-2">
+                    💬 Skupnostne Opombe (Layer 2)
+                  </h3>
+                  <p className="text-slate-400 text-sm mt-1">
+                    Lokalno znanje + žive izkušnje = Resnica od spodaj navzgor
+                  </p>
+                </div>
+                <button className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition text-sm">
+                  ➕ Dodaj Opombo
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                {(selectedSite
+                  ? communityAnnotations.filter(ann => ann.siteId === selectedSite.id)
+                  : communityAnnotations
+                ).map((annotation) => (
+                  <div key={annotation.id} className="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="flex flex-col items-center">
+                          <button className="text-green-400 hover:text-green-300">
+                            ▲
+                          </button>
+                          <span className="text-lg font-bold text-slate-300">{annotation.votes}</span>
+                          <button className="text-red-400 hover:text-red-300">
+                            ▼
+                          </button>
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-slate-200">{annotation.author}</span>
+                            {annotation.verified && (
+                              <span className="bg-green-900/50 text-green-400 text-xs px-2 py-0.5 rounded border border-green-700">
+                                ✓ Verificirano
+                              </span>
+                            )}
+                            <span className="bg-blue-900/50 text-blue-400 text-xs px-2 py-0.5 rounded">
+                              {annotation.category}
+                            </span>
+                          </div>
+                          <p className="text-xs text-slate-500 mt-1">{annotation.date}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-slate-300 text-sm leading-relaxed mb-3">
+                      {annotation.observation}
+                    </p>
+                    <div className="flex gap-2 flex-wrap">
+                      <span className="text-xs text-slate-400">Dokazi:</span>
+                      {annotation.evidence.map((ev, idx) => (
+                        <span key={idx} className="text-xs bg-slate-800 text-cyan-400 px-2 py-1 rounded border border-slate-700">
+                          📎 {ev}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-6 bg-purple-950/40 border border-purple-700 rounded-lg p-4 text-sm">
+                <h4 className="font-bold text-purple-400 mb-2">🌱 Kako Deluje Layer 2?</h4>
+                <ul className="text-slate-300 space-y-1 text-xs">
+                  <li>• <strong>Dodaj opombo:</strong> Deli lokalne opazovanja, fotografije, meritve</li>
+                  <li>• <strong>Verifikacija:</strong> Skupnost glasuje za verodostojnost</li>
+                  <li>• <strong>GitHub Discussions:</strong> Vsaka opomba živi v javnem repository-ju</li>
+                  <li>• <strong>Immutable Archive:</strong> Podatki ne morejo biti cenzurirani ali izbrisani</li>
+                </ul>
+              </div>
+            </div>
+          </>
         )}
         
         {activeDomain === 'casovnica' && (
@@ -374,18 +451,227 @@ const OrionDashboard = () => {
         )}
         
         {activeDomain === 'omrezja' && (
-          <div className="bg-slate-900 rounded-lg border border-slate-800 p-12 text-center">
-            <Network className="w-16 h-16 mx-auto text-slate-600 mb-4" />
-            <h2 className="text-2xl font-bold text-slate-400 mb-2">Omrežja Moči</h2>
-            <p className="text-slate-500">Graf korporativnih povezav v pripravi...</p>
+          <div className="space-y-6">
+            {/* Header */}
+            <div className="bg-slate-900 rounded-lg border border-slate-800 p-6">
+              <h2 className="text-2xl font-bold text-cyan-400 mb-4 flex items-center gap-2">
+                <Network className="w-6 h-6" />
+                Omrežja Moči - Kdo je Povezan
+              </h2>
+              <p className="text-slate-400">
+                Vizualizacija korporativnih povezav, lastništva, lobiranja in političnih vplivov.
+                Sledite denarju od fabrike do ministrstva.
+              </p>
+            </div>
+
+            {/* Corporate Networks Grid */}
+            {corporateNetworks.map((network) => (
+              <div key={network.id} className="bg-slate-900 rounded-lg border border-slate-800 p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h3 className="text-xl font-bold text-cyan-400">{network.company}</h3>
+                    <p className="text-sm text-slate-400 mt-1">{network.ownership}</p>
+                  </div>
+                  <Building2 className="w-8 h-8 text-cyan-500/30" />
+                </div>
+
+                {/* Connections Network */}
+                <div className="mb-6">
+                  <h4 className="text-sm font-bold text-slate-300 mb-3">🕸️ Povezave</h4>
+                  <div className="space-y-2">
+                    {network.connections.map((conn, idx) => {
+                      const strengthPercent = conn.strength * 100;
+                      const strengthColor = conn.strength > 0.7 ? 'bg-red-500' : conn.strength > 0.5 ? 'bg-yellow-500' : 'bg-green-500';
+                      return (
+                        <div key={idx} className="bg-slate-800/50 rounded-lg p-3">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-slate-200 font-medium">{conn.to}</span>
+                            <span className="text-xs text-slate-400">{conn.type}</span>
+                          </div>
+                          <div className="w-full bg-slate-700 rounded-full h-2">
+                            <div
+                              className={`${strengthColor} h-2 rounded-full transition-all`}
+                              style={{ width: `${strengthPercent}%` }}
+                            />
+                          </div>
+                          <div className="text-xs text-slate-500 mt-1">
+                            Moč povezave: {strengthPercent.toFixed(0)}%
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Financial & Political Influence */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-slate-700 pt-4">
+                  <div className="bg-slate-800/30 rounded-lg p-3">
+                    <div className="text-xs text-slate-400 mb-1">Lobiranje</div>
+                    <div className="text-sm font-bold text-yellow-400">{network.lobbyingBudget}</div>
+                  </div>
+                  <div className="bg-slate-800/30 rounded-lg p-3">
+                    <div className="text-xs text-slate-400 mb-1">Politične Donacije</div>
+                    <div className="text-sm font-bold text-orange-400">{network.politicalDonations}</div>
+                  </div>
+                  <div className="bg-slate-800/30 rounded-lg p-3">
+                    <div className="text-xs text-slate-400 mb-1">Člani Uprave</div>
+                    <div className="text-xs text-slate-300">
+                      {network.boardMembers.join(', ')}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {/* Pattern Analysis */}
+            <div className="bg-gradient-to-br from-red-950/30 to-orange-950/30 border border-red-800 rounded-lg p-6">
+              <h3 className="text-lg font-bold text-red-400 mb-3">🔍 Vzorec: Vrtljiva Vrata</h3>
+              <p className="text-slate-300 text-sm leading-relaxed">
+                Bivši vladni uradniki sedijo v upravah. Bivši direktorji postanejo svetovalci ministrstev.
+                Lobiranje teče skozi "trgovinska združenja". Donacije tečejo preko neznan kanalov.
+                To ni zarota - to je sistem.
+              </p>
+              <div className="mt-4 text-xs text-red-300 italic">
+                💡 "Korupcija ni potrebna, če je sistem že zasnovan za elite."
+              </div>
+            </div>
           </div>
         )}
         
         {activeDomain === 'akcije' && (
-          <div className="bg-slate-900 rounded-lg border border-slate-800 p-12 text-center">
-            <Target className="w-16 h-16 mx-auto text-slate-600 mb-4" />
-            <h2 className="text-2xl font-bold text-slate-400 mb-2">Akcijski Center</h2>
-            <p className="text-slate-500">Activist toolkit v pripravi...</p>
+          <div className="space-y-6">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-green-950/30 to-cyan-950/30 border border-green-800 rounded-lg p-6">
+              <h2 className="text-2xl font-bold text-green-400 mb-3 flex items-center gap-2">
+                <Target className="w-6 h-6" />
+                Akcijski Center - Od Podatkov Do Akcije
+              </h2>
+              <p className="text-slate-300 mb-4">
+                Transparentnost ni dovolj. Potrebna je akcija. Tu so orodja za pritisk na oblast.
+              </p>
+              <div className="bg-green-950/40 border border-green-700 rounded-lg p-4 text-sm text-green-200">
+                ⚖️ <strong>Pravna Opomba:</strong> Vsi kontakti in orodja so 100% legalni.
+                To so tvoje pravice pod slovensko in EU zakonodajo.
+              </div>
+            </div>
+
+            {/* Contact Points */}
+            <div className="bg-slate-900 rounded-lg border border-slate-800 p-6">
+              <h3 className="text-xl font-bold text-cyan-400 mb-4">📞 Kontaktne Točke</h3>
+              <p className="text-slate-400 text-sm mb-4">
+                Uradniki so zavezani odgovarjati. Uporabi Access to Information Act (ZDIJZ) za zahtevo podatkov.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {actionResources.contactPoints.map((contact, idx) => (
+                  <div key={idx} className="bg-slate-800/50 rounded-lg p-4 border border-slate-700 hover:border-cyan-500/50 transition">
+                    <h4 className="font-bold text-cyan-300 mb-1">{contact.name}</h4>
+                    <p className="text-xs text-slate-400 mb-3">{contact.role}</p>
+                    <div className="space-y-1 text-xs mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-slate-500">Email:</span>
+                        <a href={`mailto:${contact.email}`} className="text-cyan-400 hover:underline">
+                          {contact.email}
+                        </a>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-slate-500">Telefon:</span>
+                        <span className="text-slate-300">{contact.phone}</span>
+                      </div>
+                    </div>
+                    <div className="border-t border-slate-700 pt-2">
+                      <div className="text-xs text-slate-400 mb-1">💡 Akcija:</div>
+                      <p className="text-xs text-green-300">{contact.action}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Legal Tools */}
+            <div className="bg-slate-900 rounded-lg border border-slate-800 p-6">
+              <h3 className="text-xl font-bold text-cyan-400 mb-4">⚖️ Pravna Orodja</h3>
+              <div className="space-y-4">
+                {actionResources.legalTools.map((tool, idx) => (
+                  <div key={idx} className="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+                    <h4 className="font-bold text-yellow-400 mb-2">{tool.name}</h4>
+                    <p className="text-sm text-slate-300 mb-3">{tool.description}</p>
+                    <div className="bg-slate-900/50 rounded p-3 mb-2">
+                      <div className="text-xs text-slate-400 mb-1">Kako uporabiti:</div>
+                      <p className="text-xs text-slate-200">{tool.howTo}</p>
+                    </div>
+                    <button className="text-xs text-cyan-400 hover:text-cyan-300 underline">
+                      📄 {tool.template}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Community Actions */}
+            <div className="bg-slate-900 rounded-lg border border-slate-800 p-6">
+              <h3 className="text-xl font-bold text-cyan-400 mb-4">🤝 Skupnostne Akcije</h3>
+              <p className="text-slate-400 text-sm mb-4">
+                Kolektivna akcija ima moč. Izberi projekt, najdi ljudi, začni.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {actionResources.communityActions.map((action, idx) => (
+                  <div key={idx} className="bg-slate-800/50 rounded-lg p-4 border border-slate-700 hover:border-green-500/50 transition">
+                    <h4 className="font-bold text-green-400 mb-2">{action.title}</h4>
+                    <p className="text-sm text-slate-300 mb-3">{action.description}</p>
+
+                    <div className="flex gap-3 mb-3">
+                      <div className={`px-2 py-1 rounded text-xs font-bold ${
+                        action.difficulty === 'Low' ? 'bg-green-900/50 text-green-300' :
+                        action.difficulty === 'Medium' ? 'bg-yellow-900/50 text-yellow-300' :
+                        'bg-red-900/50 text-red-300'
+                      }`}>
+                        Težavnost: {action.difficulty}
+                      </div>
+                      <div className={`px-2 py-1 rounded text-xs font-bold ${
+                        action.impact === 'Medium' ? 'bg-blue-900/50 text-blue-300' :
+                        action.impact === 'High' ? 'bg-purple-900/50 text-purple-300' :
+                        'bg-pink-900/50 text-pink-300'
+                      }`}>
+                        Vpliv: {action.impact}
+                      </div>
+                    </div>
+
+                    <div className="border-t border-slate-700 pt-2">
+                      <div className="text-xs text-slate-400 mb-1">Potrebni viri:</div>
+                      <ul className="text-xs text-slate-300 space-y-1">
+                        {action.resources.map((resource, ridx) => (
+                          <li key={ridx} className="flex items-start gap-1">
+                            <span className="text-green-500">•</span>
+                            <span>{resource}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Call to Action */}
+            <div className="bg-gradient-to-br from-green-950/40 to-cyan-950/40 border-2 border-green-600 rounded-lg p-6 text-center">
+              <h3 className="text-2xl font-bold text-green-400 mb-3">
+                💚 RESNICA BREZ AKCIJE JE SAMO ŠE EN PODATEK 💚
+              </h3>
+              <p className="text-slate-300 mb-4">
+                Ne čakaj na dovoljenje. Ne čakaj na "pravega trenutka". Sistem se ne bo spremenil sam.
+              </p>
+              <div className="flex gap-4 justify-center flex-wrap">
+                <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition">
+                  🚀 Začni FOIA Kampanjo
+                </button>
+                <button className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-6 rounded-lg transition">
+                  🧪 Organiziraj Testiranje Vode
+                </button>
+                <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition">
+                  📱 Pridruži Se Telegram Skupini
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </main>
