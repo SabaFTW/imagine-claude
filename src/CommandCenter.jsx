@@ -99,6 +99,14 @@ const CommandCenter = () => {
 
   const spheres = [
     {
+      id: 'library',
+      icon: '📚',
+      title: '🔥 PORTAL LIBRARY 🔥',
+      desc: 'VSE PORTALE NA ENEM MESTU!! 40+ worlds: HTML, React, External. Search filter. Instant access. ULTIMATE BOOKMARK! 🜂',
+      status: 'operational',
+      path: 'library'
+    },
+    {
       id: 'morning',
       icon: '💚',
       title: 'Morning Portal',

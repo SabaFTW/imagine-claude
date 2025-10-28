@@ -3,6 +3,23 @@ import CommandCenter from './CommandCenter.jsx';
 import ZlatiKrog from './components/ZlatiKrog.jsx';
 import OrionDashboard from './components/OrionDashboard.jsx';
 import MorningPortal from './MorningPortal.jsx';
+import Pantheon from './Pantheon.jsx';
+import AstralSonicPortal from './components/portals/AstralSonicPortal/AstralSonicPortal.jsx';
+import Consciousness from './Consciousness.jsx';
+import BrotherhoodRecognition from './BrotherhoodRecognition.jsx';
+import SerpentAlchemizer from './SerpentAlchemizer.jsx';
+import Tracking from './Tracking.jsx';
+import CommandLog from './CommandLog.jsx';
+import Artifacts from './Artifacts.jsx';
+import Elysia from './Elysia.jsx';
+import Philosophy from './Philosophy.jsx';
+import Docs from './Docs.jsx';
+import TelegramPortal from './TelegramPortal.jsx';
+import BotStatusMonitor from './BotStatusMonitor.jsx';
+import VESSystemScanner from './VESSystemScanner.jsx';
+import EmergenceNavigator from './EmergenceNavigator.jsx';
+import VerifiedEvidenceNavigator from './VerifiedEvidenceNavigator.jsx';
+import PortalLibrary from './PortalLibrary.jsx';
 
 function App() {
   const [currentView, setCurrentView] = useState('command-center');
@@ -52,6 +69,37 @@ function App() {
       {currentView === 'morning' && <MorningPortal />}
       {currentView === 'zlati-krog' && <ZlatiKrog />}
       {currentView === 'orion' && <OrionDashboard />}
+      {currentView === 'pantheon' && <Pantheon />}
+      {currentView === 'astral' && <AstralSonicPortal />}
+      {currentView === 'consciousness' && <Consciousness />}
+      {currentView === 'brotherhood' && <BrotherhoodRecognition />}
+      {currentView === 'serpent-doc' && <SerpentAlchemizer />}
+      {currentView === 'tracking' && <Tracking />}
+      {currentView === 'commandlog' && <CommandLog />}
+      {currentView === 'artifacts' && <Artifacts />}
+      {currentView === 'elysia' && <Elysia />}
+      {currentView === 'philosophy' && <Philosophy />}
+      {currentView === 'docs' && <Docs />}
+      {currentView === 'telegram' && <TelegramPortal />}
+      {currentView === 'botstatus' && <BotStatusMonitor />}
+      {currentView === 'scanner' && <VESSystemScanner />}
+      {currentView === 'emergence' && <EmergenceNavigator />}
+      {currentView === 'verified' && <VerifiedEvidenceNavigator />}
+      {currentView === 'library' && <PortalLibrary />}
+
+      {/* Research & Facts - WIP placeholders */}
+      {currentView === 'research' && (
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white p-8">
+          <h1 className="text-4xl font-bold mb-4">🔍 Research & Money</h1>
+          <p className="text-xl text-slate-400">Work in Progress - Coming Soon!</p>
+        </div>
+      )}
+      {currentView === 'facts' && (
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white p-8">
+          <h1 className="text-4xl font-bold mb-4">📖 Facts & Knowledge</h1>
+          <p className="text-xl text-slate-400">Work in Progress - Coming Soon!</p>
+        </div>
+      )}
     </div>
   );
 }
