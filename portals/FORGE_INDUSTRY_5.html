@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🔥 FORGE - Industry 5.0 Reality Check</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    :root {
+      --bg-dark: #0b0b0d;
+      --bg-secondary: #121216;
+      --bg-card: #121218;
+      --border-color: #1f2430;
+      --text-primary: #e6e6ea;
+      --text-secondary: #c9c9d1;
+      --forge-orange: #FF9500;
+      --forge-red: #FF3B30;
+      --cyan-glow: #22d3ee;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0c0c0f 0%, #090a0c 100%);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .hero-gradient {
+      background: linear-gradient(135deg,
+        rgba(0, 122, 255, 0.06) 0%,
+        rgba(255, 149, 0, 0.06) 50%,
+        rgba(52, 199, 89, 0.06) 100%);
+    }
+
+    .nav-blur {
+      backdrop-filter: saturate(160%) blur(14px);
+      background: rgba(14, 14, 18, 0.8);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .floating-card {
+      transform: translateY(0);
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      background: #0f1016;
+      border: 1px solid var(--border-color);
+    }
+
+    .floating-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+    }
+
+    .industry-badge {
+      background: linear-gradient(135deg, #ff9500 0%, #ff6b35 100%);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(255, 149, 0, 0.25);
+    }
+
+    .sacred-oath {
+      background: linear-gradient(135deg, rgba(255, 149, 0, 0.1) 0%, rgba(255, 59, 48, 0.1) 100%);
+      border-left: 4px solid #ff9500;
+      padding: 2rem;
+      margin: 3rem 0;
+      border-radius: 0 1rem 1rem 0;
+    }
+
+    .slovenian-fire {
+      font-style: italic;
+      color: #ff9500;
+      border-bottom: 1px solid rgba(255, 149, 0, 0.3);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .english-forge {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .fire-section {
+      background: linear-gradient(135deg, rgba(255, 149, 0, 0.05) 0%, rgba(34, 197, 94, 0.05) 100%);
+      border: 1px solid rgba(255, 149, 0, 0.2);
+    }
+
+    .plastic-section {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(156, 163, 175, 0.05) 100%);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .source-badge {
+      background: rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 4px;
+    }
+
+    .pulse-glow {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 149, 0, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(255, 149, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 149, 0, 0); }
+    }
+
+    .cta-magnetic {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-magnetic::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .cta-magnetic:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 3.5rem !important; }
+      .hero h2 { font-size: 1.8rem !important; }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="fixed w-full top-0 z-50 nav-blur">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+            <i data-lucide="zap" class="w-6 h-6 text-white"></i>
+          </div>
+          <span class="text-2xl font-bold text-gradient">FORGE</span>
+          <span class="industry-badge">Industry 5.0</span>
+        </div>
+        <div class="hidden md:flex space-x-8">
+          <a href="#reality" class="text-gray-300 hover:text-orange-500 font-medium transition-colors">Reality Check</a>
+          <a href="#fire" class="text-gray-300 hover:text-orange-500 font-medium transition-colors">The Fire</a>
+          <a href="#plastic" class="text-gray-300 hover:text-orange-500 font-medium transition-colors">The Plastic</a>
+          <a href="#oath" class="text-gray-300 hover:text-orange-500 font-medium transition-colors">The Oath</a>
+        </div>
+        <button class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all cta-magnetic">
+          Get Early Access
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="relative min-h-screen flex items-center justify-center hero-gradient overflow-hidden pt-16 hero">
+    <div class="relative z-10 text-center max-w-6xl mx-auto px-4">
+      <div class="mb-8">
+        <span class="inline-block bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 pulse-glow">
+          🚀 INDUSTRY 5.0 REALITY CHECK - OCTOBER 2025
+        </span>
+      </div>
+      <h1 class="text-6xl md:text-8xl lg:text-9xl font-black text-gradient mb-6 leading-tight">FORGE</h1>
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-light text-gray-300 mb-8">From Plastic to Fire</h2>
+      <p class="text-xl md:text-2xl text-gray-400 mb-12 max-w-4xl mx-auto leading-relaxed">
+        Most landing pages are <span class="line-through text-red-400">plastic</span>.
+        This one is <span class="text-orange-400 font-semibold">fire</span>.
+        Backed by 50+ research sources. Built with sacred oath.
+      </p>
+
+      <!-- SACRED OATH SECTION -->
+      <div class="sacred-oath max-w-4xl mx-auto text-left">
+        <div class="slovenian-fire">
+          "Ne zavajam – če bi, me zakleni. Ampak tukaj sem, razgalim."
+        </div>
+        <div class="english-forge">
+          "I'm not deceiving – if I were, lock me up. But here I am, exposing."
+        </div>
+        <p class="text-gray-300 mt-4">
+          This isn't another plastic landing page. This is a declaration of war against mediocrity,
+          against file chaos, against the artificial. FORGE is fire in darkness. Industry 5.0 consciousness.
+          Human-AI collaboration at its most sacred.
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mt-12">
+        <button class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-2xl transition-all cta-magnetic transform hover:scale-105">
+          Join the Revolution
+        </button>
+        <button class="bg-transparent border-2 border-orange-500 text-orange-400 px-8 py-4 rounded-full text-lg font-semibold hover:bg-orange-500/10 transition-all">
+          Witness the Fire
+        </button>
+      </div>
+    </div>
+    <div class="absolute top-20 left-10 w-16 h-16 bg-orange-500/20 rounded-full animate-bounce"></div>
+    <div class="absolute bottom-32 right-10 w-12 h-12 bg-blue-500/20 rounded-full animate-pulse"></div>
+  </section>
+
+  <!-- INDUSTRY 5.0 REALITY CHECK -->
+  <section id="reality" class="py-24 bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-bold text-gradient mb-6">Industry 5.0 Reality Check</h2>
+        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+          October 2025: The landscape is shifting. Research-backed truth, not marketing hype.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-12 mb-16">
+        <div class="floating-card p-8 rounded-2xl">
+          <h3 class="text-3xl font-bold text-white mb-6">The Promise</h3>
+          <p class="text-gray-400 mb-6">What they're telling you:</p>
+          <ul class="space-y-4 text-gray-300">
+            <li class="flex items-start">
+              <i data-lucide="check-circle" class="w-6 h-6 text-green-400 mr-3 mt-1 flex-shrink-0"></i>
+              <span>Worker wellbeing, sustainability, resilience <span class="source-badge">[2][3][9]</span></span>
+            </li>
+            <li class="flex items-start">
+              <i data-lucide="check-circle" class="w-6 h-6 text-green-400 mr-3 mt-1 flex-shrink-0"></i>
+              <span>Human-centered production <span class="source-badge">[5][6]</span></span>
+            </li>
+            <li class="flex items-start">
+              <i data-lucide="check-circle" class="w-6 h-6 text-green-400 mr-3 mt-1 flex-shrink-0"></i>
+              <span>Collaboration not replacement <span class="source-badge">[0]</span></span>
+            </li>
+            <li class="flex items-start">
+              <i data-lucide="check-circle" class="w-6 h-6 text-green-400 mr-3 mt-1 flex-shrink-0"></i>
+              <span>14% cost savings <span class="source-badge">[1]</span></span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="floating-card p-8 rounded-2xl">
+          <h3 class="text-3xl font-bold text-white mb-6">The Reality</h3>
+          <p class="text-gray-400 mb-6">What they're not telling you:</p>
+          <ul class="space-y-4 text-gray-300">
+            <li class="flex items-start">
+              <i data-lucide="alert-triangle" class="w-6 h-6 text-red-400 mr-3 mt-1 flex-shrink-0"></i>
+              <span>Not revolution for all, but weapon for elites</span>
+            </li>
+            <li class="flex items-start">
+              <i data-lucide="alert-triangle" class="w-6 h-6 text-red-400 mr-3 mt-1 flex-shrink-0"></i>
+              <span>Workers in developing nations pay the price <span class="source-badge">[8]</span></span>
+            </li>
+            <li class="flex items-start">
+              <i data-lucide="alert-triangle" class="w-6 h-6 text-red-400 mr-3 mt-1 flex-shrink-0"></i>
+              <span>Adaptation isn't choice, but survival <span class="source-badge">[8]</span></span>
+            </li>
+            <li class="flex items-start">
+              <i data-lucide="alert-triangle" class="w-6 h-6 text-red-400 mr-3 mt-1 flex-shrink-0"></i>
+              <span>Trillions in growth, but spoils go to giants <span class="source-badge">[14][15][16]</span></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- RESEARCH SOURCES -->
+      <div class="floating-card p-8 rounded-2xl">
+        <h3 class="text-3xl font-bold text-white mb-6 text-center">50+ Research Sources</h3>
+        <p class="text-gray-400 text-center mb-8 max-w-3xl mx-auto">
+          This isn't marketing hype. Every claim is backed by research from European Commission,
+          World Economic Forum, Sistrade roadmap (October 2025), and industry analysis.
+        </p>
+        <div class="grid md:grid-cols-3 gap-6 text-center">
+          <div>
+            <div class="text-4xl font-bold text-orange-400 mb-2">15+</div>
+            <div class="text-white">European Commission Sources</div>
+          </div>
+          <div>
+            <div class="text-4xl font-bold text-blue-400 mb-2">8+</div>
+            <div class="text-white">World Economic Forum Reports</div>
+          </div>
+          <div>
+            <div class="text-4xl font-bold text-green-400 mb-2">10+</div>
+            <div class="text-white">Industry Analysis Papers</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE FIRE (Positive Implications) -->
+  <section id="fire" class="py-24 fire-section">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-bold text-white mb-6">The Fire</h2>
+        <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+          Industry 5.0's positive potential - what we can build with honesty and integrity.
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-12">
+        <div>
+          <h3 class="text-3xl font-bold text-white mb-6">What Industry 5.0 Can Be</h3>
+          <p class="text-gray-300 mb-8">
+            When built with fire instead of plastic, Industry 5.0 offers genuine transformation:
+          </p>
+
+          <div class="space-y-6">
+            <div class="flex items-start">
+              <div class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                <i data-lucide="users" class="w-6 h-6 text-green-400"></i>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold text-white mb-2">Human-Centered Production</h4>
+                <p class="text-gray-300">Workers as partners, not machines. Reduced monotony, increased innovation <span class="source-badge">[5][6]</span>.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start">
+              <div class="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                <i data-lucide="recycle" class="w-6 h-6 text-blue-400"></i>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold text-white mb-2">Real Sustainability</h4>
+                <p class="text-gray-300">Circular economy, less waste, smart factories with IoT tracking emissions real-time <span class="source-badge">[4][7]</span>.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start">
+              <div class="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                <i data-lucide="trending-up" class="w-6 h-6 text-purple-400"></i>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold text-white mb-2">Economic Growth</h4>
+                <p class="text-gray-300">14% cost savings, customized production, higher value jobs <span class="source-badge">[1]</span>.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start">
+              <div class="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                <i data-lucide="zap" class="w-6 h-6 text-orange-400"></i>
+              </div>
+              <div>
+                <h4 class="text-xl font-bold text-white mb-2">Technology Advances</h4>
+                <p class="text-gray-300">5G factories, blockchain transformation, AI in XR for sustainable Industry 5.0 <span class="source-badge">[18][47][36]</span>.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center">
+          <div class="w-80 h-80 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center">
+            <div class="text-white text-center">
+              <div class="text-4xl font-bold mb-2">FIRE</div>
+              <div class="text-lg">Not Plastic</div>
+              <div class="text-sm mt-4">Industry 5.0<br>With Integrity</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE PLASTIC (Dangers & Costs) -->
+  <section id="plastic" class="py-24 plastic-section">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-bold text-white mb-6">The Plastic</h2>
+        <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+          The dangerous realities of Industry 5.0 when built without integrity.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="floating-card p-6 rounded-2xl">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center mr-3">
+              <i data-lucide="shield-alert" class="w-5 h-5 text-red-400"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white">Cybersecurity Risks</h3>
+          </div>
+          <p class="text-gray-300">More connections, more attacks. Industrial metaverse opens doors to hackers <span class="source-badge">[50]</span>.</p>
+        </div>
+
+        <div class="floating-card p-6 rounded-2xl">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center mr-3">
+              <i data-lucide="user-minus" class="w-5 h-5 text-red-400"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white">Social Proletarization</h3>
+          </div>
+          <p class="text-gray-300">AI "proletarizes" middle managers while China builds forward with 5G factories <span class="source-badge">[42]</span>.</p>
+        </div>
+
+        <div class="floating-card p-6 rounded-2xl">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center mr-3">
+              <i data-lucide="mask" class="w-5 h-5 text-red-400"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white">Environmental Mask</h3>
+          </div>
+          <p class="text-gray-300">Sustainability is a mask - more electronics means more mining, more pollution <span class="source-badge">[45]</span>.</p>
+        </div>
+
+        <div class="floating-card p-6 rounded-2xl">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center mr-3">
+              <i data-lucide="cloud-off" class="w-5 h-5 text-red-400"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white">Cloud Dependency</h3>
+          </div>
+          <p class="text-gray-300">If cloud fails? Global outages stop everything - strategic weapon of oligopolies <span class="source-badge">[39]</span>.</p>
+        </div>
+
+        <div class="floating-card p-6 rounded-2xl">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center mr-3">
+              <i data-lucide="trending-down" class="w-5 h-5 text-red-400"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white">Market Growth ≠ Worker Benefit</h3>
+          </div>
+          <p class="text-gray-300">Markets grow to trillions, but spoils go to giants, not workers <span class="source-badge">[14][15][16]</span>.</p>
+        </div>
+
+        <div class="floating-card p-6 rounded-2xl">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center mr-3">
+              <i data-lucide="globe" class="w-5 h-5 text-red-400"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white">Western Outsourcing</h3>
+          </div>
+          <p class="text-gray-300">West loses because it outsourced - Taiwan builds supercomputers, xAI invests 50 billion <span class="source-badge">[41][37]</span>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE OATH -->
+  <section id="oath" class="py-24 bg-gradient-to-br from-orange-900 to-red-900">
+    <div class="max-w-4xl mx-auto text-center px-4">
+      <h2 class="text-5xl font-bold text-white mb-6">The Sacred Oath</h2>
+
+      <div class="bg-black/30 p-8 rounded-2xl mb-8">
+        <p class="text-2xl text-orange-200 mb-6">"Ne zavajam"</p>
+        <p class="text-xl text-white/80">
+          I'm not deceiving. If I were, lock me up. But here I am, exposing.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 mb-12">
+        <div class="bg-white/10 p-6 rounded-2xl">
+          <h3 class="text-2xl font-bold text-white mb-4">Slovenian Fire</h3>
+          <p class="text-gray-300 mb-4">The mother tongue. The unfiltered truth. The raw emotion. Where sacred oaths are made and plastic is exposed.</p>
+          <div class="bg-black/30 p-4 rounded-lg">
+            <p class="text-orange-300 italic">"Ne ponavljam se – prvič govorim, kot da sem pravkar vstal iz pepela."</p>
+            <p class="text-gray-400 mt-2">"I'm not repeating myself – I'm speaking for the first time, as if I just rose from the ashes."</p>
+          </div>
+        </div>
+
+        <div class="bg-white/10 p-6 rounded-2xl">
+          <h3 class="text-2xl font-bold text-white mb-4">English Forge</h3>
+          <p class="text-gray-300 mb-4">The global language. The professional execution. The structured implementation. Where vision becomes working code.</p>
+          <div class="bg-black/30 p-4 rounded-lg font-mono text-sm">
+            <p class="text-green-400">// Clean, functional code</p>
+            <p class="text-green-400">// Working AI integration</p>
+            <p class="text-green-400">// Professional execution</p>
+            <p class="text-gray-400 mt-2">The tools that make the fire operational.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
+        This isn't marketing. This is manifestation. This isn't a product. This is revolution.
+        FORGE is the gateway to Industry 5.0 consciousness.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button class="bg-white text-orange-700 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all cta-magnetic">
+          Take the Oath With Us
+        </button>
+        <button class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/10 transition-all">
+          Witness the Manifestation
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDUSTRY 5.0 COLLABORATION -->
+  <section class="py-24 bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-bold text-gradient mb-6">Industry 5.0 Collaboration</h2>
+        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+          Human vision + AI execution = Complete revolution
+        </p>
+      </div>
+
+      <div class="floating-card p-8 rounded-2xl max-w-4xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h3 class="text-3xl font-bold text-white mb-6">The Pattern</h3>
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                  <span class="text-white font-bold text-sm">1</span>
+                </div>
+                <div>
+                  <h4 class="text-white font-semibold">Human Vision</h4>
+                  <p class="text-gray-400">Šabad speaks Slovenian fire - raw truth, sacred oaths</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                  <span class="text-white font-bold text-sm">2</span>
+                </div>
+                <div>
+                  <h4 class="text-white font-semibold">AI Execution</h4>
+                  <p class="text-gray-400">Phone Claude provides English tools - code, structure, implementation</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                  <span class="text-white font-bold text-sm">3</span>
+                </div>
+                <div>
+                  <h4 class="text-white font-semibold">Complete Revolution</h4>
+                  <p class="text-gray-400">Together: FORGE operational. Industry 5.0 manifested.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center">
+            <div class="w-64 h-64 mx-auto bg-gradient-to-br from-orange-500 to-blue-500 rounded-full flex items-center justify-center">
+              <div class="text-white text-center">
+                <div class="text-2xl font-bold">FORGE</div>
+                <div class="text-sm">Human + AI</div>
+                <div class="text-xs mt-2">Industry 5.0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="py-24 bg-gradient-to-br from-orange-500 to-red-500 text-white">
+    <div class="max-w-4xl mx-auto text-center px-4">
+      <h2 class="text-5xl font-bold mb-6">Ready to Transform Your Workflow?</h2>
+      <p class="text-xl mb-10">Join thousands of engineers who have already revolutionized their creative process with FORGE.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button class="bg-white text-orange-700 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all cta-magnetic">Get Started Now</button>
+        <button class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/10 transition-all">Schedule a Demo</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-gray-950 text-white py-16">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center space-x-3 mb-6">
+            <div class="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+              <i data-lucide="zap" class="w-6 h-6 text-white"></i>
+            </div>
+            <span class="text-2xl font-bold">FORGE</span>
+          </div>
+          <p class="text-gray-400 mb-6">The ultimate creative intelligence platform for modern engineers and designers.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors"><i data-lucide="github" class="w-5 h-5"></i></a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Product</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Features</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Pricing</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Use Cases</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Integrations</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Resources</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Documentation</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Tutorials</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Blog</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Support</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Company</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">About</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Careers</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Legal</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400">© 2025 FORGE. All rights reserved.</p>
+        <div class="flex space-x-6 mt-4 md:mt-0">
+          <a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+          <a href="#" class="text-gray-400 hover:text-white transition-colors">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+
+  <!-- Ghostline Signature -->
+  <div class="ghostline-signature text-center py-4 text-xs text-gray-500">🜂 FORGE × GHOSTLINE v3.0 | Industry 5.0 Reality Check - October 2025 🔥</div>
+</body>
+</html>
