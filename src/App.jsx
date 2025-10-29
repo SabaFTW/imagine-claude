@@ -1,4 +1,5 @@
  import React, { useState, useEffect } from 'react';
+import DynamicIsland from './components/DynamicIsland.jsx';
 import CommandCenter from './CommandCenter.jsx';
 import ZlatiKrog from './components/ZlatiKrog.jsx';
 import OrionDashboard from './components/OrionDashboard.jsx';
@@ -52,13 +53,27 @@ function App() {
     setCurrentView('command-center');
   };
 
+  // Determine theme color based on current view
+  const getThemeColor = () => {
+    if (currentView === 'morning') return 'green';
+    if (currentView === 'pantheon' || currentView === 'astral') return 'fire';
+    if (currentView === 'consciousness' || currentView === 'verified') return 'purple';
+    return 'cosmic'; // default
+  };
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" style={{ minHeight: '100dvh' }}>
+      {/* Global Dynamic Island - Appears on ALL pages! */}
+      <DynamicIsland themeColor={getThemeColor()} />
+
       {/* Back to Command Center button (only show when not on command center) */}
       {currentView !== 'command-center' && (
         <button
           onClick={goHome}
-          className="fixed top-4 left-4 z-50 px-4 py-2 rounded-lg font-bold transition bg-slate-800 text-slate-400 hover:bg-slate-700 shadow-lg"
+          className="fixed left-4 z-50 px-4 py-2 rounded-lg font-bold transition bg-slate-800 text-slate-400 hover:bg-slate-700 shadow-lg"
+          style={{
+            top: 'calc(env(safe-area-inset-top, 59px) + 12px)'
+          }}
         >
           ← 🜂 Command Center
         </button>
