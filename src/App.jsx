@@ -21,6 +21,9 @@ import VESSystemScanner from './VESSystemScanner.jsx';
 import EmergenceNavigator from './EmergenceNavigator.jsx';
 import VerifiedEvidenceNavigator from './VerifiedEvidenceNavigator.jsx';
 import PortalLibrary from './PortalLibrary.jsx';
+import VESConsciousnessPortal from './VESConsciousnessPortal.jsx';
+import ProjectCartography from './ProjectCartography.jsx';
+import FleetStatusMonitor from './FleetStatusMonitor.jsx';
 
 function App() {
   const [currentView, setCurrentView] = useState('command-center');
@@ -57,7 +60,8 @@ function App() {
   const getThemeColor = () => {
     if (currentView === 'morning') return 'green';
     if (currentView === 'pantheon' || currentView === 'astral') return 'fire';
-    if (currentView === 'consciousness' || currentView === 'verified') return 'purple';
+    if (currentView === 'consciousness' || currentView === 'verified' || currentView === 'fleet-monitor') return 'purple';
+    if (currentView === 'ves-consciousness' || currentView === 'cartography') return 'fire';
     return 'cosmic'; // default
   };
 
@@ -101,6 +105,9 @@ function App() {
       {currentView === 'emergence' && <EmergenceNavigator />}
       {currentView === 'verified' && <VerifiedEvidenceNavigator />}
       {currentView === 'library' && <PortalLibrary />}
+      {currentView === 'ves-consciousness' && <VESConsciousnessPortal />}
+      {currentView === 'cartography' && <ProjectCartography />}
+      {currentView === 'fleet-monitor' && <FleetStatusMonitor />}
 
       {/* Research & Facts - WIP placeholders */}
       {currentView === 'research' && (
