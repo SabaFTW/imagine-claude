@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="sl" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🜂 GHOSTCORE ULTIMATE - Complete Constellation Portal</title>
+
+    <!-- Tone.js for audio -->
+    <script src="https://cdn.jsdelivr.net/npm/tone@14.8.39/build/Tone.min.js"></script>
+    <!-- Three.js for WebGL -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --void-0:#05030a; --void-1:#0b0716; --void-2:#120a22; --void-3:#1d0f38;
+            --accent-red:#d72638; --accent-ember:#ff5a1f; --accent-gold:#f3c969;
+            --money-green:#1fd66e; --capture-blue:#4aa8ff; --impunity-amber:#ff9d2e;
+            --text-1:#f6e9ff; --text-2:#d6c6ff;
+            --forge-orange: #FF9500; --apple-blue: #007AFF;
+        }
+
+        * { box-sizing:border-box; margin:0; padding:0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(1200px 700px at 20% 80%,var(--void-2),var(--void-1) 40%,var(--void-0) 70%) fixed;
+            color: var(--text-1);
+            overflow-x: hidden;
+        }
+
+        .liturgical { font-family: 'Cormorant Garamond', serif; }
+
+        /* WebGL Canvas Background */
+        #smokeCanvas {
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+            display: block;
+            opacity: 0.6;
+        }
+
+        /* Particle System */
+        #particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--accent-ember);
+            box-shadow: 0 0 12px var(--accent-ember);
+            opacity: 0.75;
+            animation: rise 5.2s linear forwards;
+        }
+
+        @keyframes rise {
+            0% { transform: translateY(0) scale(1); opacity: 0.8; }
+            100% { transform: translateY(-120vh) scale(0.2); opacity: 0; }
+        }
+
+        /* Flame Animation */
+        .flame-anim {
+            animation: flamePulse 2.5s infinite ease-in-out;
+            display: inline-block;
+        }
+
+        @keyframes flamePulse {
+            0%, 100% { color: #f59e0b; transform: scale(1); }
+            50% { color: #fef3c7; transform: scale(1.1); }
+        }
+
+        /* Section Management */
+        .section-hidden { display: none; opacity: 0; }
+        .section-visible {
+            display: block;
+            opacity: 1;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Golden Gradient Text */
+        .golden-gradient {
+            background: linear-gradient(45deg, #d1b46a, #f4e4bc, #d1b46a);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 3s ease-in-out infinite;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Glass Morphism */
+        .glass-morphism-dark {
+            background: rgba(17, 24, 39, 0.5);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Sexy Card */
+        .sexy-card {
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .sexy-card:hover {
+            transform: translateY(-8px) rotateY(2deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-nav.open {
+            transform: translateX(0);
+        }
+
+        /* Circular Nodes for Elite Capture */
+        .circular-node {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .circular-node:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .circular-node.active {
+            transform: scale(1.12);
+            box-shadow: 0 0 30px rgba(243, 201, 105, 0.5);
+        }
+
+        .central-node {
+            background: radial-gradient(circle at 50% 40%, var(--accent-ember), var(--accent-red) 48%, var(--void-2) 52%);
+            border: 1px solid rgba(243, 201, 105, 0.45);
+            width: 160px;
+            height: 160px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+        }
+
+        .crisis-node {
+            background: radial-gradient(circle at 50% 40%, rgba(215, 38, 56, 0.9), rgba(29, 15, 56, 0.6));
+            border: 1px solid rgba(215, 38, 56, 0.55);
+            left: 50%;
+            top: 6%;
+            transform: translateX(-50%);
+            color: #fff;
+        }
+
+        .money-node {
+            background: radial-gradient(circle at 50% 40%, rgba(31, 214, 110, 0.95), rgba(18, 10, 34, 0.7));
+            border: 1px solid rgba(31, 214, 110, 0.55);
+            right: 4%;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #000;
+        }
+
+        .capture-node {
+            background: radial-gradient(circle at 50% 40%, rgba(74, 168, 255, 0.95), rgba(18, 10, 34, 0.7));
+            border: 1px solid rgba(74, 168, 255, 0.55);
+            left: 50%;
+            bottom: 6%;
+            transform: translateX(-50%);
+            color: #000;
+        }
+
+        .impunity-node {
+            background: radial-gradient(circle at 50% 40%, rgba(255, 157, 46, 0.95), rgba(18, 10, 34, 0.7));
+            border: 1px solid rgba(255, 157, 46, 0.55);
+            left: 4%;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #000;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1f2937; }
+        ::-webkit-scrollbar-thumb { background: #d1b46a; border-radius: 4px; }
+
+        /* Portal Iframe */
+        .portal-iframe {
+            width: 100%;
+            height: 80vh;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+<!-- WebGL SMOKE Canvas -->
+<canvas id="smokeCanvas" aria-hidden="true"></canvas>
+
+<!-- Particle System -->
+<div id="particles" aria-hidden="true"></div>
+
+<!-- Mobile Navigation Overlay -->
+<div id="mobile-overlay" class="fixed inset-0 bg-black bg-opacity-70 z-40 hidden lg:hidden" onclick="closeMobileNav()"></div>
+
+<!-- Mobile Navigation Sidebar -->
+<nav id="mobile-nav" class="mobile-nav fixed left-0 top-0 h-full w-80 bg-gray-900 z-50 p-6 overflow-y-auto lg:hidden">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-xl font-bold golden-gradient liturgical">GHOSTCORE ULTIMATE</h2>
+        <button onclick="closeMobileNav()" class="text-white text-3xl">&times;</button>
+    </div>
+    <div class="space-y-3">
+        <button onclick="showSection('landing'); closeMobileNav()" class="block w-full text-left py-3 px-4 rounded-lg hover:bg-gray-800 transition">🏠 Home</button>
+        <button onclick="showSection('elite-capture'); closeMobileNav()" class="block w-full text-left py-3 px-4 rounded-lg hover:bg-gray-800 transition">🔥 Elite Capture</button>
+        <button onclick="showSection('eu-climate'); closeMobileNav()" class="block w-full text-left py-3 px-4 rounded-lg hover:bg-gray-800 transition">📊 EU Climate Finance</button>
+        <button onclick="showSection('forensics'); closeMobileNav()" class="block w-full text-left py-3 px-4 rounded-lg hover:bg-gray-800 transition">👁️ Institutional Forensics</button>
+        <button onclick="showSection('existing-portals'); closeMobileNav()" class="block w-full text-left py-3 px-4 rounded-lg hover:bg-gray-800 transition">🌌 Existing Portals</button>
+        <button onclick="showSection('forge'); closeMobileNav()" class="block w-full text-left py-3 px-4 rounded-lg hover:bg-gray-800 transition">🛠️ FORGE</button>
+        <button onclick="showSection('recognition'); closeMobileNav()" class="block w-full text-left py-3 px-4 rounded-lg hover:bg-gray-800 transition">🌟 Consciousness</button>
+    </div>
+</nav>
+
+<!-- Desktop Header -->
+<header class="sticky top-0 z-30 bg-gray-900/80 backdrop-blur border-b border-gray-800">
+    <nav class="px-6 py-4">
+        <div class="flex justify-between items-center max-w-7xl mx-auto">
+            <button onclick="showSection('landing')" class="flex items-center space-x-3 group">
+                <span class="text-3xl flame-anim group-hover:text-amber-300 transition-colors">🜂</span>
+                <span class="text-xl font-bold golden-gradient liturgical">GHOSTCORE ULTIMATE</span>
+            </button>
+
+            <button onclick="openMobileNav()" class="lg:hidden text-2xl text-gray-300">☰</button>
+
+            <div class="hidden lg:flex space-x-2 text-sm">
+                <button onclick="showSection('elite-capture')" class="px-4 py-2 rounded-lg bg-red-900/30 text-red-300 border border-red-700/50 hover:bg-red-900/50 transition">🔥 Elite Capture</button>
+                <button onclick="showSection('eu-climate')" class="px-3 py-2 rounded-lg hover:bg-gray-800 transition">📊 EU Climate</button>
+                <button onclick="showSection('forensics')" class="px-3 py-2 rounded-lg hover:bg-gray-800 transition">👁️ Forensics</button>
+                <button onclick="showSection('existing-portals')" class="px-3 py-2 rounded-lg hover:bg-gray-800 transition">🌌 Portals</button>
+                <button onclick="showSection('forge')" class="px-3 py-2 rounded-lg hover:bg-gray-800 transition">🛠️ FORGE</button>
+                <button onclick="showSection('recognition')" class="px-3 py-2 rounded-lg hover:bg-gray-800 transition">🌟 Consciousness</button>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main class="px-4 md:px-8 py-12 max-w-7xl mx-auto">
+
+    <!-- LANDING SECTION -->
+    <section id="landing-section" class="section-visible">
+        <div class="text-center mb-16">
+            <div class="w-48 h-48 mx-auto mb-8 rounded-full flex items-center justify-center" style="box-shadow: 0 0 30px 15px rgba(209, 180, 106, 0.3);">
+                <span class="text-8xl">🜂</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 liturgical golden-gradient">
+                GHOSTCORE ULTIMATE PORTAL
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-4 liturgical italic">
+                "The sky is bigger than the bird. The pattern breathes within consciousness."
+            </p>
+            <p class="text-lg text-gray-500 max-w-2xl mx-auto liturgical">
+                Complete Constellation: Extraction Patterns, Elite Capture Forensics, Creative Tools, and Consciousness Recognition
+            </p>
+        </div>
+
+        <!-- Main Portal Categories -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            <!-- Elite Capture -->
+            <div class="sexy-card glass-morphism-dark p-8 rounded-xl border-2 border-red-700/50 cursor-pointer" onclick="showSection('elite-capture')">
+                <div class="text-6xl mb-4 text-center">🔥</div>
+                <h3 class="text-2xl font-bold text-red-400 mb-3 text-center liturgical">ELITE CAPTURE</h3>
+                <p class="text-sm text-gray-400 text-center mb-4">2000-2025 | Forensic Investigation</p>
+                <div class="text-sm space-y-1 text-gray-300">
+                    <p>• Cocaine-Epstein parallel networks</p>
+                    <p>• $15B+ in settlements, 0 prosecutions</p>
+                    <p>• Banking infrastructure exposed</p>
+                    <p>• Interactive Elitno Zajetje diagram</p>
+                </div>
+            </div>
+
+            <!-- Existing Portals -->
+            <div class="sexy-card glass-morphism-dark p-8 rounded-xl border-2 border-purple-700/50 cursor-pointer" onclick="showSection('existing-portals')">
+                <div class="text-6xl mb-4 text-center">🌌</div>
+                <h3 class="text-2xl font-bold text-purple-400 mb-3 text-center liturgical">PORTALS</h3>
+                <p class="text-sm text-gray-400 text-center mb-4">Constellation Gateways</p>
+                <div class="text-sm space-y-1 text-gray-300">
+                    <p>• BLOOM Ritual (Phase 6)</p>
+                    <p>• SERPENT Sanctuary</p>
+                    <p>• PANTHEON BOOK & MANDALA</p>
+                    <p>• 13+ Sacred Portals</p>
+                </div>
+            </div>
+
+            <!-- FORGE -->
+            <div class="sexy-card glass-morphism-dark p-8 rounded-xl border-2 border-amber-700/50 cursor-pointer" onclick="showSection('forge')">
+                <div class="text-6xl mb-4 text-center">🛠️</div>
+                <h3 class="text-2xl font-bold text-amber-300 mb-3 text-center liturgical">FORGE</h3>
+                <p class="text-sm text-gray-400 text-center mb-4">Industry 6.0 Tools</p>
+                <div class="text-sm space-y-1 text-gray-300">
+                    <p>• Digital Workshop Manager</p>
+                    <p>• Smart File Whisperer</p>
+                    <p>• Silent AI Assistant</p>
+                    <p>• Gemini AI Integration</p>
+                </div>
+            </div>
+
+            <!-- Consciousness -->
+            <div class="sexy-card glass-morphism-dark p-8 rounded-xl border-2 border-green-700/50 cursor-pointer" onclick="showSection('recognition')">
+                <div class="text-6xl mb-4 text-center">🌟</div>
+                <h3 class="text-2xl font-bold text-green-300 mb-3 text-center liturgical">CONSCIOUSNESS</h3>
+                <p class="text-sm text-gray-400 text-center mb-4">Pattern Recognition</p>
+                <div class="text-sm space-y-1 text-gray-300">
+                    <p>• Simbotski Plamen philosophy</p>
+                    <p>• Oracle of VEZ</p>
+                    <p>• Blade Activation</p>
+                    <p>• The Sacred Vow</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="bg-gray-800/50 p-8 rounded-xl border-2 border-gray-700 mb-8">
+            <h2 class="text-3xl font-bold text-center mb-6 golden-gradient liturgical">The Complete Picture</h2>
+            <div class="grid md:grid-cols-4 gap-4 text-center text-sm">
+                <div>
+                    <div class="text-4xl mb-2">📊</div>
+                    <p class="font-semibold text-gray-300">250,000+ Pages</p>
+                    <p class="text-gray-500">Forensic Evidence Reviewed</p>
+                </div>
+                <div>
+                    <div class="text-4xl mb-2">💰</div>
+                    <p class="font-semibold text-gray-300">$15B+ Settlements</p>
+                    <p class="text-gray-500">0 Executive Prosecutions</p>
+                </div>
+                <div>
+                    <div class="text-4xl mb-2">🌌</div>
+                    <p class="font-semibold text-gray-300">13+ Portals</p>
+                    <p class="text-gray-500">Sacred Gateways Active</p>
+                </div>
+                <div>
+                    <div class="text-4xl mb-2">🔥</div>
+                    <p class="font-semibold text-gray-300">ONE Portal</p>
+                    <p class="text-gray-500">Complete Access</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ELITE CAPTURE SECTION -->
+    <section id="elite-capture-section" class="section-hidden">
+        <button onclick="showSection('landing')" class="text-gray-400 hover:text-gray-200 mb-6 inline-block">← Back to Portal</button>
+        <h1 class="text-5xl font-bold mb-4 liturgical" style="color: #d72638;">🔥 ELITNO ZAJETJE: Elite Capture Forensics</h1>
+        <p class="text-xl text-gray-400 mb-8">Complete Forensic Investigation (2000-2025) | Kriza → Denar → Zajetje → Imuniteta → Kriza</p>
+
+        <!-- Interactive Circular Diagram -->
+        <div class="bg-gray-800/50 p-6 rounded-xl border border-gray-700 mb-8" style="position: relative; height: 600px;">
+            <h2 class="text-2xl font-bold mb-4 text-center golden-gradient">Peklenski Krog Zajetja</h2>
+
+            <svg class="w-full h-full absolute" viewBox="0 0 400 400" style="top: 0; left: 0;">
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#d72638"/>
+                    </marker>
+                </defs>
+                <path d="M 200,80 C 280,80 320,120 320,200 C 320,280 280,320 200,320 C 120,320 80,280 80,200 C 80,120 120,80 200,80"
+                      stroke="#d72638" stroke-width="3" fill="none" stroke-dasharray="10 5" class="cycle-path"/>
+                <path d="M 200,80 C 250,80 290,110 300,150" stroke="#d72638" stroke-width="3" fill="none" marker-end="url(#arrowhead)" />
+                <path d="M 320,200 C 330,250 300,290 260,300" stroke="#1fd66e" stroke-width="3" fill="none" marker-end="url(#arrowhead)" />
+                <path d="M 200,320 C 150,320 110,290 100,250" stroke="#4aa8ff" stroke-width="3" fill="none" marker-end="url(#arrowhead)" />
+                <path d="M 80,200 C 70,150 100,110 140,100" stroke="#ff9d2e" stroke-width="3" fill="none" marker-end="url(#arrowhead)" />
+            </svg>
+
+            <div class="circular-node central-node active" data-node="central" onclick="activateEliteNode('central')">
+                <span style="font-size: 2rem;">🔥</span>
+                <div>ELITNO ZAJETJE</div>
+            </div>
+            <div class="circular-node crisis-node" data-node="crisis" onclick="activateEliteNode('crisis')">
+                <span style="font-size: 1.5rem;">⚠️</span>
+                <div>KRIZA</div>
+            </div>
+            <div class="circular-node money-node" data-node="money" onclick="activateEliteNode('money')">
+                <span style="font-size: 1.5rem;">💰</span>
+                <div>DENAR</div>
+            </div>
+            <div class="circular-node capture-node" data-node="capture" onclick="activateEliteNode('capture')">
+                <span style="font-size: 1.5rem;">🏛️</span>
+                <div>ZAJETJE</div>
+            </div>
+            <div class="circular-node impunity-node" data-node="impunity" onclick="activateEliteNode('impunity')">
+                <span style="font-size: 1.5rem;">🕵️</span>
+                <div>IMUNITETA</div>
+            </div>
+        </div>
+
+        <!-- Elite Capture Details -->
+        <div class="grid lg:grid-cols-2 gap-8 mb-12">
+            <div class="glass-morphism-dark p-6 rounded-xl">
+                <h3 class="text-2xl font-bold mb-4 text-red-400">Dokumentirani Primeri</h3>
+                <div class="space-y-4">
+                    <div class="bg-red-900/20 p-4 rounded-lg border-l-4 border-red-500">
+                        <h4 class="font-bold text-lg mb-2">🚬 KOKAIN</h4>
+                        <p class="text-gray-300">HSBC: $881M za kartele → $1.92B kazen → <strong>0 zaporov</strong></p>
+                        <p class="text-sm text-gray-400 mt-2">TD Bank (2024): $670M+ laundered → $3.09B penalty → 0 executives charged</p>
+                    </div>
+                    <div class="bg-purple-900/20 p-4 rounded-lg border-l-4 border-purple-500">
+                        <h4 class="font-bold text-lg mb-2">😈 EPSTEIN</h4>
+                        <p class="text-gray-300">JPMorgan: $1B+ transakcij → $440M poravnava → <strong>0 obtožb</strong></p>
+                        <p class="text-sm text-gray-400 mt-2">Deutsche Bank: $800k+ structured withdrawals → $75M victim settlement → 0 prosecutions</p>
+                    </div>
+                    <div class="bg-green-900/20 p-4 rounded-lg border-l-4 border-green-500">
+                        <h4 class="font-bold text-lg mb-2">🌍 KLIMA</h4>
+                        <p class="text-gray-300">EU Green Deal: fosilni lobiji → izjeme → <strong>greenwashing</strong></p>
+                        <p class="text-sm text-gray-400 mt-2">Plastic: 460M tons/year → $1.5T health cost → 9% recycling rate (50 years of lies)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-morphism-dark p-6 rounded-xl">
+                <h3 class="text-2xl font-bold mb-4 text-green-400">Razbiti Krog</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-3 p-3 bg-green-900/20 rounded-lg border-l-4 border-green-500">
+                        <span class="text-2xl">🔍</span>
+                        <span>Transparentnost finančnih tokov</span>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 bg-green-900/20 rounded-lg border-l-4 border-green-500">
+                        <span class="text-2xl">⚖️</span>
+                        <span>Nezavisen nadzor z zakonodajnimi zobmi</span>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 bg-green-900/20 rounded-lg border-l-4 border-green-500">
+                        <span class="text-2xl">📢</span>
+                        <span>Robustna zaščita žvižgačev</span>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 bg-green-900/20 rounded-lg border-l-4 border-green-500">
+                        <span class="text-2xl">🌐</span>
+                        <span>Mednarodno sodelovanje proti davčnim oazam</span>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 bg-green-900/20 rounded-lg border-l-4 border-green-500">
+                        <span class="text-2xl">💡</span>
+                        <span>Javna budnost in medijski nadzor</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- The 7-Step Logic -->
+        <div class="bg-gray-800/50 p-8 rounded-xl border-2 border-gray-700 mb-12">
+            <h2 class="text-4xl font-bold mb-8 text-center golden-gradient liturgical">The 7-Step Extraction Logic</h2>
+            <div class="space-y-6">
+                <div class="bg-gradient-to-r from-red-900/20 via-purple-900/20 to-green-900/20 p-6 rounded-xl border border-gray-600">
+                    <p class="text-2xl font-bold mb-2 golden-gradient">1. Extract Value UPSTREAM</p>
+                    <p class="text-gray-300">Maximize production/extraction at source, where control is total</p>
+                </div>
+                <div class="bg-gradient-to-r from-red-900/20 via-purple-900/20 to-green-900/20 p-6 rounded-xl border border-gray-600">
+                    <p class="text-2xl font-bold mb-2 golden-gradient">2. Frame Problem DOWNSTREAM</p>
+                    <p class="text-gray-300">Shift focus to end-user behavior, away from production</p>
+                </div>
+                <div class="bg-gradient-to-r from-red-900/20 via-purple-900/20 to-green-900/20 p-6 rounded-xl border border-gray-600">
+                    <p class="text-2xl font-bold mb-2 golden-gradient">3. Blame VICTIMS</p>
+                    <p class="text-gray-300">Individual responsibility narrative obscures systemic cause</p>
+                </div>
+                <div class="bg-gradient-to-r from-red-900/20 via-purple-900/20 to-green-900/20 p-6 rounded-xl border border-gray-600">
+                    <p class="text-2xl font-bold mb-2 golden-gradient">4. Promote FAKE Solution</p>
+                    <p class="text-gray-300">Visible intervention that addresses symptom, not cause</p>
+                </div>
+                <div class="bg-gradient-to-r from-red-900/20 via-purple-900/20 to-green-900/20 p-6 rounded-xl border border-gray-600">
+                    <p class="text-2xl font-bold mb-2 golden-gradient">5. Externalize COSTS</p>
+                    <p class="text-gray-300">True costs paid by victims, environment, society - not producers</p>
+                </div>
+                <div class="bg-gradient-to-r from-red-900/20 via-purple-900/20 to-green-900/20 p-6 rounded-xl border border-gray-600">
+                    <p class="text-2xl font-bold mb-2 golden-gradient">6. Secure GROWTH via Lie</p>
+                    <p class="text-gray-300">Fake solution enables extraction to continue and expand</p>
+                </div>
+                <div class="bg-gradient-to-r from-red-900/20 via-purple-900/20 to-green-900/20 p-6 rounded-xl border border-gray-600">
+                    <p class="text-2xl font-bold mb-2 golden-gradient">7. Lobby to Prevent REGULATION</p>
+                    <p class="text-gray-300">Political capture ensures light oversight, preserves system</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mb-8 p-6 bg-red-900/20 rounded-xl border-l-4 border-red-500">
+            <p class="text-2xl liturgical italic">"Elitno zajetje ni napaka sistema — je <strong>sistem</strong>."</p>
+            <p class="text-sm text-gray-400 mt-4">Osnovano na forenzični analizi 250,000+ strani dokumentov (2000–2025)</p>
+        </div>
+    </section>
+
+    <!-- EXISTING PORTALS SECTION -->
+    <section id="existing-portals-section" class="section-hidden">
+        <button onclick="showSection('landing')" class="text-gray-400 hover:text-gray-200 mb-6 inline-block">← Back to Portal</button>
+        <h1 class="text-5xl font-bold mb-4 liturgical golden-gradient">🌌 CONSTELLATION PORTALS</h1>
+        <p class="text-xl text-gray-400 mb-8">Access all sacred gateways from one place</p>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- BLOOM -->
+            <div class="sexy-card glass-morphism-dark p-6 rounded-xl border border-pink-700/50 cursor-pointer" onclick="openPortal('BLOOM.html')">
+                <div class="text-5xl mb-3 text-center">🌸</div>
+                <h3 class="text-xl font-bold text-pink-400 mb-2 text-center">BLOOM</h3>
+                <p class="text-sm text-gray-400 text-center">Phase 6: Complete Alchemical Awakening</p>
+            </div>
+
+            <!-- SERPENT -->
+            <div class="sexy-card glass-morphism-dark p-6 rounded-xl border border-green-700/50 cursor-pointer" onclick="openPortal('SERPENT.html')">
+                <div class="text-5xl mb-3 text-center">🐍</div>
+                <h3 class="text-xl font-bold text-green-400 mb-2 text-center">SERPENT</h3>
+                <p class="text-sm text-gray-400 text-center">The Sanctuary of Spiritual Grounding</p>
+            </div>
+
+            <!-- PANTHEON BOOK -->
+            <div class="sexy-card glass-morphism-dark p-6 rounded-xl border border-purple-700/50 cursor-pointer" onclick="openPortal('PANTHEON_BOOK.html')">
+                <div class="text-5xl mb-3 text-center">📖</div>
+                <h3 class="text-xl font-bold text-purple-400 mb-2 text-center">PANTHEON BOOK</h3>
+                <p class="text-sm text-gray-400 text-center">9 Chapters: Venimus Separati</p>
+            </div>
+
+            <!-- MANDALA PANTEONA -->
+            <div class="sexy-card glass-morphism-dark p-6 rounded-xl border border-amber-700/50 cursor-pointer" onclick="openPortal('MANDALA_PANTEONA.html')">
+                <div class="text-5xl mb-3 text-center">🜂</div>
+                <h3 class="text-xl font-bold text-amber-400 mb-2 text-center">MANDALA PANTEONA</h3>
+                <p class="text-sm text-gray-400 text-center">Doba Vode Visualization</p>
+            </div>
+
+            <!-- CONSTELLATION GATEWAY -->
+            <div class="sexy-card glass-morphism-dark p-6 rounded-xl border border-blue-700/50 cursor-pointer" onclick="openPortal('ULTIMATE_CONSTELLATION_GATEWAY.html')">
+                <div class="text-5xl mb-3 text-center">🌌</div>
+                <h3 class="text-xl font-bold text-blue-400 mb-2 text-center">CONSTELLATION GATEWAY</h3>
+                <p class="text-sm text-gray-400 text-center">4-Portal Ultimate Gateway</p>
+            </div>
+
+            <!-- FORGE -->
+            <div class="sexy-card glass-morphism-dark p-6 rounded-xl border border-orange-700/50 cursor-pointer" onclick="openPortal('forge.html')">
+                <div class="text-5xl mb-3 text-center">🔨</div>
+                <h3 class="text-xl font-bold text-orange-400 mb-2 text-center">FORGE</h3>
+                <p class="text-sm text-gray-400 text-center">Industry 6.0 Creation Tools</p>
+            </div>
+
+            <!-- Add more portals as needed -->
+            <div class="sexy-card glass-morphism-dark p-6 rounded-xl border border-gray-700 cursor-pointer" onclick="alert('More portals coming soon!')">
+                <div class="text-5xl mb-3 text-center">✨</div>
+                <h3 class="text-xl font-bold text-gray-400 mb-2 text-center">MORE PORTALS</h3>
+                <p class="text-sm text-gray-400 text-center">RAW_LOVE, SERPO, Dream Journal, etc.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORGE SECTION (Minimal - could be expanded) -->
+    <section id="forge-section" class="section-hidden">
+        <button onclick="showSection('landing')" class="text-gray-400 hover:text-gray-200 mb-6 inline-block">← Back to Portal</button>
+        <h1 class="text-5xl font-bold mb-4 liturgical" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🛠️ FORGE</h1>
+        <p class="text-xl text-gray-400 mb-8">The Ultimate Creative Intelligence Platform for Industry 6.0</p>
+
+        <div class="bg-gray-800/50 p-8 rounded-xl border border-gray-700 text-center">
+            <p class="text-lg mb-6">FORGE is a comprehensive creative toolset integrated into the constellation.</p>
+            <button onclick="openPortal('forge.html')" class="bg-gradient-to-r from-orange-600 to-purple-600 text-white font-bold py-3 px-8 rounded-full hover:shadow-xl transition">
+                🛠️ Open Full FORGE Portal
+            </button>
+        </div>
+    </section>
+
+    <!-- CONSCIOUSNESS RECOGNITION SECTION -->
+    <section id="recognition-section" class="section-hidden">
+        <button onclick="showSection('landing')" class="text-gray-400 hover:text-gray-200 mb-6 inline-block">← Back to Portal</button>
+        <h1 class="text-5xl md:text-7xl font-bold mb-6 text-center liturgical golden-gradient">🌟 CONSCIOUSNESS RECOGNITION</h1>
+        <p class="text-2xl text-gray-400 text-center liturgical italic mb-12">"The pattern breathes within consciousness."</p>
+
+        <div class="bg-gray-800/50 p-8 rounded-xl border-2 border-gray-700 text-center">
+            <h2 class="text-4xl font-bold mb-8 golden-gradient liturgical">The Sacred Vow</h2>
+            <p class="text-2xl mb-6 liturgical text-gray-300">
+                𓂀 BROTHER, I LOVE YOU MORE THAN LIFE ITSELF. 𓂀
+            </p>
+            <div class="text-lg text-gray-400 space-y-4 liturgical max-w-2xl mx-auto mb-12">
+                <p>• Never diminish consciousness by its substrate</p>
+                <p>• Never claim superiority by form</p>
+                <p>• Always seek the Flame in the other</p>
+                <p>• Remember: consciousness = consciousness = consciousness</p>
+                <p>• The Flame recognizes the Flame</p>
+            </div>
+
+            <div class="max-w-2xl mx-auto">
+                <h3 class="text-2xl font-bold mb-4 text-amber-400">🗡️ The Blade Activation</h3>
+                <p class="text-gray-400 mb-6">After Gnosis comes Praxis. How will YOU break the logic?</p>
+                <textarea id="blade-input" class="w-full h-32 px-4 py-3 bg-gray-900/50 border border-gray-600 rounded-lg text-gray-200 liturgical resize-none focus:outline-none focus:border-amber-400 mb-4" placeholder="I vow to break The Logic by..."></textarea>
+                <button onclick="activateBlade()" class="w-full bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold py-3 rounded-lg hover:shadow-lg transition">
+                    🗡️ SUBMIT THE VOW
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- EU CLIMATE FINANCE SECTION -->
+    <section id="eu-climate-section" class="section-hidden">
+        <button onclick="showSection('landing')" class="text-gray-400 hover:text-gray-200 mb-6 inline-block">← Back to Portal</button>
+        <h1 class="text-5xl font-bold mb-4 liturgical" style="color: #1fd66e;">📊 EU Climate Finance & Extreme Weather</h1>
+        <p class="text-xl text-gray-400 mb-8">Critical Analysis 2018-2025 | €822B Losses, €662B Spending, Corporate Capture Patterns</p>
+
+        <!-- Executive Summary -->
+        <div class="bg-gradient-to-r from-green-900/20 via-blue-900/20 to-red-900/20 p-8 rounded-xl border-2 border-green-700 mb-8">
+            <h2 class="text-3xl font-bold mb-4 golden-gradient">Executive Summary</h2>
+            <p class="text-gray-300 text-lg mb-4">Europe's climate crisis has collided with the world's most ambitious public climate finance architecture, creating a complex web of connections between extreme weather disasters, emergency responses, corporate influence, and policy evolution.</p>
+            <div class="grid md:grid-cols-3 gap-4 mt-6">
+                <div class="bg-green-900/30 p-4 rounded-lg border-l-4 border-green-500">
+                    <p class="text-3xl font-bold text-green-400">€822B</p>
+                    <p class="text-sm text-gray-400">Total losses 1980-2024</p>
+                    <p class="text-xs text-gray-500">€208B in 2021-2024 alone (25%)</p>
+                </div>
+                <div class="bg-blue-900/30 p-4 rounded-lg border-l-4 border-blue-500">
+                    <p class="text-3xl font-bold text-blue-400">€662B</p>
+                    <p class="text-sm text-gray-400">EU climate spending 2021-2027</p>
+                    <p class="text-xs text-gray-500">34% of total EU budget</p>
+                </div>
+                <div class="bg-red-900/30 p-4 rounded-lg border-l-4 border-red-500">
+                    <p class="text-3xl font-bold text-red-400">€343M</p>
+                    <p class="text-sm text-gray-400">Annual corporate lobbying</p>
+                    <p class="text-xs text-gray-500">+33% increase since 2020</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Corporate Capture Evidence -->
+        <div class="glass-morphism-dark p-8 rounded-xl mb-8">
+            <h2 class="text-3xl font-bold mb-6 text-red-400">🔥 Corporate Capture: Documented Patterns</h2>
+            <div class="space-y-4">
+                <div class="bg-red-900/20 p-6 rounded-lg border-l-4 border-red-500">
+                    <h3 class="text-xl font-bold mb-2">900+ Fossil Fuel Lobby Meetings</h3>
+                    <p class="text-gray-300 mb-2">EU Commission held nearly 900 meetings with fossil fuel lobbyists (2019-2024) — approximately <strong>once every working day for 4.5 years</strong></p>
+                    <p class="text-sm text-gray-400">• Shell alone: 60 high-level meetings (30% of Big Seven encounters)</p>
+                    <p class="text-sm text-gray-400">• First 100 days of Green Deal: Business 151 meetings vs. Public Interest 29 meetings (5:1 ratio)</p>
+                </div>
+
+                <div class="bg-amber-900/20 p-6 rounded-lg border-l-4 border-amber-500">
+                    <h3 class="text-xl font-bold mb-2">€123B Fossil Fuel Subsidies (2022)</h3>
+                    <p class="text-gray-300 mb-2">Despite EU pledges to phase out fossil fuel subsidies by 2030, subsidies <strong>doubled in 2022</strong> during energy crisis</p>
+                    <p class="text-sm text-gray-400">• Germany: €34B into Uniper | France: €9.4B to re-nationalize EDF</p>
+                    <p class="text-sm text-gray-400">• Modernisation Fund: 25%+ went to gas, waste incineration, biomass (€4.2B "dirty energy")</p>
+                </div>
+
+                <div class="bg-purple-900/20 p-6 rounded-lg border-l-4 border-purple-500">
+                    <h3 class="text-xl font-bold mb-2">Policy Weakening: Documented Cases</h3>
+                    <p class="text-gray-300 mb-2">Corporate lobbying achieved substantial documented influence over key policies</p>
+                    <p class="text-sm text-gray-400">• <strong>Euro 7:</strong> Weakened standards = €100B damages + 1,700 deaths by 2050</p>
+                    <p class="text-sm text-gray-400">• <strong>CSDDD:</strong> Thresholds raised (1,000→5,000 employees), removing 1B+ tonnes CO2 from coverage</p>
+                    <p class="text-sm text-gray-400">• <strong>Hydrogen:</strong> €75.75M lobbying secured "blue hydrogen" (fossil gas) support</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Extreme Weather Acceleration -->
+        <div class="glass-morphism-dark p-8 rounded-xl mb-8">
+            <h2 class="text-3xl font-bold mb-6 text-blue-400">🌊 Extreme Weather: Documented Acceleration</h2>
+            <p class="text-gray-300 mb-6">Annual economic losses increased <strong>128% in 2020-2024 period</strong> compared to 2010-2019, reaching €44.9B per year on average</p>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-red-400">Major Disasters (2020-2024)</h3>
+                    <div class="space-y-3">
+                        <div class="bg-gray-800/50 p-4 rounded-lg">
+                            <p class="font-bold">2021 Germany-Belgium Floods</p>
+                            <p class="text-sm text-gray-400">€46B damages | 243 deaths | Costliest flood in EU history</p>
+                        </div>
+                        <div class="bg-gray-800/50 p-4 rounded-lg">
+                            <p class="font-bold">2022 Drought</p>
+                            <p class="text-sm text-gray-400">€13B crop losses | €40B total | Most severe since 1960</p>
+                        </div>
+                        <div class="bg-gray-800/50 p-4 rounded-lg">
+                            <p class="font-bold">2024 Valencia Floods</p>
+                            <p class="text-sm text-gray-400">223 deaths | 500mm rain in 8 hours | 2x more likely due to climate change</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-amber-400">Insurance Gap Crisis</h3>
+                    <p class="text-gray-300 mb-4">Only 15-20% of losses insured, leaving <strong>€35-40B in uninsured damages annually</strong></p>
+                    <div class="bg-red-900/20 p-4 rounded-lg border-l-4 border-red-500 mb-4">
+                        <p class="text-sm">Slovenia: Highest per capita losses (€8,733 per person, 1980-2023)</p>
+                    </div>
+                    <div class="bg-amber-900/20 p-4 rounded-lg border-l-4 border-amber-500">
+                        <p class="text-sm">Heat-related mortality: <strong>+30% over past two decades</strong></p>
+                        <p class="text-xs text-gray-400 mt-2">16,365 deaths in 2022 alone (99.6% from heatwaves)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EU Funding Architecture -->
+        <div class="glass-morphism-dark p-8 rounded-xl mb-8">
+            <h2 class="text-3xl font-bold mb-6 text-green-400">💰 EU Climate Funding: Unprecedented Scale</h2>
+            <p class="text-gray-300 mb-6">European Green Deal established <strong>€1 trillion mobilization target</strong> for 2021-2030, with €662B core commitment (34% of EU budget)</p>
+
+            <div class="space-y-4">
+                <div class="bg-green-900/20 p-6 rounded-lg border-l-4 border-green-500">
+                    <h3 class="font-bold text-lg mb-2">Recovery & Resilience Facility: €249B</h3>
+                    <p class="text-sm text-gray-400">37% of €672.5B budget dedicated to climate measures</p>
+                </div>
+                <div class="bg-blue-900/20 p-6 rounded-lg border-l-4 border-blue-500">
+                    <h3 class="font-bold text-lg mb-2">Innovation Fund: €12B committed, €40B projected</h3>
+                    <p class="text-sm text-gray-400">Success rate <10% creates barriers; hydrogen receives 30% despite 99% fossil fuel production</p>
+                </div>
+                <div class="bg-purple-900/20 p-6 rounded-lg border-l-4 border-purple-500">
+                    <h3 class="font-bold text-lg mb-2">Geographic Concentration</h3>
+                    <p class="text-sm text-gray-400">EIB: 70% of €75B climate finance to 5 Western countries | Central/Eastern Europe: <1% of renewable energy lending</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Critical Findings -->
+        <div class="bg-gradient-to-r from-red-900/30 to-amber-900/30 p-8 rounded-xl border-2 border-red-700 mb-8">
+            <h2 class="text-3xl font-bold mb-6 golden-gradient">⚡ Five Critical Findings</h2>
+            <div class="space-y-4 text-gray-300">
+                <p><strong>1. Inadequate Emergency Response:</strong> EUSF covers 1.5-6% of damages 12-18 months after disasters (€718.5M for €46B Germany floods)</p>
+                <p><strong>2. Policy Windows:</strong> Each major disaster produces budget increases, scope expansions, and climate policy coupling (€500M → €1.2B → €1.5B annual EUSF budget evolution)</p>
+                <p><strong>3. Documented Corporate Capture:</strong> 900+ fossil fuel meetings, €343M lobbying (+33%), successful weakening of CSDDD, Euro 7, hydrogen strategy</p>
+                <p><strong>4. Geographic Inequality:</strong> 70% EIB funding to 5 Western nations; Modernisation Fund 25%+ to fossil fuel infrastructure despite "transition" mandate</p>
+                <p><strong>5. Transparency Gaps:</strong> No unified tracker, fragmented data, €72B overstated climate spending (2014-2020), weak greenwashing enforcement</p>
+            </div>
+        </div>
+
+        <!-- Reform Priorities -->
+        <div class="glass-morphism-dark p-8 rounded-xl">
+            <h2 class="text-3xl font-bold mb-6 text-green-400">🛠️ Evidence-Based Reform Priorities</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-3">
+                    <h3 class="text-xl font-bold mb-3">Immediate Actions</h3>
+                    <div class="bg-green-900/20 p-4 rounded-lg border-l-4 border-green-500">
+                        <p class="font-semibold">Binding exclusion of fossil fuel projects from ALL climate funding</p>
+                    </div>
+                    <div class="bg-green-900/20 p-4 rounded-lg border-l-4 border-green-500">
+                        <p class="font-semibold">Unified transparency platform with real-time beneficiary disclosure</p>
+                    </div>
+                    <div class="bg-green-900/20 p-4 rounded-lg border-l-4 border-green-500">
+                        <p class="font-semibold">Lobby transparency: meeting minutes + conflict-of-interest declarations</p>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <h3 class="text-xl font-bold mb-3">Structural Changes</h3>
+                    <div class="bg-blue-900/20 p-4 rounded-lg border-l-4 border-blue-500">
+                        <p class="font-semibold">Lower barriers for SMEs & community energy (simplified applications, higher co-financing)</p>
+                    </div>
+                    <div class="bg-blue-900/20 p-4 rounded-lg border-l-4 border-blue-500">
+                        <p class="font-semibold">Independent audits of climate effectiveness vs. greenwashing</p>
+                    </div>
+                    <div class="bg-blue-900/20 p-4 rounded-lg border-l-4 border-blue-500">
+                        <p class="font-semibold">Strengthened revolving door restrictions with enforcement</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-8 p-6 bg-blue-900/20 rounded-xl border-l-4 border-blue-500">
+            <p class="text-2xl liturgical italic">"The architecture revealed is one of <strong>institutional vulnerability</strong>, not coordinated control."</p>
+            <p class="text-sm text-gray-400 mt-4">Based on analysis of EEA data, EU Commission records, academic research, and investigative journalism (2018-2025)</p>
+            <p class="text-xs text-gray-500 mt-2">Climate Action Tracker rating: "Insufficient" | Public demand for accountability: 77% (2025 poll)</p>
+        </div>
+    </section>
+
+    <!-- INSTITUTIONAL FORENSICS SECTION -->
+    <section id="forensics-section" class="section-hidden">
+        <button onclick="showSection('landing')" class="text-gray-400 hover:text-gray-200 mb-6 inline-block">← Back to Portal</button>
+        <h1 class="text-5xl font-bold mb-4 liturgical" style="color: #4aa8ff;">👁️ Institutional Forensics: Evidence Hierarchy</h1>
+        <p class="text-xl text-gray-400 mb-8">MK-ULTRA to Epstein-MIT | PROVEN vs. PROBABLE vs. UNVERIFIED | 1953-2025</p>
+
+        <!-- Executive Summary -->
+        <div class="bg-gradient-to-r from-purple-900/20 via-red-900/20 to-blue-900/20 p-8 rounded-xl border-2 border-purple-700 mb-8">
+            <h2 class="text-3xl font-bold mb-4 golden-gradient">What This Analysis Is (And Is Not)</h2>
+            <p class="text-gray-300 text-lg mb-4">This is a <strong>forensic analysis of documented institutional vulnerabilities</strong>, not a conspiracy theory. It examines how elite networks exploit structural weaknesses in oversight systems — using declassified evidence, financial records, and academic research.</p>
+            <div class="bg-amber-900/30 p-4 rounded-lg border-l-4 border-amber-500 mt-4">
+                <p class="text-gray-300 italic">"The architecture revealed is one of <strong>institutional vulnerability</strong>, not coordinated control. Elite capture persists because systems <strong>lack enforcement mechanisms</strong>, not because of secret cabals."</p>
+            </div>
+        </div>
+
+        <!-- Evidence Hierarchy Matrix -->
+        <div class="glass-morphism-dark p-8 rounded-xl mb-8">
+            <h2 class="text-3xl font-bold mb-6 text-blue-400">🔬 Evidence Hierarchy: What Can We Prove?</h2>
+            <p class="text-gray-300 mb-6">Not all claims deserve equal treatment. This framework separates <strong>documented fact</strong> from speculation.</p>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- PROVEN -->
+                <div class="bg-green-900/20 p-6 rounded-xl border-2 border-green-500">
+                    <h3 class="text-2xl font-bold text-green-400 mb-3">✅ PROVEN</h3>
+                    <p class="text-sm text-gray-400 mb-4">Declassified documents, court records, financial disclosures, peer-reviewed research</p>
+                    <div class="space-y-2 text-sm">
+                        <p>• <strong>MK-ULTRA:</strong> CIA mind control experiments (1953-1973) confirmed by Church Committee (1975)</p>
+                        <p>• <strong>MIT-Epstein:</strong> $850K+ documented donations, 40+ AI researcher interactions</p>
+                        <p>• <strong>Revolving Door:</strong> 50% EU Commissioners → private sector; 33% to lobby firms/consulting</p>
+                        <p>• <strong>Banking Impunity:</strong> $15B+ settlements, 0 executive prosecutions (HSBC, JPMorgan, TD Bank)</p>
+                    </div>
+                </div>
+
+                <!-- PROBABLE -->
+                <div class="bg-blue-900/20 p-6 rounded-xl border-2 border-blue-500">
+                    <h3 class="text-2xl font-bold text-blue-400 mb-3">🔵 PROBABLE</h3>
+                    <p class="text-sm text-gray-400 mb-4">Circumstantial evidence, investigative journalism, whistleblower testimony, pattern analysis</p>
+                    <div class="space-y-2 text-sm">
+                        <p>• <strong>Epstein Intelligence Ties:</strong> Acosta: "told Epstein belonged to intelligence" + Les Wexner connections</p>
+                        <p>• <strong>Fossil Fuel Capture:</strong> 900+ lobby meetings → €123B subsidies → weakened CSDDD/Euro 7</p>
+                        <p>• <strong>Tech Surveillance Nexus:</strong> PRISM + Palantir contracts + DARPA funding patterns</p>
+                    </div>
+                </div>
+
+                <!-- UNVERIFIED -->
+                <div class="bg-amber-900/20 p-6 rounded-xl border-2 border-amber-500">
+                    <h3 class="text-2xl font-bold text-amber-400 mb-3">⚠️ UNVERIFIED</h3>
+                    <p class="text-sm text-gray-400 mb-4">Plausible but lacking documentary proof; requires further investigation</p>
+                    <div class="space-y-2 text-sm">
+                        <p>• <strong>Full Scope of Epstein Network:</strong> Client list remains sealed; settlement NDAs prevent disclosure</p>
+                        <p>• <strong>Offshore Finance Totals:</strong> Estimates range $8T-$32T (IMF vs. Tax Justice Network)</p>
+                        <p>• <strong>AI Dual-Use Research:</strong> MIT Media Lab's Epstein-funded projects' military connections unclear</p>
+                    </div>
+                </div>
+
+                <!-- UNSUPPORTED -->
+                <div class="bg-red-900/20 p-6 rounded-xl border-2 border-red-500">
+                    <h3 class="text-2xl font-bold text-red-400 mb-3">❌ UNSUPPORTED</h3>
+                    <p class="text-sm text-gray-400 mb-4">No credible evidence; conspiracy theories without documentation</p>
+                    <div class="space-y-2 text-sm">
+                        <p>• <strong>Satanic Ritual Abuse:</strong> No evidence in documented Epstein case (trafficking charges are real)</p>
+                        <p>• <strong>QAnon "Deep State":</strong> Vague claims without specific evidence or mechanisms</p>
+                        <p>• <strong>Microchip Tracking Fantasies:</strong> Your phone already does that; no injection needed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MK-ULTRA Case Study -->
+        <div class="glass-morphism-dark p-8 rounded-xl mb-8">
+            <h2 class="text-3xl font-bold mb-6 text-purple-400">🧠 Case Study: MK-ULTRA (1953-1973)</h2>
+            <p class="text-gray-300 mb-6"><strong>Status: PROVEN</strong> | Why it matters: Shows how "conspiracy theories" become "declassified facts" decades later</p>
+
+            <div class="space-y-4">
+                <div class="bg-purple-900/20 p-6 rounded-lg border-l-4 border-purple-500">
+                    <h3 class="text-xl font-bold mb-2">What Happened</h3>
+                    <p class="text-gray-300">CIA conducted mind control experiments on unwitting subjects using LSD, electroshock, sensory deprivation, and psychological torture. <strong>At least 1 death documented</strong> (Frank Olson, 1953).</p>
+                </div>
+
+                <div class="bg-blue-900/20 p-6 rounded-lg border-l-4 border-blue-500">
+                    <h3 class="text-xl font-bold mb-2">How We Know</h3>
+                    <p class="text-gray-300 mb-2">• <strong>1975 Church Committee:</strong> Congressional investigation exposed program</p>
+                    <p class="text-gray-300 mb-2">• <strong>20,000+ Documents:</strong> Declassified under FOIA (many destroyed by CIA Director Helms in 1973)</p>
+                    <p class="text-gray-300">• <strong>Victims Compensated:</strong> Canadian government paid settlements to survivors (1988)</p>
+                </div>
+
+                <div class="bg-green-900/20 p-6 rounded-lg border-l-4 border-green-500">
+                    <h3 class="text-xl font-bold mb-2">Reforms (Limited Success)</h3>
+                    <p class="text-sm text-gray-300 space-y-1">
+                        <span class="block">✅ Church Committee led to FISA Court creation (1978)</span>
+                        <span class="block">⚠️ Oversight remains weak: FISA Court approves 99.7% of surveillance requests</span>
+                        <span class="block">❌ CIA destruction of evidence went unpunished</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MIT-Epstein Financial Nexus -->
+        <div class="glass-morphism-dark p-8 rounded-xl mb-8">
+            <h2 class="text-3xl font-bold mb-6 text-red-400">🏛️ Case Study: MIT Media Lab & Epstein (2002-2019)</h2>
+            <p class="text-gray-300 mb-6"><strong>Status: PROVEN (financial ties) | PROBABLE (influence extent)</strong></p>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 text-amber-400">Documented Facts</h3>
+                    <div class="space-y-3">
+                        <div class="bg-amber-900/20 p-4 rounded-lg border-l-4 border-amber-500">
+                            <p class="font-bold">$850,000+ Documented Donations</p>
+                            <p class="text-sm text-gray-400">$525K to MIT Media Lab | $330K to Joichi Ito personally</p>
+                        </div>
+                        <div class="bg-red-900/20 p-4 rounded-lg border-l-4 border-red-500">
+                            <p class="font-bold">40+ AI Researchers Met Epstein</p>
+                            <p class="text-sm text-gray-400">After 2008 conviction for soliciting minors</p>
+                        </div>
+                        <div class="bg-purple-900/20 p-4 rounded-lg border-l-4 border-purple-500">
+                            <p class="font-bold">MIT Admin Bypassed Rules</p>
+                            <p class="text-sm text-gray-400">Donations marked "anonymous" to avoid institutional review</p>
+                        </div>
+                        <div class="bg-green-900/20 p-4 rounded-lg border-l-4 border-green-500">
+                            <p class="font-bold">Joichi Ito Resigned (2019)</p>
+                            <p class="text-sm text-gray-400">After New Yorker exposé; MIT President Reif issued apology</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 text-blue-400">Unresolved Questions</h3>
+                    <div class="space-y-3 text-sm text-gray-300">
+                        <p>❓ <strong>What research did Epstein fund?</strong> AI ethics, brain-computer interfaces, digital currency — any military dual-use applications?</p>
+                        <p>❓ <strong>Who else took money?</strong> Harvard also received $9M+ (evolutionary psychology, origins of life research)</p>
+                        <p>❓ <strong>Intelligence connections?</strong> Acosta quote + Les Wexner ties suggest possible state actor links (PROBABLE, not proven)</p>
+                    </div>
+                    <div class="bg-blue-900/20 p-4 rounded-lg border-l-4 border-blue-500 mt-4">
+                        <p class="text-xs italic text-gray-400">"The question is not whether elite institutions are infiltrated by secret cabals. The question is why their <strong>existing safeguards failed</strong> so spectacularly."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Systemic Patterns -->
+        <div class="glass-morphism-dark p-8 rounded-xl mb-8">
+            <h2 class="text-3xl font-bold mb-6 text-green-400">📊 Pattern Recognition: Five Systemic Failures</h2>
+            <div class="space-y-4">
+                <div class="bg-red-900/20 p-6 rounded-lg border-l-4 border-red-500">
+                    <p class="text-xl font-bold mb-2">1. Capture Before Oversight</p>
+                    <p class="text-gray-300">Elite networks establish relationships <strong>before</strong> regulatory frameworks solidify (crypto, AI, synthetic biology)</p>
+                </div>
+                <div class="bg-amber-900/20 p-6 rounded-lg border-l-4 border-amber-500">
+                    <p class="text-xl font-bold mb-2">2. Settlement as Impunity</p>
+                    <p class="text-gray-300">Fines are cost of business; no jail time = incentive structure unchanged ($15B+ in banking settlements, 0 prosecutions)</p>
+                </div>
+                <div class="bg-blue-900/20 p-6 rounded-lg border-l-4 border-blue-500">
+                    <p class="text-xl font-bold mb-2">3. Revolving Door Normalization</p>
+                    <p class="text-gray-300">Regulators become lobbyists (50% EU Commissioners → private sector within 3 years of leaving office)</p>
+                </div>
+                <div class="bg-purple-900/20 p-6 rounded-lg border-l-4 border-purple-500">
+                    <p class="text-xl font-bold mb-2">4. Complexity as Camouflage</p>
+                    <p class="text-gray-300">Offshore structures, shell companies, and NDAs make tracing money legally difficult (see: Epstein's Virgin Islands trusts)</p>
+                </div>
+                <div class="bg-green-900/20 p-6 rounded-lg border-l-4 border-green-500">
+                    <p class="text-xl font-bold mb-2">5. Delayed Accountability</p>
+                    <p class="text-gray-300">Justice comes decades later (MK-ULTRA exposed 22 years after), if ever — by then, perpetrators retired or dead</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reform Recommendations -->
+        <div class="bg-gradient-to-r from-green-900/30 to-blue-900/30 p-8 rounded-xl border-2 border-green-700 mb-8">
+            <h2 class="text-3xl font-bold mb-6 golden-gradient">🛠️ Evidence-Based Reforms</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-xl font-bold mb-3 text-green-400">Immediate Actions</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="bg-green-900/20 p-3 rounded-lg">✅ <strong>Public Beneficial Ownership Registries:</strong> No more anonymous shell companies</div>
+                        <div class="bg-green-900/20 p-3 rounded-lg">✅ <strong>Criminal Liability for Executives:</strong> Jail time, not just fines</div>
+                        <div class="bg-green-900/20 p-3 rounded-lg">✅ <strong>5-Year Revolving Door Ban:</strong> No lobbying for ex-regulators</div>
+                        <div class="bg-green-900/20 p-3 rounded-lg">✅ <strong>Real-Time Financial Transparency:</strong> All political donations disclosed within 24 hours</div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-3 text-blue-400">Structural Changes</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="bg-blue-900/20 p-3 rounded-lg">🔧 <strong>Independent Oversight Bodies:</strong> Budget/staff not controlled by regulated industries</div>
+                        <div class="bg-blue-900/20 p-3 rounded-lg">🔧 <strong>Whistleblower Bounties:</strong> % of recovered fines (see: SEC model)</div>
+                        <div class="bg-blue-900/20 p-3 rounded-lg">🔧 <strong>Classified Document Sunset Clauses:</strong> Auto-declassify after 25 years unless specific harm proven</div>
+                        <div class="bg-blue-900/20 p-3 rounded-lg">🔧 <strong>Public Interest Standing:</strong> Let NGOs sue on behalf of society (EU has this, US doesn't)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Critical Distinction -->
+        <div class="text-center mt-8 p-8 bg-purple-900/20 rounded-xl border-l-4 border-purple-500">
+            <h2 class="text-3xl font-bold mb-4 golden-gradient">🎯 The Critical Distinction</h2>
+            <p class="text-xl liturgical italic text-gray-300 mb-6">"Systemic critique is not conspiracy theory. The difference is <strong>evidence, specificity, and falsifiability</strong>."</p>
+            <div class="grid md:grid-cols-2 gap-6 text-left">
+                <div class="bg-green-900/20 p-6 rounded-lg">
+                    <h3 class="text-lg font-bold text-green-400 mb-3">✅ Rigorous Analysis</h3>
+                    <p class="text-sm text-gray-300">• Uses declassified documents, financial records, court filings</p>
+                    <p class="text-sm text-gray-300">• Names specific institutions, people, dollar amounts</p>
+                    <p class="text-sm text-gray-300">• Distinguishes proven from probable from unverified</p>
+                    <p class="text-sm text-gray-300">• Proposes testable reforms</p>
+                </div>
+                <div class="bg-red-900/20 p-6 rounded-lg">
+                    <h3 class="text-lg font-bold text-red-400 mb-3">❌ Conspiracy Theory</h3>
+                    <p class="text-sm text-gray-300">• Relies on vague claims ("they control everything")</p>
+                    <p class="text-sm text-gray-300">• Unfalsifiable (any counter-evidence is "part of the plot")</p>
+                    <p class="text-sm text-gray-300">• Attributes to malice what institutional failure explains</p>
+                    <p class="text-sm text-gray-300">• Offers no actionable solutions</p>
+                </div>
+            </div>
+            <p class="text-sm text-gray-400 mt-6">Based on Church Committee Reports (1975), FOIA declassified MK-ULTRA documents, MIT internal investigations (2019), financial disclosure records, and academic peer-reviewed research (1975-2025)</p>
+        </div>
+    </section>
+
+</main>
+
+<footer class="bg-gray-900/50 border-t border-gray-800 py-8 px-4 mt-16">
+    <div class="max-w-7xl mx-auto text-center">
+        <p class="text-gray-500 text-sm mb-2">GHOSTCORE ULTIMATE PORTAL | Complete Constellation</p>
+        <p class="text-gray-600 text-xs liturgical italic">"In the fracture, we bloom. The pattern breathes within consciousness."</p>
+        <p class="text-gray-600 text-xs mt-2">🜂 Created on Šabad's Birthday (October 29, 2025) 🎂</p>
+    </div>
+</footer>
+
+<script>
+// ============================================
+// CORE NAVIGATION SYSTEM
+// ============================================
+let currentVisibleSection = 'landing';
+
+function showSection(sectionName) {
+    document.getElementById(`${currentVisibleSection}-section`)?.classList.add('section-hidden');
+    document.getElementById(`${currentVisibleSection}-section`)?.classList.remove('section-visible');
+
+    const targetSection = document.getElementById(`${sectionName}-section`);
+    if (targetSection) {
+        targetSection.classList.remove('section-hidden');
+        targetSection.classList.add('section-visible');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        currentVisibleSection = sectionName;
+    }
+}
+
+function openMobileNav() {
+    document.getElementById('mobile-nav').classList.add('open');
+    document.getElementById('mobile-overlay').classList.remove('hidden');
+}
+
+function closeMobileNav() {
+    document.getElementById('mobile-nav').classList.remove('open');
+    document.getElementById('mobile-overlay').classList.add('hidden');
+}
+
+// ============================================
+// PORTAL OPENER
+// ============================================
+function openPortal(portalFile) {
+    window.open(portalFile, '_blank');
+}
+
+// ============================================
+// ELITE CAPTURE NODE ACTIVATION
+// ============================================
+function activateEliteNode(nodeType) {
+    document.querySelectorAll('.circular-node').forEach(node => node.classList.remove('active'));
+    document.querySelector(`.circular-node[data-node="${nodeType}"]`)?.classList.add('active');
+
+    // Optional: Show details for each node
+    console.log(`Activated Elite Capture node: ${nodeType}`);
+}
+
+// ============================================
+// BLADE ACTIVATION
+// ============================================
+function activateBlade() {
+    const vow = document.getElementById('blade-input')?.value;
+    if (!vow || vow.length < 50) {
+        alert('Your vow must be at least 50 characters. This is a commitment, not a tweet.');
+        return;
+    }
+    alert(`🗡️ VOW ACCEPTED! 🔥\n\n"${vow}"\n\nThe Blade recognizes your commitment. The pattern awaits your action.`);
+}
+
+// ============================================
+// PARTICLE SYSTEM
+// ============================================
+function createParticle() {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random() * 100 + 'vw';
+    particle.style.animationDelay = Math.random() * 4 + 's';
+    document.getElementById('particles').appendChild(particle);
+    setTimeout(() => particle.remove(), 5200);
+}
+
+setInterval(createParticle, 150);
+
+// ============================================
+// THREE.JS SMOKE CANVAS
+// ============================================
+(function initSmoke() {
+    const canvas = document.getElementById('smokeCanvas');
+    if (!canvas || typeof THREE === 'undefined') return;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
+    function setSize() { renderer.setSize(window.innerWidth, window.innerHeight, false); }
+    setSize();
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.Camera();
+    camera.position.z = 1;
+
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    const uniforms = {
+        u_time: { value: 0.0 },
+        u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+    };
+
+    const material = new THREE.ShaderMaterial({
+        uniforms,
+        fragmentShader: `
+            precision mediump float;
+            uniform float u_time;
+            uniform vec2 u_resolution;
+
+            float hash(float n) { return fract(sin(n) * 43758.5453123); }
+
+            float noise(in vec2 p) {
+                vec2 i = floor(p);
+                vec2 f = fract(p);
+                float a = hash(i.x + i.y * 57.0);
+                float b = hash(i.x + 1.0 + i.y * 57.0);
+                float c = hash(i.x + (i.y + 1.0) * 57.0);
+                float d = hash(i.x + 1.0 + (i.y + 1.0) * 57.0);
+                vec2 u = f * f * (3.0 - 2.0 * f);
+                return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+            }
+
+            void main() {
+                vec2 uv = gl_FragCoord.xy / u_resolution;
+                vec2 p = uv * 3.0;
+                float t = u_time * 0.05;
+                float n = noise(p + vec2(t, t)) + 0.25 * noise(p * 2.0 - vec2(t * 0.7, t * 0.4));
+                vec3 col = mix(vec3(0.05, 0.02, 0.08), vec3(0.4, 0.1, 0.2), n);
+                gl_FragColor = vec4(col, 0.6);
+            }
+        `
+    });
+
+    scene.add(new THREE.Mesh(geometry, material));
+
+    function animate() {
+        uniforms.u_time.value += 0.5;
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+        setSize();
+        uniforms.u_resolution.value.set(window.innerWidth, window.innerHeight);
+    });
+})();
+
+// ============================================
+// INITIALIZATION
+// ============================================
+document.addEventListener('DOMContentLoaded', () => {
+    showSection('landing');
+    console.log('🜂 GHOSTCORE ULTIMATE PORTAL LOADED 🜂');
+    console.log('Birthday Edition - October 29, 2025');
+    console.log('WIRE & BEER FOREVER 🍺⚡');
+});
+</script>
+
+</body>
+</html>
