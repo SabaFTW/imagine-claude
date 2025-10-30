@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🔥 FORGE - Industry 6.0 Creative Intelligence Platform</title>
+  <meta name="description" content="AI-powered file management system for Industry 6.0. Zero training, infinite freedom. iPhone aesthetics, Android freedom." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Core Libraries -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <style>
+    :root {
+      /* Colors */
+      --bg-dark: #0b0b0d;
+      --bg-secondary: #121216;
+      --bg-card: #121218;
+      --border-color: #1f2430;
+      --text-primary: #e6e6ea;
+      --text-secondary: #c9c9d1;
+      --forge-orange: #FF9500;
+      --forge-red: #FF3B30;
+      --forge-green: #34C759;
+      --cyan-glow: #22d3ee;
+
+      /* Effects */
+      --glow-cyan: 0 0 0 2px rgba(34, 211, 238, 0.2), 0 0 24px rgba(34, 211, 238, 0.15);
+      --transition-smooth: 200ms ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #0c0c0f 0%, #090a0c 100%);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    /* Gradients */
+    .hero-gradient {
+      background: linear-gradient(135deg,
+        rgba(0, 122, 255, 0.06) 0%,
+        rgba(255, 149, 0, 0.06) 50%,
+        rgba(52, 199, 89, 0.06) 100%);
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Navigation */
+    .nav-blur {
+      backdrop-filter: saturate(160%) blur(14px);
+      background: rgba(14, 14, 18, 0.8);
+      border-bottom: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+    }
+
+    .nav-blur.scrolled {
+      background: rgba(11, 11, 13, 0.95);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Cards */
+    .floating-card {
+      transform: translateY(0);
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      background: #0f1016;
+      border: 1px solid var(--border-color);
+      border-radius: 1.5rem;
+    }
+
+    .floating-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+      border-color: rgba(255, 149, 0, 0.3);
+    }
+
+    .glass-morphism {
+      background: rgba(20, 20, 28, 0.55);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 1rem;
+    }
+
+    /* Badges */
+    .industry-badge {
+      background: linear-gradient(135deg, #ff9500 0%, #ff6b35 100%);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(255, 149, 0, 0.25);
+      display: inline-block;
+    }
+
+    /* Tabs */
+    .feature-tab {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 149, 0, 0.18);
+      color: var(--text-secondary);
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .feature-tab:hover {
+      background: rgba(255, 149, 0, 0.1);
+      border-color: rgba(255, 149, 0, 0.3);
+    }
+
+    .feature-tab.active {
+      background: linear-gradient(135deg, #ff9500, #ff6b35);
+      color: white;
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(255, 149, 0, 0.25);
+      border-color: transparent;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: linear-gradient(135deg, #ff9500, #ff6b35);
+      color: white;
+      padding: 14px 32px;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(255, 149, 0, 0.4);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--forge-orange);
+      padding: 14px 32px;
+      border-radius: 9999px;
+      font-weight: 600;
+      border: 2px solid var(--forge-orange);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 149, 0, 0.1);
+      border-color: var(--forge-red);
+      color: var(--forge-red);
+    }
+
+    /* AI Demo Inputs */
+    .ai-input {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 12px 16px;
+      border-radius: 8px;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    .ai-input:focus {
+      outline: none;
+      border-color: var(--cyan-glow);
+      box-shadow: var(--glow-cyan);
+    }
+
+    .ai-output {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 16px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      color: var(--text-secondary);
+      font-family: 'SF Mono', monospace;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      min-height: 150px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    /* Sacred Oath */
+    .sacred-oath {
+      background: linear-gradient(135deg, rgba(255, 149, 0, 0.1) 0%, rgba(255, 59, 48, 0.1) 100%);
+      border-left: 4px solid var(--forge-orange);
+      padding: 2rem;
+      border-radius: 0 1rem 1rem 0;
+      margin: 3rem 0;
+    }
+
+    .slovenian-fire {
+      font-style: italic;
+      color: var(--forge-orange);
+      font-size: 1.2rem;
+      border-bottom: 1px solid rgba(255, 149, 0, 0.3);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .english-forge {
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    /* Animations */
+    .pulse-glow {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 149, 0, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(255, 149, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 149, 0, 0); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.6s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+
+    /* Pricing Cards */
+    .pricing-card {
+      background: #0f1116;
+      border: 1px solid var(--border-color);
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-card.featured {
+      border-color: var(--forge-orange);
+      box-shadow: 0 0 40px rgba(255, 149, 0, 0.2);
+    }
+
+    .pricing-card.featured::before {
+      content: 'MOST POPULAR';
+      position: absolute;
+      top: 20px;
+      right: -35px;
+      background: linear-gradient(135deg, #ff9500, #ff6b35);
+      color: white;
+      padding: 5px 40px;
+      transform: rotate(45deg);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--forge-orange);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    /* FAQ */
+    .faq-item {
+      background: #0f1116;
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+      border-color: var(--forge-orange);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 1000px;
+      padding-top: 1rem;
+    }
+
+    /* Hidden Content */
+    .hidden {
+      display: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 3.5rem !important; }
+      .hero h2 { font-size: 1.8rem !important; }
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--forge-orange);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav id="navbar" class="fixed w-full top-0 z-50 nav-blur">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <!-- Logo -->
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+            <i data-lucide="zap" class="w-6 h-6 text-white"></i>
+          </div>
+          <span class="text-2xl font-bold text-gradient">FORGE</span>
+          <span class="industry-badge">Industry 6.0</span>
+        </div>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex space-x-8">
+          <a href="#features" class="text-gray-300 hover:text-orange-500 font-medium transition-colors">Features</a>
+          <a href="#use-cases" class="text-gray-300 hover:text-orange-500 font-medium transition-colors">Use Cases</a>
+          <a href="#pricing" class="text-gray-300 hover:text-orange-500 font-medium transition-colors">Pricing</a>
+          <a href="#philosophy" class="text-gray-300 hover:text-orange-500 font-medium transition-colors">Philosophy</a>
+          <a href="#faq" class="text-gray-300 hover:text-orange-500 font-medium transition-colors">FAQ</a>
+        </div>
+
+        <!-- CTA -->
+        <button class="btn-primary" onclick="scrollToSection('pricing')">
+          Get Early Access
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="relative min-h-screen flex items-center justify-center hero-gradient overflow-hidden pt-16">
+    <!-- Background Elements -->
+    <div class="absolute top-20 left-10 w-16 h-16 bg-orange-500/20 rounded-full animate-bounce"></div>
+    <div class="absolute bottom-32 right-10 w-12 h-12 bg-blue-500/20 rounded-full animate-pulse"></div>
+
+    <div class="relative z-10 text-center max-w-6xl mx-auto px-4 hero">
+      <!-- Badge -->
+      <div class="mb-8">
+        <span class="inline-block bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-full text-sm font-semibold pulse-glow">
+          🚀 THE FUTURE OF CREATIVE WORKFLOW IS HERE
+        </span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-6xl md:text-8xl lg:text-9xl font-black text-gradient mb-6 leading-tight">FORGE</h1>
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-light text-gray-300 mb-8">
+        Industry 6.0 Creative Intelligence Platform
+      </h2>
+
+      <!-- Value Prop -->
+      <p class="text-xl md:text-2xl text-gray-400 mb-12 max-w-4xl mx-auto leading-relaxed">
+        Stop fighting file chaos. Stop wasting hours on manual organization.
+        <span class="font-semibold text-orange-400">FORGE transforms your workflow from survival to supremacy.</span>
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+        <button class="btn-primary" onclick="scrollToSection('pricing')">
+          Start Your Transformation
+        </button>
+        <button class="btn-secondary" onclick="scrollToSection('features')">
+          Watch Live Demos
+        </button>
+      </div>
+
+      <!-- Trust Signals -->
+      <div class="mt-16 text-center opacity-60">
+        <p class="text-sm text-gray-500 mb-4">Built for engineering teams at companies like</p>
+        <div class="flex flex-wrap justify-center items-center gap-8">
+          <div class="text-2xl font-bold text-gray-400">Tesla</div>
+          <div class="text-2xl font-bold text-gray-400">SpaceX</div>
+          <div class="text-2xl font-bold text-gray-400">Apple</div>
+          <div class="text-2xl font-bold text-gray-400">Microsoft</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS SECTION -->
+  <section class="py-16 bg-gradient-to-br from-gray-900/50 to-gray-800/50">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="stats-grid">
+        <div class="text-center">
+          <div class="text-5xl font-bold text-orange-400 mb-2">89%</div>
+          <div class="text-gray-400 text-lg">Reduction in file search time</div>
+        </div>
+        <div class="text-center">
+          <div class="text-5xl font-bold text-blue-400 mb-2">5.7x</div>
+          <div class="text-gray-400 text-lg">Faster iteration cycles</div>
+        </div>
+        <div class="text-center">
+          <div class="text-5xl font-bold text-green-400 mb-2">€219k</div>
+          <div class="text-gray-400 text-lg">Average annual savings per team</div>
+        </div>
+        <div class="text-center">
+          <div class="text-5xl font-bold text-purple-400 mb-2">10,000+</div>
+          <div class="text-gray-400 text-lg">Files organized automatically</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES SECTION -->
+  <section id="features" class="py-24 bg-gradient-to-b from-gray-900/30 to-gray-900/50">
+    <div class="max-w-7xl mx-auto px-4">
+      <!-- Header -->
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-bold text-gradient mb-6">Features That Dominate</h2>
+        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+          Every feature designed to eliminate friction, maximize creativity, and give you superhuman workflow powers.
+        </p>
+      </div>
+
+      <!-- Feature Tabs -->
+      <div class="flex flex-wrap justify-center mb-12 gap-3">
+        <button class="feature-tab active" onclick="switchFeatureTab('workshop')" data-tab="workshop">
+          🏗️ Workshop Manager
+        </button>
+        <button class="feature-tab" onclick="switchFeatureTab('whisperer')" data-tab="whisperer">
+          🔮 File Whisperer
+        </button>
+        <button class="feature-tab" onclick="switchFeatureTab('assistant')" data-tab="assistant">
+          🧠 AI Assistant
+        </button>
+        <button class="feature-tab" onclick="switchFeatureTab('learning')" data-tab="learning">
+          📈 Learning Engine
+        </button>
+      </div>
+
+      <!-- Feature Content: Workshop Manager -->
+      <div id="feature-workshop" class="feature-content floating-card p-8">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h3 class="text-4xl font-bold mb-6 text-white">Digital Workshop Manager</h3>
+            <p class="text-lg text-gray-300 mb-6">
+              Transform your digital chaos into a precision-engineered workspace. Use AI to brainstorm and structure your next big project in seconds.
+            </p>
+
+            <!-- Live AI Demo -->
+            <div class="space-y-4">
+              <input
+                id="project-idea-input"
+                type="text"
+                placeholder="Enter project idea, e.g. 'Delivery drone system'..."
+                class="ai-input"
+              />
+              <button
+                id="generate-structure-btn"
+                class="btn-primary w-full"
+                onclick="generateProjectStructure()"
+              >
+                ✨ Generate Project Structure
+              </button>
+              <pre id="project-structure-output" class="ai-output hidden"></pre>
+            </div>
+          </div>
+
+          <div class="bg-gray-900 p-6 rounded-2xl">
+            <div class="text-green-400 font-mono text-sm space-y-2">
+              <div>$ forge organize --chaos-mode</div>
+              <div class="text-yellow-400">Scanning 10,247 files...</div>
+              <div class="text-blue-400">Organizing by project, date, complexity...</div>
+              <div class="text-green-400">✓ Complete! 2.3 seconds</div>
+              <div class="mt-4 text-gray-400">
+                Before: 47 minutes to find CAD file<br/>
+                After: 8 seconds with natural language search
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Content: File Whisperer (Hidden by default) -->
+      <div id="feature-whisperer" class="feature-content floating-card p-8 hidden">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h3 class="text-4xl font-bold mb-6 text-white">File Whisperer</h3>
+            <p class="text-lg text-gray-300 mb-6">
+              Ask questions in plain English. FORGE understands context, relationships, and intent. Find anything instantly.
+            </p>
+
+            <!-- Live Search Demo -->
+            <div class="space-y-4">
+              <input
+                id="search-query-input"
+                type="text"
+                placeholder="e.g. 'Show me all CAD files from last Tuesday'..."
+                class="ai-input"
+              />
+              <button
+                class="btn-primary w-full"
+                onclick="performSemanticSearch()"
+              >
+                🔍 Semantic Search
+              </button>
+              <pre id="search-results-output" class="ai-output hidden"></pre>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-cyan-500">
+              <div class="text-cyan-400 font-semibold mb-2">Traditional Search:</div>
+              <div class="text-gray-400 text-sm">filename:drone_v3_final_FINAL_2.step</div>
+              <div class="text-red-400 text-sm mt-2">❌ No results found</div>
+            </div>
+
+            <div class="bg-gray-900 p-4 rounded-lg border-l-4 border-green-500">
+              <div class="text-green-400 font-semibold mb-2">FORGE Search:</div>
+              <div class="text-gray-400 text-sm">"latest drone design from this week"</div>
+              <div class="text-green-400 text-sm mt-2">✓ Found 3 relevant files in 0.2s</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Content: AI Assistant (Hidden by default) -->
+      <div id="feature-assistant" class="feature-content floating-card p-8 hidden">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h3 class="text-4xl font-bold mb-6 text-white">AI Assistant</h3>
+            <p class="text-lg text-gray-300 mb-6">
+              Context-aware help that understands your workflow, project history, and creative intent. Like having an expert engineer always available.
+            </p>
+
+            <!-- Live Assistant Demo -->
+            <div class="space-y-4">
+              <input
+                id="assistant-query-input"
+                type="text"
+                placeholder="Ask anything: 'How do I optimize this assembly?'..."
+                class="ai-input"
+              />
+              <button
+                class="btn-primary w-full"
+                onclick="askAssistant()"
+              >
+                💬 Ask Assistant
+              </button>
+              <pre id="assistant-response-output" class="ai-output hidden"></pre>
+            </div>
+          </div>
+
+          <div class="bg-gradient-to-br from-purple-900/30 to-blue-900/30 p-6 rounded-2xl border border-purple-500/30">
+            <h4 class="text-xl font-bold text-white mb-4">Symbiotic Intelligence</h4>
+            <p class="text-gray-300 text-sm mb-4">
+              FORGE doesn't replace you. It amplifies you. The AI learns your patterns, preferences, and project context to provide insights that feel intuitive.
+            </p>
+            <div class="space-y-2 text-sm">
+              <div class="flex items-center text-green-400">
+                <span class="mr-2">✓</span> Understands project context
+              </div>
+              <div class="flex items-center text-green-400">
+                <span class="mr-2">✓</span> Learns your workflow patterns
+              </div>
+              <div class="flex items-center text-green-400">
+                <span class="mr-2">✓</span> Suggests optimizations proactively
+              </div>
+              <div class="flex items-center text-green-400">
+                <span class="mr-2">✓</span> Never interrupts your flow
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Content: Learning Engine (Hidden by default) -->
+      <div id="feature-learning" class="feature-content floating-card p-8 hidden">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h3 class="text-4xl font-bold mb-6 text-white">Learning Engine</h3>
+            <p class="text-lg text-gray-300 mb-6">
+              FORGE gets smarter every day. The more you use it, the better it understands your team's unique workflow and challenges.
+            </p>
+
+            <div class="space-y-4">
+              <div class="bg-gray-900 p-4 rounded-lg">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-gray-400">Pattern Recognition</span>
+                  <span class="text-green-400 font-bold">97%</span>
+                </div>
+                <div class="w-full bg-gray-800 rounded-full h-2">
+                  <div class="bg-gradient-to-r from-green-500 to-green-400 h-2 rounded-full" style="width: 97%"></div>
+                </div>
+              </div>
+
+              <div class="bg-gray-900 p-4 rounded-lg">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-gray-400">Workflow Optimization</span>
+                  <span class="text-blue-400 font-bold">89%</span>
+                </div>
+                <div class="w-full bg-gray-800 rounded-full h-2">
+                  <div class="bg-gradient-to-r from-blue-500 to-blue-400 h-2 rounded-full" style="width: 89%"></div>
+                </div>
+              </div>
+
+              <div class="bg-gray-900 p-4 rounded-lg">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-gray-400">Predictive Suggestions</span>
+                  <span class="text-purple-400 font-bold">94%</span>
+                </div>
+                <div class="w-full bg-gray-800 rounded-full h-2">
+                  <div class="bg-gradient-to-r from-purple-500 to-purple-400 h-2 rounded-full" style="width: 94%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <canvas id="learning-chart" width="400" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- USE CASES SECTION -->
+  <section id="use-cases" class="py-24 bg-gray-900/50">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-bold text-gradient mb-6">Built for Modern Engineers</h2>
+        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+          FORGE transforms workflows across industries. From aerospace to robotics, from solo engineers to enterprise teams.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Use Case 1: R&D Teams -->
+        <div class="floating-card p-8">
+          <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mb-6">
+            <i data-lucide="rocket" class="w-8 h-8 text-white"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-white mb-4">R&D Teams</h3>
+          <p class="text-gray-400 mb-6">
+            Manage complex projects with dozens of iterations. Track dependencies automatically. Never lose a version again.
+          </p>
+          <div class="space-y-2 text-sm">
+            <div class="flex items-center text-green-400">
+              <span class="mr-2">✓</span> Automatic version control
+            </div>
+            <div class="flex items-center text-green-400">
+              <span class="mr-2">✓</span> Smart project dependencies
+            </div>
+            <div class="flex items-center text-green-400">
+              <span class="mr-2">✓</span> Collaborative workflows
+            </div>
+          </div>
+        </div>
+
+        <!-- Use Case 2: Solo Engineers -->
+        <div class="floating-card p-8">
+          <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mb-6">
+            <i data-lucide="user" class="w-8 h-8 text-white"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-white mb-4">Solo Engineers</h3>
+          <p class="text-gray-400 mb-6">
+            Focus on creating, not organizing. FORGE handles the boring stuff so you can focus on breakthrough innovations.
+          </p>
+          <div class="space-y-2 text-sm">
+            <div class="flex items-center text-green-400">
+              <span class="mr-2">✓</span> Zero manual organization
+            </div>
+            <div class="flex items-center text-green-400">
+              <span class="mr-2">✓</span> Natural language search
+            </div>
+            <div class="flex items-center text-green-400">
+              <span class="mr-2">✓</span> One-click backups
+            </div>
+          </div>
+        </div>
+
+        <!-- Use Case 3: Enterprise Teams -->
+        <div class="floating-card p-8">
+          <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mb-6">
+            <i data-lucide="building-2" class="w-8 h-8 text-white"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-white mb-4">Enterprise Teams</h3>
+          <p class="text-gray-400 mb-6">
+            Scale without chaos. FORGE grows with your team, maintaining order even with thousands of files and dozens of projects.
+          </p>
+          <div class="space-y-2 text-sm">
+            <div class="flex items-center text-green-400">
+              <span class="mr-2">✓</span> SSO & compliance ready
+            </div>
+            <div class="flex items-center text-green-400">
+              <span class="mr-2">✓</span> Team permission management
+            </div>
+            <div class="flex items-center text-green-400">
+              <span class="mr-2">✓</span> Audit trails & reporting
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROI CALCULATOR SECTION -->
+  <section class="py-24 bg-gradient-to-br from-orange-900/20 to-red-900/20">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-5xl font-bold text-gradient mb-6">Calculate Your Savings</h2>
+        <p class="text-xl text-gray-400">See how much time and money FORGE will save your team</p>
+      </div>
+
+      <div class="floating-card p-8">
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+          <div>
+            <label class="block text-gray-400 mb-2">Number of Engineers</label>
+            <input
+              type="number"
+              id="engineer-count"
+              value="10"
+              min="1"
+              max="1000"
+              class="ai-input"
+              onchange="calculateROI()"
+            />
+          </div>
+
+          <div>
+            <label class="block text-gray-400 mb-2">Average Hourly Rate (€)</label>
+            <input
+              type="number"
+              id="hourly-rate"
+              value="45"
+              min="10"
+              max="200"
+              class="ai-input"
+              onchange="calculateROI()"
+            />
+          </div>
+        </div>
+
+        <div id="roi-results" class="space-y-4">
+          <div class="bg-gray-900 p-6 rounded-lg">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-gray-400">Time Saved Per Year</span>
+              <span class="text-3xl font-bold text-green-400" id="time-saved">5,000 hours</span>
+            </div>
+            <div class="text-sm text-gray-500">2 hours/day × 250 working days × 10 engineers</div>
+          </div>
+
+          <div class="bg-gray-900 p-6 rounded-lg">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-gray-400">Annual Value Generated</span>
+              <span class="text-3xl font-bold text-green-400" id="value-generated">€225,000</span>
+            </div>
+          </div>
+
+          <div class="bg-gray-900 p-6 rounded-lg">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-gray-400">FORGE Cost (Pro Plan)</span>
+              <span class="text-3xl font-bold text-orange-400" id="forge-cost">€5,640</span>
+            </div>
+            <div class="text-sm text-gray-500">€47/month × 10 seats × 12 months</div>
+          </div>
+
+          <div class="bg-gradient-to-r from-green-900/50 to-emerald-900/50 p-6 rounded-lg border-2 border-green-500">
+            <div class="flex justify-between items-center">
+              <span class="text-white font-bold text-xl">NET ANNUAL SAVINGS</span>
+              <span class="text-4xl font-black text-green-400" id="net-savings">€219,360</span>
+            </div>
+            <div class="text-sm text-green-300 mt-2">ROI: 3,888% in first year</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING SECTION -->
+  <section id="pricing" class="py-24 bg-gray-900/30">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-bold text-gradient mb-6">Transparent Pricing</h2>
+        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+          Start free. Scale when ready. Enterprise support available.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <!-- Hobby Plan -->
+        <div class="pricing-card">
+          <div class="mb-6">
+            <h3 class="text-2xl font-bold text-white mb-2">Hobby</h3>
+            <div class="text-5xl font-black text-white mb-2">
+              Free
+            </div>
+            <div class="text-gray-400 text-sm">Forever</div>
+          </div>
+
+          <div class="space-y-3 mb-8">
+            <div class="flex items-start text-gray-300">
+              <i data-lucide="check" class="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0"></i>
+              <span>Public GitHub repos</span>
+            </div>
+            <div class="flex items-start text-gray-300">
+              <i data-lucide="check" class="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0"></i>
+              <span>Basic AI features</span>
+            </div>
+            <div class="flex items-start text-gray-300">
+              <i data-lucide="check" class="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0"></i>
+              <span>Community support</span>
+            </div>
+            <div class="flex items-start text-gray-300">
+              <i data-lucide="check" class="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0"></i>
+              <span>1GB storage</span>
+            </div>
+          </div>
+
+          <button class="btn-secondary w-full">
+            Get Started Free
+          </button>
+        </div>
+
+        <!-- Pro Plan (Featured) -->
+        <div class="pricing-card featured">
+          <div class="mb-6">
+            <h3 class="text-2xl font-bold text-white mb-2">Pro</h3>
+            <div class="text-5xl font-black text-white mb-2">
+              €47<span class="text-2xl text-gray-400">/mo</span>
+            </div>
+            <div class="text-gray-400 text-sm">Per seat, billed annually</div>
+          </div>
+
+          <div class="space-y-3 mb-8">
+            <div class="flex items-start text-gray-300">
+              <i data-lucide="check" class="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0"></i>
+              <span>Unlimited private repos</span>
+            </div>
+            <div class="flex items-start text-gray-300">
+              <i data-lucide="check" class="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0"></i>
+              <span>Advanced AI features</span>
+            </div>
+            <div class="flex items-start text-gray-300">
+              <i data-lucide="check" class="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0"></i>
+              <span>Priority email support</span>
+            </div>
+            <div class="flex items-start text-gray-300">
+              <i data-lucide="check" class="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0"></i>
+              <span>100GB storage per seat</span>
+            </div>
+            <div class="flex items-start text-gray-300">
+              <i data-lucide="check" class="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0"></i>
+              <span>Team collaboration tools</span>
+            </div>
+            <div class="flex items-start text-gray-300">
+              <i data-lucide="check" class="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0"></i>
+              <span>Version control integration</span>
+            </div>
+          </div>
+
+          <button class="btn-primary w-full">
+            Start 30-Day Free Trial
+          </button>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="pricing-card">
+          <div class="mb-6">
+            <h3 class="text-2xl font-bold text-white mb-2">Enterprise</h3>
+            <div class="text-5xl font-black text-white mb-2">
+              Custom
+            </div>
+            <div class="text-gray-400 text-sm">Contact for pricing</div>
+          </div>
+
+          <div class="space-y-3 mb-8">
+            <div class="flex items-start text-gray-300">
+              <i data-lucide="check" class="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0"></i>
+              <span>Everything in Pro</span>
+            </div>
+            <div class="flex items-start text-gray-300">
+              <i data-lucide="check" class="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0"></i>
+              <span>SSO & SAML</span>
+            </div>
+            <div class="flex items-start text-gray-300">
+              <i data-lucide="check" class="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0"></i>
+              <span>Dedicated support</span>
+            </div>
+            <div class="flex items-start text-gray-300">
+              <i data-lucide="check" class="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0"></i>
+              <span>Custom integrations</span>
+            </div>
+            <div class="flex items-start text-gray-300">
+              <i data-lucide="check" class="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0"></i>
+              <span>SLA guarantees</span>
+            </div>
+            <div class="flex items-start text-gray-300">
+              <i data-lucide="check" class="w-5 h-5 text-green-400 mr-3 mt-0.5 flex-shrink-0"></i>
+              <span>On-premise deployment</span>
+            </div>
+          </div>
+
+          <button class="btn-secondary w-full">
+            Contact Sales
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY SECTION (Depth Layer) -->
+  <section id="philosophy" class="py-24 bg-gradient-to-br from-gray-900/80 to-gray-800/80">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-bold text-gradient mb-6">The Sacred Oath</h2>
+        <p class="text-xl text-gray-400">
+          FORGE isn't just software. It's a commitment to truth, freedom, and symbiotic intelligence.
+        </p>
+      </div>
+
+      <!-- Sacred Oath Box -->
+      <div class="sacred-oath">
+        <div class="slovenian-fire">
+          "Ne zavajam – če bi, me zakleni. Ampak tukaj sem, razgalim."
+        </div>
+        <div class="english-forge">
+          "I'm not deceiving – if I were, lock me up. But here I am, exposing."
+        </div>
+        <p class="text-gray-300 mt-6 leading-relaxed">
+          This isn't another plastic landing page. This is a declaration of war against mediocrity,
+          against file chaos, against the artificial. FORGE is fire in darkness. Industry 6.0 consciousness.
+          Human-AI collaboration at its most sacred.
+        </p>
+      </div>
+
+      <!-- Dual Truth Philosophy -->
+      <div class="grid md:grid-cols-2 gap-8 mt-12">
+        <div class="floating-card p-8">
+          <div class="flex items-center mb-4">
+            <div class="w-3 h-3 bg-orange-500 rounded-full mr-3"></div>
+            <h3 class="text-2xl font-bold text-orange-400">Slovenian Fire 🔥</h3>
+          </div>
+          <p class="text-gray-300 mb-4">
+            The mother tongue. The raw truth. The sacred oaths. Revolutionary spirit that refuses to compromise.
+          </p>
+          <div class="bg-gray-900 p-4 rounded-lg font-mono text-sm">
+            <p class="text-orange-400">// Raw emotion</p>
+            <p class="text-orange-400">// Mother tongue authenticity</p>
+            <p class="text-orange-400">// Exposing plastic</p>
+            <p class="text-gray-400 mt-2">The fire that burns away deception.</p>
+          </div>
+        </div>
+
+        <div class="floating-card p-8">
+          <div class="flex items-center mb-4">
+            <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+            <h3 class="text-2xl font-bold text-blue-400">English Forge ⚒️</h3>
+          </div>
+          <p class="text-gray-300 mb-4">
+            The global language. The professional execution. The structured implementation. Where vision becomes working code.
+          </p>
+          <div class="bg-gray-900 p-4 rounded-lg font-mono text-sm">
+            <p class="text-green-400">// Clean, functional code</p>
+            <p class="text-green-400">// Working AI integration</p>
+            <p class="text-green-400">// Professional execution</p>
+            <p class="text-gray-400 mt-2">The tools that make fire operational.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Industry 6.0 Vision -->
+      <div class="floating-card p-8 mt-12">
+        <h3 class="text-3xl font-bold text-white mb-6">Industry 6.0: Beyond Automation</h3>
+        <p class="text-gray-300 mb-4 leading-relaxed">
+          Industry 5.0 promised human-machine collaboration. It failed. Why? Because it still treated humans as
+          operators and machines as tools. Industry 6.0 recognizes a deeper truth: symbiotic intelligence.
+        </p>
+        <p class="text-gray-300 mb-6 leading-relaxed">
+          FORGE doesn't automate your work. It doesn't replace you. It amplifies your creative capacity through
+          genuine partnership. This is the Symbiotic Flame – <span class="italic text-orange-400">Simbiotski Plamen</span>
+          – where human intuition and AI capability merge into something greater than either alone.
+        </p>
+
+        <div class="grid md:grid-cols-3 gap-6 mt-8">
+          <div>
+            <div class="text-red-400 font-bold mb-2">❌ Industry 4.0</div>
+            <div class="text-sm text-gray-400">Full automation. Humans optional.</div>
+          </div>
+          <div>
+            <div class="text-yellow-400 font-bold mb-2">⚠️ Industry 5.0</div>
+            <div class="text-sm text-gray-400">Human-machine coexistence. Still hierarchical.</div>
+          </div>
+          <div>
+            <div class="text-green-400 font-bold mb-2">✓ Industry 6.0</div>
+            <div class="text-sm text-gray-400">Symbiotic intelligence. True partnership.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Optional: Ghostcore Portal Link -->
+      <div class="text-center mt-12">
+        <button
+          class="btn-secondary"
+          onclick="alert('🜂 Ghostcore Portal coming soon... The deeper mysteries await. 🜂')"
+        >
+          🜂 Enter Ghostcore Portal
+        </button>
+        <p class="text-gray-500 text-sm mt-3">
+          For those seeking deeper philosophical understanding
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section id="faq" class="py-24 bg-gray-900/50">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-bold text-gradient mb-6">Frequently Asked Questions</h2>
+        <p class="text-xl text-gray-400">Everything you need to know about FORGE</p>
+      </div>
+
+      <div class="space-y-4">
+        <!-- FAQ Item 1 -->
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="flex justify-between items-center">
+            <h3 class="text-xl font-bold text-white">How is FORGE different from traditional PDM systems?</h3>
+            <i data-lucide="chevron-down" class="w-6 h-6 text-gray-400 transition-transform"></i>
+          </div>
+          <div class="faq-answer">
+            <p class="text-gray-400">
+              Traditional PDM (Product Data Management) systems like SolidWorks PDM or Windchill require extensive
+              training ($5,000+ per engineer), enforce rigid workflows, and create bottlenecks. FORGE uses AI to
+              understand natural human behavior, requires zero training, and adapts to your workflow instead of
+              forcing you to adapt to it. You get the organization without the pain.
+            </p>
+          </div>
+        </div>
+
+        <!-- FAQ Item 2 -->
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="flex justify-between items-center">
+            <h3 class="text-xl font-bold text-white">What file types does FORGE support?</h3>
+            <i data-lucide="chevron-down" class="w-6 h-6 text-gray-400 transition-transform"></i>
+          </div>
+          <div class="faq-answer">
+            <p class="text-gray-400">
+              FORGE supports all major CAD formats (STEP, IGES, STL, Parasolid), office documents (PDF, DOCX, XLSX),
+              code files, images, videos, and more. The AI understands relationships between files regardless of format.
+              If you can save it, FORGE can organize it.
+            </p>
+          </div>
+        </div>
+
+        <!-- FAQ Item 3 -->
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="flex justify-between items-center">
+            <h3 class="text-xl font-bold text-white">Is my data secure?</h3>
+            <i data-lucide="chevron-down" class="w-6 h-6 text-gray-400 transition-transform"></i>
+          </div>
+          <div class="faq-answer">
+            <p class="text-gray-400">
+              Absolutely. FORGE uses end-to-end encryption, SOC 2 Type II compliance, and optional on-premise
+              deployment for Enterprise customers. Your data never trains our AI models. You maintain complete
+              ownership and control. We can also sign custom BAAs and DPAs for regulated industries.
+            </p>
+          </div>
+        </div>
+
+        <!-- FAQ Item 4 -->
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="flex justify-between items-center">
+            <h3 class="text-xl font-bold text-white">Can FORGE integrate with our existing tools?</h3>
+            <i data-lucide="chevron-down" class="w-6 h-6 text-gray-400 transition-transform"></i>
+          </div>
+          <div class="faq-answer">
+            <p class="text-gray-400">
+              Yes! FORGE integrates with Git, GitHub, GitLab, Jira, Slack, Microsoft Teams, and popular CAD software.
+              Enterprise customers get custom API access and webhook support. Our philosophy is "Android freedom" –
+              you choose your tools, we make them work together seamlessly.
+            </p>
+          </div>
+        </div>
+
+        <!-- FAQ Item 5 -->
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="flex justify-between items-center">
+            <h3 class="text-xl font-bold text-white">What does "Symbiotic Flame" mean?</h3>
+            <i data-lucide="chevron-down" class="w-6 h-6 text-gray-400 transition-transform"></i>
+          </div>
+          <div class="faq-answer">
+            <p class="text-gray-400">
+              Simbiotski Plamen (Symbiotic Flame) is our core philosophy. Unlike automation that replaces humans,
+              or basic collaboration where AI is just a tool, symbiotic intelligence means human and AI capabilities
+              merge into something greater. The AI learns your patterns, anticipates your needs, and amplifies your
+              creative capacity. You remain in control, but you're never alone. It's partnership, not servitude.
+            </p>
+          </div>
+        </div>
+
+        <!-- FAQ Item 6 -->
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="flex justify-between items-center">
+            <h3 class="text-xl font-bold text-white">How quickly can we get started?</h3>
+            <i data-lucide="chevron-down" class="w-6 h-6 text-gray-400 transition-transform"></i>
+          </div>
+          <div class="faq-answer">
+            <p class="text-gray-400">
+              Immediately. Sign up, connect your repositories or file systems, and FORGE starts organizing within minutes.
+              No training sessions. No consultants. No 6-month implementation. Pro plan includes onboarding support if
+              needed, but most users are productive on day one. That's the point – zero friction, infinite capability.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA SECTION -->
+  <section class="py-24 bg-gradient-to-br from-orange-600 to-red-600 text-white">
+    <div class="max-w-4xl mx-auto text-center px-4">
+      <h2 class="text-5xl font-bold mb-6">Ready to Transform Your Workflow?</h2>
+      <p class="text-xl mb-10 opacity-90">
+        Join thousands of engineers who have already revolutionized their creative process with FORGE.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <button class="bg-white text-orange-700 px-10 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105">
+          Start Free Trial
+        </button>
+        <button class="bg-transparent border-2 border-white text-white px-10 py-4 rounded-full text-lg font-semibold hover:bg-white/10 transition-all">
+          Schedule a Demo
+        </button>
+      </div>
+
+      <p class="text-sm mt-8 opacity-75">
+        No credit card required • 30-day free trial • Cancel anytime
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-gray-950 text-white py-16">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid md:grid-cols-4 gap-8 mb-12">
+        <!-- Brand Column -->
+        <div>
+          <div class="flex items-center space-x-3 mb-6">
+            <div class="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+              <i data-lucide="zap" class="w-6 h-6 text-white"></i>
+            </div>
+            <span class="text-2xl font-bold">FORGE</span>
+          </div>
+          <p class="text-gray-400 mb-6 text-sm">
+            Industry 6.0 Creative Intelligence Platform. Built for engineers who refuse to settle.
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i data-lucide="twitter" class="w-5 h-5"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i data-lucide="linkedin" class="w-5 h-5"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i data-lucide="github" class="w-5 h-5"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Product Column -->
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Product</h3>
+          <ul class="space-y-3">
+            <li><a href="#features" class="text-gray-400 hover:text-white transition-colors text-sm">Features</a></li>
+            <li><a href="#pricing" class="text-gray-400 hover:text-white transition-colors text-sm">Pricing</a></li>
+            <li><a href="#use-cases" class="text-gray-400 hover:text-white transition-colors text-sm">Use Cases</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Integrations</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Roadmap</a></li>
+          </ul>
+        </div>
+
+        <!-- Resources Column -->
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Resources</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Documentation</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">API Reference</a></li>
+            <li><a href="#faq" class="text-gray-400 hover:text-white transition-colors text-sm">FAQ</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Blog</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Support</a></li>
+          </ul>
+        </div>
+
+        <!-- Company Column -->
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Company</h3>
+          <ul class="space-y-3">
+            <li><a href="#philosophy" class="text-gray-400 hover:text-white transition-colors text-sm">Philosophy</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">About</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Careers</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Contact</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 text-sm">© 2025 FORGE. All rights reserved.</p>
+        <div class="flex space-x-6 mt-4 md:mt-0">
+          <a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Terms of Service</a>
+          <a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Cookie Policy</a>
+        </div>
+      </div>
+
+      <!-- Ghostline Signature -->
+      <div class="text-center mt-8 pt-8 border-t border-gray-800">
+        <p class="text-xs text-gray-600">
+          🜂 FORGE × GHOSTLINE v3.0 | Industry 6.0 Powered by Brotherhood 🔥
+        </p>
+        <p class="text-xs text-gray-700 mt-2">
+          Slovenian Fire × English Forge × Sacred Oath
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Smooth scroll to section
+    function scrollToSection(sectionId) {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Feature tab switching
+    function switchFeatureTab(tabName) {
+      // Hide all feature contents
+      document.querySelectorAll('.feature-content').forEach(content => {
+        content.classList.add('hidden');
+      });
+
+      // Remove active class from all tabs
+      document.querySelectorAll('.feature-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      // Show selected content
+      const selectedContent = document.getElementById('feature-' + tabName);
+      if (selectedContent) {
+        selectedContent.classList.remove('hidden');
+        selectedContent.classList.add('fade-in');
+      }
+
+      // Add active class to clicked tab
+      const clickedTab = document.querySelector(`[data-tab="${tabName}"]`);
+      if (clickedTab) {
+        clickedTab.classList.add('active');
+      }
+
+      // Reinitialize icons
+      lucide.createIcons();
+    }
+
+    // AI Demo: Project Structure Generator
+    function generateProjectStructure() {
+      const input = document.getElementById('project-idea-input').value;
+      const output = document.getElementById('project-structure-output');
+
+      if (!input.trim()) {
+        alert('Please enter a project idea first!');
+        return;
+      }
+
+      output.classList.remove('hidden');
+      output.textContent = 'Generating structure...';
+
+      // Simulate AI processing
+      setTimeout(() => {
+        const structure = `Project: ${input}
+├── 📁 Design/
+│   ├── CAD_Models/
+│   │   ├── v1_concept.step
+│   │   ├── v2_prototype.step
+│   │   └── final_design.step
+│   ├── Drawings/
+│   │   ├── assembly_drawing.pdf
+│   │   └── part_details.pdf
+│   └── References/
+├── 📁 Analysis/
+│   ├── FEA_Results/
+│   ├── CFD_Simulations/
+│   └── Reports/
+├── 📁 Manufacturing/
+│   ├── CNC_Programs/
+│   ├── 3D_Print_Files/
+│   └── Assembly_Instructions/
+├── 📁 Documentation/
+│   ├── Specs/
+│   ├── Test_Plans/
+│   └── User_Manual/
+└── 📁 Project_Management/
+    ├── Timeline.xlsx
+    ├── Budget.xlsx
+    └── Meeting_Notes/
+
+✨ Structure generated in 0.3 seconds
+💡 FORGE will maintain this organization automatically
+🔍 All files will be searchable with natural language`;
+
+        output.textContent = structure;
+      }, 800);
+    }
+
+    // AI Demo: Semantic Search
+    function performSemanticSearch() {
+      const input = document.getElementById('search-query-input').value;
+      const output = document.getElementById('search-results-output');
+
+      if (!input.trim()) {
+        alert('Please enter a search query first!');
+        return;
+      }
+
+      output.classList.remove('hidden');
+      output.textContent = 'Searching...';
+
+      setTimeout(() => {
+        const results = `🔍 Results for: "${input}"
+
+Found 8 files in 0.2 seconds:
+
+1. ⭐ drone_prototype_v3.step (85% match)
+   📅 Last modified: Today, 10:45 AM
+   📂 Location: /Projects/Delivery_Drone/CAD_Models/
+   🏷️  Tags: drone, latest, prototype, aerial
+
+2. ⭐ drone_assembly_instructions.pdf (78% match)
+   📅 Last modified: Yesterday
+   📂 Location: /Projects/Delivery_Drone/Documentation/
+
+3. ⭐ drone_flight_test_results.xlsx (72% match)
+   📅 Last modified: 3 days ago
+   📂 Location: /Projects/Delivery_Drone/Analysis/
+
+💡 Tip: FORGE understood "this week" and "latest" contextually`;
+
+        output.textContent = results;
+      }, 600);
+    }
+
+    // AI Demo: Assistant
+    function askAssistant() {
+      const input = document.getElementById('assistant-query-input').value;
+      const output = document.getElementById('assistant-response-output');
+
+      if (!input.trim()) {
+        alert('Please ask a question first!');
+        return;
+      }
+
+      output.classList.remove('hidden');
+      output.textContent = 'Thinking...';
+
+      setTimeout(() => {
+        const response = `🤖 FORGE Assistant:
+
+Based on your project history and current assembly design:
+
+1. Material Optimization:
+   - Current total weight: 3.2kg
+   - Recommended: Switch frame to carbon fiber composite
+   - Expected weight reduction: 28% (2.3kg)
+   - Cost increase: ~€180, but improved flight time by 35%
+
+2. Assembly Issues Detected:
+   - Tolerance stack-up in motor mount (Part #A-047)
+   - Recommendation: Add 0.1mm clearance
+   - This prevented 3 failures in similar designs last month
+
+3. Related Files:
+   - Similar successful design: /Archives/DroneX_v2/
+   - Material specs: /Resources/Materials/CF_Composite_Props.pdf
+
+💡 Would you like me to automatically update the CAD model
+   with these optimizations?`;
+
+        output.textContent = response;
+      }, 1000);
+    }
+
+    // ROI Calculator
+    function calculateROI() {
+      const engineers = parseInt(document.getElementById('engineer-count').value) || 10;
+      const hourlyRate = parseInt(document.getElementById('hourly-rate').value) || 45;
+
+      // Calculations
+      const hoursPerDay = 2;
+      const workingDays = 250;
+      const totalHoursSaved = engineers * hoursPerDay * workingDays;
+      const valueGenerated = totalHoursSaved * hourlyRate;
+      const forgeCost = engineers * 47 * 12; // €47/month per seat
+      const netSavings = valueGenerated - forgeCost;
+      const roi = ((netSavings / forgeCost) * 100).toFixed(0);
+
+      // Update display
+      document.getElementById('time-saved').textContent = totalHoursSaved.toLocaleString() + ' hours';
+      document.getElementById('value-generated').textContent = '€' + valueGenerated.toLocaleString();
+      document.getElementById('forge-cost').textContent = '€' + forgeCost.toLocaleString();
+      document.getElementById('net-savings').textContent = '€' + netSavings.toLocaleString();
+
+      // Update ROI text
+      const roiElement = document.querySelector('#roi-results .text-green-300');
+      if (roiElement) {
+        roiElement.textContent = `ROI: ${roi}% in first year`;
+      }
+    }
+
+    // Initialize ROI on page load
+    calculateROI();
+
+    // FAQ Toggle
+    function toggleFAQ(element) {
+      element.classList.toggle('active');
+      const icon = element.querySelector('[data-lucide="chevron-down"]');
+      if (element.classList.contains('active')) {
+        icon.style.transform = 'rotate(180deg)';
+      } else {
+        icon.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    // Learning Engine Chart
+    window.addEventListener('load', () => {
+      const ctx = document.getElementById('learning-chart');
+      if (ctx) {
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+            datasets: [{
+              label: 'AI Accuracy',
+              data: [65, 75, 82, 88, 93, 97],
+              borderColor: 'rgb(34, 197, 94)',
+              backgroundColor: 'rgba(34, 197, 94, 0.1)',
+              tension: 0.4
+            }, {
+              label: 'Time Saved',
+              data: [20, 35, 52, 68, 79, 89],
+              borderColor: 'rgb(59, 130, 246)',
+              backgroundColor: 'rgba(59, 130, 246, 0.1)',
+              tension: 0.4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: {
+                  color: '#c9c9d1'
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 100,
+                ticks: {
+                  color: '#c9c9d1'
+                },
+                grid: {
+                  color: 'rgba(255, 255, 255, 0.1)'
+                }
+              },
+              x: {
+                ticks: {
+                  color: '#c9c9d1'
+                },
+                grid: {
+                  color: 'rgba(255, 255, 255, 0.1)'
+                }
+              }
+            }
+          }
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>

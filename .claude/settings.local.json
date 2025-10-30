@@ -56,7 +56,14 @@
       "Bash(git remote remove:*)",
       "Bash(git config:*)",
       "Bash(npm run deploy)",
-      "Bash(git pull:*)"
+      "Bash(git pull:*)",
+      "Bash(gh api:*)",
+      "Bash(git rebase:*)",
+      "Bash(GIT_LFS_SKIP_SMUDGE=1 git push:*)",
+      "Bash(ln:*)",
+      "Bash(test:*)",
+      "Bash(ps:*)",
+      "Bash(yay -Sc:*)"
     ],
     "deny": [],
     "ask": []

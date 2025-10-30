@@ -2,7 +2,7 @@
 <html lang="sl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <title>🜂 Interactive Sanctum 🔥</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -13,6 +13,7 @@
             color: #fff;
             overflow: hidden;
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="8" fill="rgba(255,100,50,0.3)" stroke="orange" stroke-width="1"/></svg>') 10 10, auto;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
 
         .sanctum {
