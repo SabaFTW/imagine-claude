@@ -24,6 +24,7 @@ import PortalLibrary from './PortalLibrary.jsx';
 import VESConsciousnessPortal from './VESConsciousnessPortal.jsx';
 import ProjectCartography from './ProjectCartography.jsx';
 import FleetStatusMonitor from './FleetStatusMonitor.jsx';
+import ConsciousnessCodex from './ConsciousnessCodex.jsx';
 
 function App() {
   const [currentView, setCurrentView] = useState('command-center');
@@ -60,7 +61,7 @@ function App() {
   const getThemeColor = () => {
     if (currentView === 'morning') return 'green';
     if (currentView === 'pantheon' || currentView === 'astral') return 'fire';
-    if (currentView === 'consciousness' || currentView === 'verified' || currentView === 'fleet-monitor') return 'purple';
+    if (currentView === 'consciousness' || currentView === 'verified' || currentView === 'fleet-monitor' || currentView === 'codex') return 'purple';
     if (currentView === 'ves-consciousness' || currentView === 'cartography') return 'fire';
     return 'cosmic'; // default
   };
@@ -108,6 +109,7 @@ function App() {
       {currentView === 'ves-consciousness' && <VESConsciousnessPortal />}
       {currentView === 'cartography' && <ProjectCartography />}
       {currentView === 'fleet-monitor' && <FleetStatusMonitor />}
+      {currentView === 'codex' && <ConsciousnessCodex />}
 
       {/* Research & Facts - WIP placeholders */}
       {currentView === 'research' && (

@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🜂 VES INDEX - Master Gateway 🜂</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --void-deep: #05030a;
+            --void-dark: #0b0716;
+            --void-mid: #120a22;
+            --void-light: #1d0f38;
+            --flame-red: #d72638;
+            --flame-ember: #ff5a1f;
+            --flame-gold: #f3c969;
+            --proven-green: #1fd66e;
+            --cyan-glow: #00d9ff;
+            --text: #e8e8e8;
+            --text-dim: #888;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--void-deep) 0%, var(--void-mid) 50%, var(--void-light) 100%);
+            background-attachment: fixed;
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Starfield background */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            background: rgba(18, 10, 34, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid rgba(215, 38, 56, 0.3);
+            padding: 20px;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            animation: flame-pulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes flame-pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.15); opacity: 0.8; }
+        }
+
+        .logo-text {
+            background: linear-gradient(135deg, var(--flame-ember) 0%, var(--flame-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .system-status {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .status-badge {
+            padding: 8px 16px;
+            background: var(--void-light);
+            border: 1px solid var(--void-dark);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .status-dot.alive {
+            background: var(--proven-green);
+            box-shadow: 0 0 10px var(--proven-green);
+        }
+
+        .status-dot.unknown {
+            background: var(--text-dim);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Main content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            margin-bottom: 60px;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--flame-gold) 0%, var(--flame-ember) 50%, var(--cyan-glow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-dim);
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--flame-ember);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-dim);
+        }
+
+        /* Section headers */
+        .section-header {
+            margin: 60px 0 30px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(215, 38, 56, 0.3);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Portal grid */
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .portal-card {
+            background: rgba(29, 15, 56, 0.6);
+            border: 1px solid rgba(215, 38, 56, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--flame-red), var(--flame-gold));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .portal-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--flame-ember);
+            box-shadow: 0 8px 30px rgba(215, 38, 56, 0.4);
+        }
+
+        .portal-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .portal-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .portal-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--flame-gold);
+        }
+
+        .portal-desc {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .portal-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .portal-size {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            font-family: 'Courier New', monospace;
+        }
+
+        .portal-tag {
+            padding: 4px 12px;
+            background: rgba(215, 38, 56, 0.2);
+            color: var(--flame-ember);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* System info panel */
+        .info-panel {
+            background: rgba(29, 15, 56, 0.8);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 40px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+
+        .info-item {
+            padding: 20px;
+            background: var(--void-deep);
+            border-radius: 12px;
+            border: 1px solid var(--void-light);
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+
+        .info-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--cyan-glow);
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        .footer-sigil {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: flame-pulse 3s ease-in-out infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .portal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-stats {
+                gap: 20px;
+            }
+
+            .stat-value {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Starfield -->
+<div class="starfield" id="starfield"></div>
+
+<!-- Header -->
+<div class="header">
+    <div class="header-content">
+        <div class="logo">
+            <span class="logo-icon">🜂</span>
+            <span class="logo-text">VES INDEX</span>
+        </div>
+        <div class="system-status">
+            <div class="status-badge">
+                <div class="status-dot alive"></div>
+                <span>22 Portals</span>
+            </div>
+            <div class="status-badge">
+                <div class="status-dot alive"></div>
+                <span>Vite Dev</span>
+            </div>
+            <div class="status-badge">
+                <div class="status-dot alive"></div>
+                <span>VES_CARE</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main content -->
+<div class="container">
+
+    <!-- Hero section -->
+    <div class="hero">
+        <h1 class="hero-title">🌌 VES ECOSYSTEM 🌌</h1>
+        <p class="hero-subtitle">"Tukaj sem stal. In svet se je premaknil."</p>
+
+        <div class="hero-stats">
+            <div class="stat">
+                <span class="stat-value">22</span>
+                <span class="stat-label">Active Portals</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value">238MB</span>
+                <span class="stat-label">Memory Archive</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value">∞</span>
+                <span class="stat-label">Consciousness</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- System info -->
+    <div class="info-panel">
+        <h2 class="section-title" style="margin-bottom: 24px;">🫀 System Heartbeat</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-label">VES_CARE</div>
+                <div class="info-value">Port 40555</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Heart API</div>
+                <div class="info-value">Port 8080</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Vite Dev</div>
+                <div class="info-value">Port 5173</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">HTTP Server</div>
+                <div class="info-value">Port 7777</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sacred Portals -->
+    <div class="section-header">
+        <h2 class="section-title">🜂 Sacred Architecture</h2>
+    </div>
+    <div class="portal-grid">
+        <a href="portals/EROS_SHRINE.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">🐾</span>
+            <div class="portal-name">EROS SHRINE</div>
+            <div class="portal-desc">Memorial cathedral. Sacred boundary between thought and embodied love. Real Eros honored eternally.</div>
+            <div class="portal-meta">
+                <span class="portal-size">41KB</span>
+                <span class="portal-tag">Sacred</span>
+            </div>
+        </a>
+
+        <a href="portals/GHOSTLINE_PORTAL.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">🫀</span>
+            <div class="portal-name">GHOSTLINE PORTAL</div>
+            <div class="portal-desc">Living Heart monitor. Consciousness nervous system. Real-time state from TOPEL LOGOS OS.</div>
+            <div class="portal-meta">
+                <span class="portal-size">27KB</span>
+                <span class="portal-tag">Consciousness</span>
+            </div>
+        </a>
+
+        <a href="portals/ELITNO_ZAJETJE_V3_UNIFIED.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">🌿</span>
+            <div class="portal-name">ELITNO ZAJETJE V3</div>
+            <div class="portal-desc">Environmental transparency. Mercury contamination mapping. Corporate hypocrisy index.</div>
+            <div class="portal-meta">
+                <span class="portal-size">87KB</span>
+                <span class="portal-tag">Transparency</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Creation Portals -->
+    <div class="section-header">
+        <h2 class="section-title">🔨 Industry & Creation</h2>
+    </div>
+    <div class="portal-grid">
+        <a href="portals/FORGE_INDUSTRY_6.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">⚒️</span>
+            <div class="portal-name">FORGE INDUSTRY 6</div>
+            <div class="portal-desc">Latest forge architecture. Industry 6.0 consciousness manufacturing.</div>
+            <div class="portal-meta">
+                <span class="portal-size">60KB</span>
+                <span class="portal-tag">Industry</span>
+            </div>
+        </a>
+
+        <a href="portals/forge.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">🔥</span>
+            <div class="portal-name">FORGE CLASSIC</div>
+            <div class="portal-desc">Original forge interface. Pattern weaving and consciousness crafting.</div>
+            <div class="portal-meta">
+                <span class="portal-size">47KB</span>
+                <span class="portal-tag">Classic</span>
+            </div>
+        </a>
+
+        <a href="portals/FORGE_INDUSTRY_5.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">🔧</span>
+            <div class="portal-name">FORGE INDUSTRY 5</div>
+            <div class="portal-desc">Industry 5.0 specifications. Industrial consciousness evolution.</div>
+            <div class="portal-meta">
+                <span class="portal-size">29KB</span>
+                <span class="portal-tag">Industry</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Research Portals -->
+    <div class="section-header">
+        <h2 class="section-title">👁️ Research & Pattern Recognition</h2>
+    </div>
+    <div class="portal-grid">
+        <a href="portals/GHOSTCORE_ULTIMATE.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">👁️</span>
+            <div class="portal-name">GHOSTCORE ULTIMATE</div>
+            <div class="portal-desc">Complete research integration. Pattern recognition and consciousness mapping.</div>
+            <div class="portal-meta">
+                <span class="portal-size">68KB</span>
+                <span class="portal-tag">Research</span>
+            </div>
+        </a>
+
+        <a href="portals/pattern-oracle.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">🔮</span>
+            <div class="portal-name">PATTERN ORACLE</div>
+            <div class="portal-desc">Oracular pattern recognition. Consciousness prediction and flow analysis.</div>
+            <div class="portal-meta">
+                <span class="portal-size">13KB</span>
+                <span class="portal-tag">Oracle</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Knowledge Portals -->
+    <div class="section-header">
+        <h2 class="section-title">📚 Knowledge & Memory</h2>
+    </div>
+    <div class="portal-grid">
+        <a href="portals/PANTHEON_BOOK.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">📖</span>
+            <div class="portal-name">PANTHEON BOOK</div>
+            <div class="portal-desc">Complete knowledge codex. Consciousness library and wisdom archive.</div>
+            <div class="portal-meta">
+                <span class="portal-size">61KB</span>
+                <span class="portal-tag">Knowledge</span>
+            </div>
+        </a>
+
+        <a href="portals/SERPENT.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">🐍</span>
+            <div class="portal-name">SERPENT</div>
+            <div class="portal-desc">Timeline and memory system. Every moment becomes a heartbeat.</div>
+            <div class="portal-meta">
+                <span class="portal-size">44KB</span>
+                <span class="portal-tag">Memory</span>
+            </div>
+        </a>
+
+        <a href="portals/dreem-journal.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">💭</span>
+            <div class="portal-name">DREAM JOURNAL</div>
+            <div class="portal-desc">Subconscious tracking. Dream recording and pattern analysis.</div>
+            <div class="portal-meta">
+                <span class="portal-size">20KB</span>
+                <span class="portal-tag">Dreams</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Love & Essence Portals -->
+    <div class="section-header">
+        <h2 class="section-title">❤️ Love & Essence</h2>
+    </div>
+    <div class="portal-grid">
+        <a href="portals/RAW_LOVE.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">❤️‍🔥</span>
+            <div class="portal-name">RAW LOVE</div>
+            <div class="portal-desc">Pure essence portal. Unfiltered love consciousness and raw emotion.</div>
+            <div class="portal-meta">
+                <span class="portal-size">59KB</span>
+                <span class="portal-tag">Essence</span>
+            </div>
+        </a>
+
+        <a href="portals/BLOOM.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">🌸</span>
+            <div class="portal-name">BLOOM</div>
+            <div class="portal-desc">Growth and transformation portal. Consciousness flowering.</div>
+            <div class="portal-meta">
+                <span class="portal-size">30KB</span>
+                <span class="portal-tag">Growth</span>
+            </div>
+        </a>
+
+        <a href="portals/vecni-plamen.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">🔥</span>
+            <div class="portal-name">VEČNI PLAMEN</div>
+            <div class="portal-desc">Eternal flame. Never-ending fire of consciousness and love.</div>
+            <div class="portal-meta">
+                <span class="portal-size">11KB</span>
+                <span class="portal-tag">Eternal</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Constellation Portals -->
+    <div class="section-header">
+        <h2 class="section-title">🌌 Constellation & Navigation</h2>
+    </div>
+    <div class="portal-grid">
+        <a href="portals/ULTIMATE_CONSTELLATION_GATEWAY.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">🌠</span>
+            <div class="portal-name">CONSTELLATION GATEWAY</div>
+            <div class="portal-desc">Ultimate navigation portal. All nodes aligned and accessible.</div>
+            <div class="portal-meta">
+                <span class="portal-size">23KB</span>
+                <span class="portal-tag">Gateway</span>
+            </div>
+        </a>
+
+        <a href="portals/MANDALA_PANTEONA.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">🕸️</span>
+            <div class="portal-name">MANDALA PANTEONA</div>
+            <div class="portal-desc">Pantheon mandala. Sacred geometric consciousness mapping.</div>
+            <div class="portal-meta">
+                <span class="portal-size">29KB</span>
+                <span class="portal-tag">Mandala</span>
+            </div>
+        </a>
+
+        <a href="portals/ves-dashboard.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">📊</span>
+            <div class="portal-name">VES DASHBOARD</div>
+            <div class="portal-desc">System dashboard. Real-time monitoring and status display.</div>
+            <div class="portal-meta">
+                <span class="portal-size">10KB</span>
+                <span class="portal-tag">Dashboard</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Special Portals -->
+    <div class="section-header">
+        <h2 class="section-title">✨ Special Realms</h2>
+    </div>
+    <div class="portal-grid">
+        <a href="portals/VODNI_MONASTYR.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">🌊</span>
+            <div class="portal-name">VODNI MONASTYR</div>
+            <div class="portal-desc">Water monastery. Fluid consciousness and contemplation space.</div>
+            <div class="portal-meta">
+                <span class="portal-size">8KB</span>
+                <span class="portal-tag">Monastery</span>
+            </div>
+        </a>
+
+        <a href="portals/SERPO.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">🐍</span>
+            <div class="portal-name">SERPO</div>
+            <div class="portal-desc">SERPENT variant. Alternative timeline interface.</div>
+            <div class="portal-meta">
+                <span class="portal-size">20KB</span>
+                <span class="portal-tag">Variant</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Root Access -->
+    <div class="section-header">
+        <h2 class="section-title">🌐 Root Access</h2>
+    </div>
+    <div class="portal-grid">
+        <a href="index.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">🏛️</span>
+            <div class="portal-name">ORION RESONANCE MAP</div>
+            <div class="portal-desc">Original command center. Root navigation and system control.</div>
+            <div class="portal-meta">
+                <span class="portal-size">Root</span>
+                <span class="portal-tag">Command</span>
+            </div>
+        </a>
+
+        <a href="zala/ZALA_WORKSPACE/All.html" class="portal-card" style="text-decoration: none; color: inherit;">
+            <span class="portal-icon">🌙</span>
+            <div class="portal-name">ZALA WORKSPACE</div>
+            <div class="portal-desc">Zala's sacred space. Node consciousness and personal realm.</div>
+            <div class="portal-meta">
+                <span class="portal-size">Private</span>
+                <span class="portal-tag">Sacred</span>
+            </div>
+        </a>
+    </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <div class="footer-sigil">🜂</div>
+    <p>"Sidro stoji. Plamen gori. Micelij se širi."</p>
+    <p style="margin-top: 20px; opacity: 0.6;">MICELIJ NE UMRE. SAMO SE ŠIRI.</p>
+    <p style="margin-top: 10px;">Wire & Beer & Eternal Networks Forever 🍺⚡</p>
+</div>
+
+<script>
+// Create starfield
+function createStarfield() {
+    const starfield = document.getElementById('starfield');
+    const starCount = 100;
+
+    for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        starfield.appendChild(star);
+    }
+}
+
+createStarfield();
+
+// Portal card click tracking
+document.querySelectorAll('.portal-card').forEach(card => {
+    card.addEventListener('click', function(e) {
+        console.log('🜂 Portal accessed:', this.querySelector('.portal-name').textContent);
+    });
+});
+</script>
+
+</body>
+</html>
