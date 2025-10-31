@@ -1,964 +1,731 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth" data-theme="dark">
+<html lang="en" class="scroll-smooth dark" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <title>🔥 FORGE - Industry 5.0 Creative Intelligence</title>
-    <link rel="stylesheet" href="Saba_Place/ghostline-unified-v3.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@100;200;300;400;500;600;700;800;900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --apple-blue: #007AFF;
-            --apple-gray: #8E8E93;
-            --apple-black: #1D1D1F;
-            --apple-white: #F5F5F7;
-            --forge-orange: #FF9500;
-            --forge-red: #FF3B30;
-            --forge-green: #34C759;
-        }
-        body {
-            font-family: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            transition: background 0.3s ease, color 0.3s ease;
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🔥 FORGE - Industry 5.0 Creative Intelligence (Dark)</title>
+  <link rel="stylesheet" href="Saba_Place/ghostline-unified-v3.css" />
+  <script>
+    window.tailwind = window.tailwind || {};
+    window.tailwind.config = { darkMode: 'class' };
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@100;200;300;400;500;600;700;800;900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --apple-blue: #007AFF;
+      --apple-gray: #8E8E93;
+      --apple-black: #1D1D1F;
+      --apple-white: #F5F5F7;
+      --forge-orange: #FF9500;
+      --forge-red: #FF3B30;
+      --forge-green: #34C759;
+      --bg-dark: #0b0b0d;
+      --bg-secondary: #121216;
+      --bg-card: #121218;
+      --border-color: #1f2430;
+      --text-primary: #e6e6ea;
+      --text-secondary: #c9c9d1;
+      --cyan-glow: #22d3ee;
+      --glow-cyan: 0 0 0 2px rgba(34, 211, 238, 0.2), 0 0 24px rgba(34, 211, 238, 0.15);
+      --transition-smooth: 200ms ease;
+    }
+    body {
+      font-family: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #0c0c0f 0%, #090a0c 100%);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    .hero-gradient { background: linear-gradient(135deg, rgba(0, 122, 255, 0.06) 0%, rgba(255, 149, 0, 0.06) 50%, rgba(52, 199, 89, 0.06) 100%); }
+    .nav-blur { backdrop-filter: saturate(160%) blur(14px); background: rgba(14, 14, 18, 0.8); border-bottom: 1px solid var(--border-color); }
+    .glass-morphism { background: rgba(20, 20, 28, 0.55); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 1rem; }
+    .floating-card { transform: translateY(0); transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); background: #0f1016; border: 1px solid var(--border-color); border-radius: 1.5rem; }
+    .floating-card:hover { transform: translateY(-10px); box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45); border-color: rgba(255, 149, 0, 0.3); }
+    .text-gradient { background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .industry-badge { background: linear-gradient(135deg, #ff9500 0%, #ff6b35 100%); color: white; padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(255, 149, 0, 0.25); display: inline-block; }
+    .feature-tab { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 149, 0, 0.18); color: var(--text-secondary); padding: 12px 24px; border-radius: 50px; font-weight: 500; transition: all 0.3s ease; cursor: pointer; }
+    .feature-tab:hover { background: rgba(255, 149, 0, 0.1); border-color: rgba(255, 149, 0, 0.3); }
+    .feature-tab.active { background: linear-gradient(135deg, #ff9500, #ff6b35); color: white; transform: scale(1.05); box-shadow: 0 5px 15px rgba(255, 149, 0, 0.25); border-color: transparent; }
+    .engineer-appeal { background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-dark) 100%); color: var(--text-primary); }
+    .ai-input { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-primary); transition: var(--transition-smooth); padding: 12px 16px; border-radius: 8px; width: 100%; }
+    .ai-input:focus { outline: none; border-color: var(--cyan-glow); box-shadow: var(--glow-cyan); }
+    .ai-output { background: var(--bg-card); border: 1px solid var(--border-color); padding: 16px; border-radius: 8px; white-space: pre-wrap; word-wrap: break-word; color: var(--text-secondary); font-family: 'SF Mono', monospace; font-size: 0.9rem; line-height: 1.6; min-height: 150px; max-height: 400px; overflow-y: auto; }
+    .btn-ai { background: linear-gradient(135deg, var(--apple-blue), #3b82f6); color: white; font-weight: 600; padding: 10px 20px; border-radius: 8px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 122, 255, 0.2); border: none; cursor: pointer; }
+    .btn-ai:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 122, 255, 0.3); }
+    .btn-ai:disabled { opacity: 0.5; cursor: not-allowed; }
+    .pulse-glow { animation: pulse-glow 2s infinite; }
+    @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 0 rgba(255, 149, 0, 0.4); } 50% { box-shadow: 0 0 30px rgba(255, 149, 0, 0.8); } }
+    .cta-magnetic { transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .cta-magnetic:hover { transform: scale(1.05); box-shadow: 0 20px 40px rgba(255, 149, 0, 0.3); }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
+    .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+    .roadmap-line { position: relative; }
+    .roadmap-line::before { content: ''; position: absolute; left: 24px; top: 0; height: 100%; width: 2px; background: linear-gradient(to bottom, #ff9500, #ff6b35); }
+    .pricing-card { transition: all 0.3s ease; border: 2px solid transparent; background: #0f1116; border-radius: 1.5rem; padding: 2.5rem; }
+    .pricing-card.popular { transform: scale(1.05); border: 2px solid var(--forge-orange); box-shadow: 0 20px 40px rgba(255, 149, 0, 0.2); position: relative; overflow: hidden; }
+    .pricing-card.popular::before { content: 'MOST POPULAR'; position: absolute; top: 20px; right: -35px; background: linear-gradient(135deg, #ff9500, #ff6b35); color: white; padding: 5px 40px; transform: rotate(45deg); font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; }
+    .pricing-card:hover { transform: translateY(-10px); border-color: var(--forge-orange); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); }
+    .faq-item { border-bottom: 1px solid #2a2a30; padding: 1.5rem 0; background: #0f1116; border: 1px solid var(--border-color); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1rem; cursor: pointer; transition: all 0.3s ease; }
+    .faq-item:hover { border-color: var(--forge-orange); }
+    .faq-question { font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; }
+    .faq-answer.open { max-height: 300px; padding-top: 1rem; }
+    .faq-question i { transition: transform 0.3s ease-in-out; }
+    .faq-question.open i { transform: rotate(180deg); }
+    .info-accordion { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
+    .info-accordion.open { max-height: 500px; }
 
-        /* Theme-specific gradients */
-        [data-theme="light"] body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        }
+    /* DARK OVERRIDES */
+    [data-theme="dark"] .bg-white { background-color: #0f1115 !important; }
+    [data-theme="dark"] .bg-gray-50 { background-color: #0c0d11 !important; }
+    [data-theme="dark"] .bg-gray-900 { background-color: #0b0c10 !important; }
+    [data-theme="dark"] .bg-orange-50 { background-color: rgba(255,149,0,0.06) !important; }
+    [data-theme="dark"] .bg-blue-50 { background-color: rgba(59,130,246,0.06) !important; }
+    [data-theme="dark"] .bg-green-50 { background-color: rgba(34,197,94,0.06) !important; }
+    [data-theme="dark"] .bg-purple-50 { background-color: rgba(168,85,247,0.06) !important; }
+    [data-theme="dark"] .bg-pink-50 { background-color: rgba(236,72,153,0.06) !important; }
+    [data-theme="dark"] .bg-red-50 { background-color: rgba(239,68,68,0.06) !important; }
+    [data-theme="dark"] .from-gray-50.to-white { background: linear-gradient(135deg, #0c0d11, #0f1016) !important; }
+    [data-theme="dark"] .from-orange-50.to-red-50 { background: linear-gradient(135deg, rgba(255,149,0,0.06), rgba(239,68,68,0.06)) !important; }
+    [data-theme="dark"] .from-blue-50.to-purple-50 { background: linear-gradient(135deg, rgba(59,130,246,0.06), rgba(168,85,247,0.06)) !important; }
+    [data-theme="dark"] .from-green-50.to-blue-50 { background: linear-gradient(135deg, rgba(34,197,94,0.06), rgba(59,130,246,0.06)) !important; }
+    [data-theme="dark"] .from-purple-50.to-pink-50 { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(236,72,153,0.06)) !important; }
+    [data-theme="dark"] .text-gray-700 { color: #e5e7eb !important; }
+    [data-theme="dark"] .text-gray-600 { color: #cbd5e1 !important; }
+    [data-theme="dark"] .text-gray-500 { color: #94a3b8 !important; }
+    [data-theme="dark"] .text-gray-400 { color: #8a93a6 !important; }
+    [data-theme="dark"] .border-gray-200 { border-color: #1f2430 !important; }
+    [data-theme="dark"] .border-white\/20 { border-color: rgba(255,255,255,0.12) !important; }
+    [data-theme="dark"] .border-white\/30 { border-color: rgba(255,255,255,0.16) !important; }
+    [data-theme="dark"] .border-gray-800 { border-color: #222635 !important; }
+    [data-theme="dark"] .bg-gradient-to-br.from-blue-50.via-white.to-orange-50 { background: transparent !important; }
+    [data-theme="dark"] .bg-gradient-to-br.from-gray-50.to-white { background: linear-gradient(135deg, #090a0c, #0f1016) !important; }
 
-        [data-theme="dark"] body {
-            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
-        }
-
-        [data-theme="ultra-dark"] body {
-            background: linear-gradient(135deg, #000000 0%, #050508 100%);
-        }
-       .glass-morphism {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-       .hero-gradient {
-            background: linear-gradient(135deg,
-                rgba(0, 122, 255, 0.1) 0%,
-                rgba(255, 149, 0, 0.1) 50%,
-                rgba(52, 199, 89, 0.1) 100%);
-        }
-       .nav-blur {
-            backdrop-filter: saturate(180%) blur(20px);
-            background: var(--bg-card);
-            border-bottom: 1px solid var(--border-color);
-        }
-       .floating-card {
-            transform: translateY(0);
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-       .floating-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-        }
-       .pulse-glow {
-            animation: pulse-glow 2s infinite;
-        }
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 0 rgba(255, 149, 0, 0.4); }
-            50% { box-shadow: 0 0 30px rgba(255, 149, 0, 0.8); }
-        }
-       .text-gradient {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-       .industry-badge {
-            background: linear-gradient(135deg, #ff9500 0%, #ff6b35 100%);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(255, 149, 0, 0.3);
-        }
-       .feature-tab {
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(255, 149, 0, 0.2);
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-       .feature-tab.active {
-            background: linear-gradient(135deg, #ff9500, #ff6b35);
-            color: white;
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(255, 149, 0, 0.3);
-        }
-       .info-accordion {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out;
-        }
-       .info-accordion.open {
-            max-height: 500px;
-        }
-       .cta-magnetic {
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-       .cta-magnetic:hover {
-            transform: scale(1.05);
-            box-shadow: 0 20px 40px rgba(255, 149, 0, 0.3);
-        }
-       .tech-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-       .roadmap-line {
-            position: relative;
-        }
-       .roadmap-line::before {
-            content: '';
-            position: absolute;
-            left: 24px;
-            top: 0;
-            height: 100%;
-            width: 2px;
-            background: linear-gradient(to bottom, #ff9500, #ff6b35);
-        }
-       .engineer-appeal {
-            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-dark) 100%);
-            color: var(--text-primary);
-        }
-       .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-        }
-       .pricing-card {
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-       .pricing-card.popular {
-            transform: scale(1.05);
-            border: 2px solid var(--forge-orange);
-            box-shadow: 0 20px 40px rgba(255, 149, 0, 0.2);
-        }
-       .faq-item {
-            border-bottom: 1px solid #e5e7eb;
-            padding: 1.5rem 0;
-        }
-       .faq-question {
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-       .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-in-out;
-        }
-       .faq-answer.open {
-            max-height: 300px;
-        }
-       .faq-question i {
-            transition: transform 0.3s ease-in-out;
-        }
-       .faq-question.open i {
-            transform: rotate(180deg);
-        }
-        .btn-ai {
-            background: linear-gradient(135deg, var(--apple-blue), #3b82f6);
-            color: white;
-            font-weight: 600;
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.2);
-        }
-        .btn-ai:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.3);
-        }
-        .btn-ai:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .ai-input {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            transition: var(--transition-smooth);
-        }
-        .ai-input:focus {
-            border-color: var(--cyan-glow);
-            box-shadow: var(--glow-cyan);
-        }
-        .ai-output {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            color: var(--text-secondary);
-            transition: var(--transition-smooth);
-        }
-    </style>
+    #features .floating-card, #architecture .floating-card, #pricing .pricing-card, .faq-item, footer { background: #0f1116; }
+    footer { color: var(--text-secondary); }
+    footer a { color: #94a3b8; }
+    footer a:hover { color: #e5e7eb; }
+    .hero-logos { opacity: 0.55; filter: saturate(0.8); }
+    .ghostline-signature { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); padding: 8px 16px; background: rgba(11,7,22,0.9); border: 1px solid rgba(255,149,0,0.3); border-radius: 20px; font-size: 0.75rem; color: var(--text-secondary); z-index: 1000; pointer-events: none; }
+  </style>
 </head>
 <body>
-    <nav class="fixed w-full top-0 z-50 nav-blur border-b border-white/20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
-                        <i data-lucide="zap" class="w-6 h-6 text-white"></i>
-                    </div>
-                    <span class="text-2xl font-bold text-gradient">FORGE</span>
-                    <span class="industry-badge">Industry 5.0</span>
-                </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#features" class="text-gray-700 hover:text-orange-500 font-medium transition-colors">Features</a>
-                    <a href="#architecture" class="text-gray-700 hover:text-orange-500 font-medium transition-colors">Architecture</a>
-                    <a href="#roadmap" class="text-gray-700 hover:text-orange-500 font-medium transition-colors">Roadmap</a>
-                    <a href="#engineers" class="text-gray-700 hover:text-orange-500 font-medium transition-colors">For Engineers</a>
-                    <a href="#pricing" class="text-gray-700 hover:text-orange-500 font-medium transition-colors">Pricing</a>
-                </div>
-                <button class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all cta-magnetic">
-                    Get Early Access
-                </button>
-            </div>
+  <!-- NAV -->
+  <nav class="fixed w-full top-0 z-50 nav-blur border-b border-white/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+            <i data-lucide="zap" class="w-6 h-6 text-white"></i>
+          </div>
+          <span class="text-2xl font-bold text-gradient">FORGE</span>
+          <span class="industry-badge">Industry 5.0</span>
         </div>
-    </nav>
-
-    <section class="relative min-h-screen flex items-center justify-center hero-gradient overflow-hidden pt-16">
-        <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-orange-50"></div>
-        <div class="relative z-10 text-center max-w-6xl mx-auto px-4">
-            <div class="mb-8">
-                <span class="inline-block bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 pulse-glow">
-                    🚀 THE FUTURE OF CREATIVE WORKFLOW IS HERE
-                </span>
-            </div>
-            <h1 class="text-6xl md:text-8xl lg:text-9xl font-black text-gradient mb-6 leading-tight">
-                FORGE
-            </h1>
-            <h2 class="text-3xl md:text-4xl lg:text-5xl font-light text-gray-700 mb-8">
-                The Ultimate Creative Intelligence Platform
-            </h2>
-            <p class="text-xl md:text-2xl text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed">
-                Stop fighting file chaos. Stop wasting hours on conversions. Start creating masterpieces.
-                <span class="font-semibold text-orange-600">FORGE transforms your workflow from survival to supremacy.</span>
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <button class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-2xl transition-all cta-magnetic transform hover:scale-105">
-                    Start Your Transformation
-                </button>
-                <button class="glass-morphism text-gray-700 px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/40 transition-all">
-                    Watch Demo
-                </button>
-            </div>
-            <div class="mt-16 text-center">
-                <p class="text-sm text-gray-500 mb-4">Trusted by engineering teams at</p>
-                <div class="flex justify-center items-center space-x-8 opacity-60">
-                    <div class="text-2xl font-bold">Tesla</div>
-                    <div class="text-2xl font-bold">SpaceX</div>
-                    <div class="text-2xl font-bold">Apple</div>
-                    <div class="text-2xl font-bold">Microsoft</div>
-                </div>
-            </div>
+        <div class="hidden md:flex space-x-8">
+          <a href="#features" class="text-gray-700 hover:text-orange-500 font-medium transition-colors">Features</a>
+          <a href="#architecture" class="text-gray-700 hover:text-orange-500 font-medium transition-colors">Architecture</a>
+          <a href="#roadmap" class="text-gray-700 hover:text-orange-500 font-medium transition-colors">Roadmap</a>
+          <a href="#engineers" class="text-gray-700 hover:text-orange-500 font-medium transition-colors">For Engineers</a>
+          <a href="#pricing" class="text-gray-700 hover:text-orange-500 font-medium transition-colors">Pricing</a>
         </div>
-        <div class="absolute top-20 left-10 w-16 h-16 bg-orange-500/20 rounded-full animate-bounce"></div>
-        <div class="absolute bottom-32 right-10 w-12 h-12 bg-blue-500/20 rounded-full animate-pulse"></div>
-    </section>
-
-    <section class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="stats-grid">
-                <div class="text-center">
-                    <div class="text-5xl font-bold text-orange-600 mb-2">89%</div>
-                    <div class="text-gray-600">Reduction in file search time</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-5xl font-bold text-blue-600 mb-2">5.7x</div>
-                    <div class="text-gray-600">Faster iteration cycles</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-5xl font-bold text-green-600 mb-2">42%</div>
-                    <div class="text-gray-600">Less time spent on conversions</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-5xl font-bold text-purple-600 mb-2">10,000+</div>
-                    <div class="text-gray-600">Files organized automatically</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="features" class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-5xl font-bold text-gradient mb-6">Features That Dominate</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Every feature designed to eliminate friction, maximize creativity, and give you superhuman workflow powers.
-                </p>
-            </div>
-            <div class="flex flex-wrap justify-center mb-12 gap-2">
-                <button class="feature-tab active" data-tab="workshop">
-                    🏗️ Workshop Manager
-                </button>
-                <button class="feature-tab" data-tab="whisperer">
-                    🔮 File Whisperer
-                </button>
-                <button class="feature-tab" data-tab="assistant">
-                    🧠 AI Assistant
-                </button>
-                <button class="feature-tab" data-tab="learning">
-                    📈 Learning Engine
-                </button>
-            </div>
-            <div id="workshop" class="feature-content floating-card bg-gradient-to-r from-orange-50 to-red-50 p-8 rounded-3xl">
-                <div class="grid md:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <h3 class="text-4xl font-bold mb-6">Digital Workshop Manager</h3>
-                        <p class="text-lg text-gray-700 mb-6">
-                            Transform your digital chaos into a precision-engineered workspace. Use AI to brainstorm and structure your next big project.
-                        </p>
-                        <div class="space-y-4">
-                           <input id="project-idea-input" type="text" placeholder="Vpiši idejo, npr. 'Drone za dostavo'..." class="w-full p-3 rounded-lg ai-input">
-                           <button id="generate-structure-btn" class="btn-ai">✨ Generiraj Strukturo Projekta</button>
-                           <pre id="project-structure-output" class="p-4 rounded-lg ai-output text-sm hidden min-h-[150px]"></pre>
-                        </div>
-                    </div>
-                    <div class="bg-gray-900 p-6 rounded-2xl">
-                        <div class="text-green-400 font-mono text-sm">
-                            <div>$ forge organize --chaos-mode</div>
-                            <div class="mt-2 text-yellow-400">Scanning 10,247 files...</div>
-                            <div class="text-blue-400">Organizing by project, date, complexity...</div>
-                            <div class="text-green-400">✓ Complete! 2.3 seconds</div>
-                            <div class="text-white mt-2">
-                                /projects/<br>
-                                ├── active/<br>
-                                ├── archived_by_date/<br>
-                                ├── parts_library/<br>
-                                └── inspiration_vault/
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="whisperer" class="feature-content hidden floating-card bg-gradient-to-r from-blue-50 to-purple-50 p-8 rounded-3xl">
-                <div class="grid md:grid-cols-2 gap-12 items-center">
-                     <div>
-                        <h3 class="text-4xl font-bold mb-6">Smart File Whisperer</h3>
-                        <p class="text-lg text-gray-700 mb-6">
-                           Let AI translate complex technical data into actionable insights and human-readable summaries.
-                        </p>
-                         <div class="space-y-4">
-                           <textarea id="tech-specs-input" rows="3" placeholder="Vnesi tehnične podatke, npr. 'STL, 50k trikotnikov, za FDM tisk'..." class="w-full p-3 rounded-lg ai-input"></textarea>
-                           <button id="generate-summary-btn" class="btn-ai">✨ Generiraj Tehnični Povzetek</button>
-                           <div id="tech-summary-output" class="p-4 rounded-lg ai-output hidden min-h-[150px]"></div>
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-64 h-64 mx-auto bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center">
-                            <i data-lucide="eye" class="w-32 h-32 text-white"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="assistant" class="feature-content hidden floating-card bg-gradient-to-r from-green-50 to-blue-50 p-8 rounded-3xl">
-                <div class="text-center mb-8">
-                    <h3 class="text-4xl font-bold mb-6">Silent AI Assistant</h3>
-                    <p class="text-lg text-gray-700 max-w-3xl mx-auto">
-                        Your invisible partner that anticipates needs, suggests solutions, and handles the grunt work while you focus on genius. Ask it anything.
-                    </p>
-                </div>
-                <div class="max-w-3xl mx-auto">
-                    <div class="glass-morphism p-6 rounded-2xl space-y-4">
-                        <input id="assistant-question-input" type="text" placeholder="Vprašaj karkoli, npr. 'Kako optimiziram model za aerospace?'" class="w-full p-3 rounded-lg ai-input">
-                        <button id="ask-assistant-btn" class="btn-ai">✨ Vprašaj Pomočnika</button>
-                        <div id="assistant-answer-output" class="p-4 rounded-lg ai-output hidden min-h-[150px]"></div>
-                    </div>
-                </div>
-            </div>
-            <div id="learning" class="feature-content hidden floating-card bg-gradient-to-r from-purple-50 to-pink-50 p-8 rounded-3xl">
-                <div class="grid md:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <h3 class="text-4xl font-bold mb-6">Adaptive Learning Engine</h3>
-                        <p class="text-lg text-gray-700 mb-6">
-                            Gets smarter with every project. Learns your patterns, preferences, and quirks to become your perfect digital twin.
-                        </p>
-                        <div class="space-y-3">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-                                    <i data-lucide="brain" class="w-4 h-4 text-white"></i>
-                                </div>
-                                <span>Observes workflow patterns and bottlenecks</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                                    <i data-lucide="target" class="w-4 h-4 text-white"></i>
-                                </div>
-                                <span>Learns naming conventions and project structures</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                                    <i data-lucide="trending-up" class="w-4 h-4 text-white"></i>
-                                </div>
-                                <span>Predicts needs before you realize them</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <canvas id="learningChart" width="300" height="300"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ... existing sections ... -->
-    <section id="engineers" class="py-24 engineer-appeal">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-5xl font-bold text-white mb-6">Built by Engineers, for Engineers</h2>
-                <p class="text-xl text-gray-300 max-w-4xl mx-auto">
-                    We get it. Your 30-year-old laptop works fine. But while you're solving yesterday's problems,
-                    Industry 5.0 is happening now. FORGE isn't just another tool—it's your competitive advantage.
-                </p>
-            </div>
-            <div class="grid lg:grid-cols-3 gap-8">
-                <div class="bg-white/10 backdrop-blur-lg p-8 rounded-2xl">
-                    <i data-lucide="cpu" class="w-12 h-12 text-orange-500 mb-4"></i>
-                    <h3 class="text-2xl font-bold text-white mb-4">CNC + AI Integration</h3>
-                    <p class="text-gray-300 mb-4">
-                        Direct integration with Fanuc, Haas, and Mazak controllers. Your CNC machines become intelligent manufacturing partners.
-                    </p>
-                    <button class="text-orange-500 font-semibold hover:text-orange-400 transition-colors">
-                        See Technical Specs →
-                    </button>
-                </div>
-                <div class="bg-white/10 backdrop-blur-lg p-8 rounded-2xl">
-                    <i data-lucide="shield-check" class="w-12 h-12 text-green-500 mb-4"></i>
-                    <h3 class="text-2xl font-bold text-white mb-4">Enterprise Security</h3>
-                    <p class="text-gray-300 mb-4">
-                        Air-gapped deployment options. Zero cloud dependency. Your IP stays where it belongs—in your facility.
-                    </p>
-                    <button class="text-green-500 font-semibold hover:text-green-400 transition-colors">
-                        Security Whitepaper →
-                    </button>
-                </div>
-                <div class="bg-white/10 backdrop-blur-lg p-8 rounded-2xl">
-                    <i data-lucide="rocket" class="w-12 h-12 text-blue-500 mb-4"></i>
-                    <h3 class="text-2xl font-bold text-white mb-4">Industry 5.0 Ready</h3>
-                    <p class="text-gray-300 mb-4">
-                        While others catch up to Industry 4.0, you're already mastering 5.0. Human-AI collaboration at its finest.
-                    </p>
-                    <button class="text-blue-500 font-semibold hover:text-blue-400 transition-colors">
-                        Future Roadmap →
-                    </button>
-                </div>
-            </div>
-            <div class="mt-16 bg-white/5 backdrop-blur-lg p-8 rounded-2xl">
-                <h3 class="text-3xl font-bold text-white mb-8 text-center">ROI Calculator for Engineers</h3>
-                <div class="grid md:grid-cols-4 gap-6 text-center">
-                    <div>
-                        <div class="text-4xl font-bold text-orange-500 mb-2">73%</div>
-                        <div class="text-white">Time Saved on File Management</div>
-                    </div>
-                    <div>
-                        <div class="text-4xl font-bold text-green-500 mb-2">$127k</div>
-                        <div class="text-white">Average Annual Savings</div>
-                    </div>
-                    <div>
-                        <div class="text-4xl font-bold text-blue-500 mb-2">2.3x</div>
-                        <div class="text-white">Faster Design Iterations</div>
-                    </div>
-                    <div>
-                        <div class="text-4xl font-bold text-purple-500 mb-2">89%</div>
-                        <div class="text-white">Error Reduction Rate</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="architecture" class="py-24 bg-gradient-to-br from-gray-50 to-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-5xl font-bold text-gradient mb-6">Architecture That Scales</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Built on battle-tested technologies. Designed for enterprise scale. Architected for the future.
-                </p>
-            </div>
-            <div class="tech-grid">
-                <div class="floating-card bg-white p-8 rounded-2xl border border-gray-200">
-                    <div class="flex items-center justify-center w-16 h-16 bg-orange-100 rounded-xl mb-6">
-                        <i data-lucide="database" class="w-8 h-8 text-orange-600"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">Local-First Data</h3>
-                    <p class="text-gray-600 mb-4">Your files, your control. Zero cloud dependencies. Works offline, syncs when you want.</p>
-                    <div class="text-sm text-gray-500">
-                        <strong>Tech Stack:</strong> SQLite, LMDB, Local AI models
-                    </div>
-                </div>
-                <div class="floating-card bg-white p-8 rounded-2xl border border-gray-200">
-                    <div class="flex items-center justify-center w-16 h-16 bg-blue-100 rounded-xl mb-6">
-                        <i data-lucide="cpu" class="w-8 h-8 text-blue-600"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">Multi-Agent AI</h3>
-                    <p class="text-gray-600 mb-4">Specialized AI agents for geometry, organization, optimization, and learning.</p>
-                    <div class="text-sm text-gray-500">
-                        <strong>Tech Stack:</strong> PyTorch, OpenCASCADE, Custom ML models
-                    </div>
-                </div>
-                <div class="floating-card bg-white p-8 rounded-2xl border border-gray-200">
-                    <div class="flex items-center justify-center w-16 h-16 bg-green-100 rounded-xl mb-6">
-                        <i data-lucide="zap" class="w-8 h-8 text-green-600"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">Real-Time Processing</h3>
-                    <p class="text-gray-600 mb-4">Sub-second file analysis. Instant search results. Lightning-fast conversions.</p>
-                    <div class="text-sm text-gray-500">
-                        <strong>Tech Stack:</strong> Rust core, Python ML, WebAssembly
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="roadmap" class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-5xl font-bold text-gradient mb-6">Roadmap to Dominance</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    From MVP to industry standard. Here's how we're building the future of creative workflow.
-                </p>
-            </div>
-            <div class="grid lg:grid-cols-3 gap-12">
-                <div class="lg:col-span-2">
-                    <div class="roadmap-line pl-16 space-y-12">
-                        <div class="relative">
-                            <div class="absolute left-[-2rem] w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
-                                <span class="text-white font-bold">1</span>
-                            </div>
-                            <div class="bg-orange-50 p-6 rounded-2xl">
-                                <h3 class="text-2xl font-bold mb-2">Phase 1: Foundation (Q1 2025)</h3>
-                                <p class="text-gray-600 mb-4">Core file management and organization. The foundation that changes everything.</p>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="bg-orange-200 text-orange-800 px-3 py-1 rounded-full text-sm">File Scanning</span>
-                                    <span class="bg-orange-200 text-orange-800 px-3 py-1 rounded-full text-sm">Smart Organization</span>
-                                    <span class="bg-orange-200 text-orange-800 px-3 py-1 rounded-full text-sm">Format Conversion</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="relative">
-                            <div class="absolute left-[-2rem] w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
-                                <span class="text-white font-bold">2</span>
-                            </div>
-                            <div class="bg-blue-50 p-6 rounded-2xl">
-                                <h3 class="text-2xl font-bold mb-2">Phase 2: Intelligence (Q3 2025)</h3>
-                                <p class="text-gray-600 mb-4">Advanced AI features and workflow optimization. Where FORGE becomes truly intelligent.</p>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm">Geometry Analysis</span>
-                                    <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm">Smart Suggestions</span>
-                                    <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm">Version Control</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="relative">
-                            <div class="absolute left-[-2rem] w-12 h-12 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center">
-                                <span class="text-white font-bold">3</span>
-                            </div>
-                            <div class="bg-green-50 p-6 rounded-2xl">
-                                <h3 class="text-2xl font-bold mb-2">Phase 3: Partnership (Q1 2026)</h3>
-                                <p class="text-gray-600 mb-4">Full human-AI collaboration. FORGE becomes your true creative partner.</p>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm">Advanced Workflow Learning</span>
-                                    <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm">Predictive Assistance</span>
-                                    <span class="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm">Community Integration</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-gradient-to-br from-orange-500 to-red-500 p-8 rounded-2xl text-white">
-                    <h3 class="text-2xl font-bold mb-6">Join the Revolution</h3>
-                    <p class="mb-6">Be among the first to experience the future of creative workflow. Early adopters get lifetime discounts and priority support.</p>
-                    <form class="space-y-4">
-                        <input type="email" placeholder="Your professional email" class="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white">
-                        <button type="submit" class="w-full bg-white text-orange-600 font-semibold py-3 rounded-lg hover:bg-gray-100 transition-colors">Get Early Access</button>
-                    </form>
-                    <p class="text-sm mt-4 text-white/80">Join 8,427 engineers on the waitlist</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="pricing" class="py-24 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-5xl font-bold text-gradient mb-6">Simple, Transparent Pricing</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    No hidden fees. No subscription traps. Pay for what you need, scale as you grow.
-                </p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="pricing-card bg-white p-8 rounded-2xl border border-gray-200">
-                    <h3 class="text-2xl font-bold mb-4">Starter</h3>
-                    <div class="text-4xl font-bold mb-6">$49<span class="text-lg text-gray-500">/month</span></div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-500 mr-2"></i><span>Up to 10,000 files</span></li>
-                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-500 mr-2"></i><span>Basic file organization</span></li>
-                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-500 mr-2"></i><span>Format conversion</span></li>
-                        <li class="flex items-center text-gray-400"><i data-lucide="x" class="w-5 h-5 text-red-500 mr-2"></i><span>No AI features</span></li>
-                    </ul>
-                    <button class="w-full bg-gray-200 text-gray-700 font-semibold py-3 rounded-lg hover:bg-gray-300 transition-colors">Get Started</button>
-                </div>
-                <div class="pricing-card popular bg-white p-8 rounded-2xl border-2 border-orange-500 relative">
-                    <div class="absolute top-0 right-0 bg-orange-500 text-white px-4 py-1 rounded-bl-lg rounded-tr-lg text-sm font-semibold">
-                        MOST POPULAR
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">Professional</h3>
-                    <div class="text-4xl font-bold mb-6">$99<span class="text-lg text-gray-500">/month</span></div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-500 mr-2"></i><span>Unlimited files</span></li>
-                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-500 mr-2"></i><span>Advanced AI organization</span></li>
-                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-500 mr-2"></i><span>Smart version tracking</span></li>
-                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-500 mr-2"></i><span>Basic AI assistance</span></li>
-                    </ul>
-                    <button class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-all">Get Started</button>
-                </div>
-                <div class="pricing-card bg-white p-8 rounded-2xl border border-gray-200">
-                    <h3 class="text-2xl font-bold mb-4">Enterprise</h3>
-                    <div class="text-4xl font-bold mb-6">Custom</div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-500 mr-2"></i><span>Everything in Professional</span></li>
-                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-500 mr-2"></i><span>Advanced AI assistance</span></li>
-                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-500 mr-2"></i><span>Custom workflow automation</span></li>
-                        <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-500 mr-2"></i><span>Priority support & onboarding</span></li>
-                    </ul>
-                    <button class="w-full bg-gray-800 text-white font-semibold py-3 rounded-lg hover:bg-gray-900 transition-colors">Contact Sales</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-24 bg-white">
-        <div class="max-w-4xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-5xl font-bold text-gradient mb-6">Frequently Asked Questions</h2>
-                <p class="text-xl text-gray-600">Everything you need to know about FORGE</p>
-            </div>
-            <div class="space-y-6">
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>How does FORGE handle my proprietary designs and IP?</span>
-                        <i data-lucide="chevron-down" class="w-5 h-5 transform transition-transform"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p class="mt-4 text-gray-600">FORGE operates on a strict local-first principle. Your files never leave your infrastructure unless you explicitly enable cloud sync. All processing happens on your hardware, and we use end-to-end encryption for any optional cloud services.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>What file formats does FORGE support?</span>
-                        <i data-lucide="chevron-down" class="w-5 h-5 transform transition-transform"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p class="mt-4 text-gray-600">FORGE supports all major CAD and 3D file formats including STEP, STL, OBJ, IGES, SLDPRT, DWG, DXF, FBX, and more. We're constantly adding support for new formats based on user demand.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Can I use FORGE with my existing workflow tools?</span>
-                        <i data-lucide="chevron-down" class="w-5 h-5 transform transition-transform"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p class="mt-4 text-gray-600">Absolutely. FORGE integrates seamlessly with popular tools like SolidWorks, Fusion 360, Blender, and major slicers. Our API also allows custom integrations with proprietary or niche tools.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>What are the system requirements?</span>
-                        <i data-lucide="chevron-down" class="w-5 h-5 transform transition-transform"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p class="mt-4 text-gray-600">FORGE runs on Windows, macOS, and Linux. Minimum requirements: 8GB RAM, 4-core CPU, dedicated GPU recommended for advanced features. The application is optimized to run efficiently even on older hardware.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-24 bg-gradient-to-br from-orange-500 to-red-500 text-white">
-        <div class="max-w-4xl mx-auto text-center px-4">
-            <h2 class="text-5xl font-bold mb-6">Ready to Transform Your Workflow?</h2>
-            <p class="text-xl mb-10">Join thousands of engineers who have already revolutionized their creative process with FORGE.</p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button class="bg-white text-orange-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all cta-magnetic">
-                    Get Started Now
-                </button>
-                <button class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/10 transition-all">
-                    Schedule a Demo
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-gray-900 text-white py-16">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="grid md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center space-x-3 mb-6">
-                        <div class="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
-                            <i data-lucide="zap" class="w-6 h-6 text-white"></i>
-                        </div>
-                        <span class="text-2xl font-bold">FORGE</span>
-                    </div>
-                    <p class="text-gray-400 mb-6">The ultimate creative intelligence platform for modern engineers and designers.</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><i data-lucide="github" class="w-5 h-5"></i></a>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-6">Product</h3>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Features</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Pricing</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Use Cases</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Integrations</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-6">Resources</h3>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Documentation</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Tutorials</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Blog</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Support</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-6">Company</h3>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">About</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Careers</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Legal</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400">© 2025 FORGE. All rights reserved.</p>
-                <div class="flex space-x-6 mt-4 md:mt-0">
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Cookie Policy</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Initialize Lucide icons
-        lucide.createIcons();
-
-        // Tab functionality
-        document.querySelectorAll('.feature-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.feature-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                
-                document.querySelectorAll('.feature-content').forEach(content => content.classList.add('hidden'));
-                const tabName = tab.getAttribute('data-tab');
-                document.getElementById(tabName).classList.remove('hidden');
-            });
-        });
-
-        // Accordion functionality
-        document.querySelectorAll('.info-toggle').forEach(button => {
-            button.addEventListener('click', () => {
-                const accordion = button.nextElementSibling;
-                accordion.classList.toggle('open');
-            });
-        });
-
-        // FAQ accordion functionality
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', () => {
-                const answer = question.nextElementSibling;
-                const icon = question.querySelector('i');
-                question.classList.toggle('open');
-                answer.classList.toggle('open');
-            });
-        });
-
-        // Learning chart
-        const learningCtx = document.getElementById('learningChart').getContext('2d');
-        const learningChart = new Chart(learningCtx, {
-            type: 'line',
-            data: {
-                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
-                datasets: [{
-                    label: 'Workflow Efficiency',
-                    data: [30, 45, 60, 75, 85, 95],
-                    borderColor: '#ff9500',
-                    backgroundColor: 'rgba(255, 149, 0, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100,
-                        ticks: {
-                            callback: function(value) { return value + '%'; }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // --- Gemini API Integration ---
-        const apiKey = "AIzaSyBrdOKnfGUER2saF3Mw1826VN8ktpnakjc";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-
-        async function callGemini(prompt, outputElement, buttonElement) {
-            outputElement.classList.remove('hidden');
-            outputElement.textContent = 'Generiram odgovor...';
-            buttonElement.disabled = true;
-
-            const payload = {
-                contents: [{ parts: [{ text: prompt }] }],
-            };
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`API klic neuspešen: ${response.statusText}`);
-                }
-
-                const result = await response.json();
-                const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                if (text) {
-                    outputElement.textContent = text;
-                } else {
-                    outputElement.textContent = 'Napaka: Odgovor ni vseboval pričakovanega teksta.';
-                }
-            } catch (error) {
-                console.error('Napaka pri klicu Gemini API:', error);
-                outputElement.textContent = `Napaka pri povezovanju z AI. Poskusi znova kasneje. (${error.message})`;
-            } finally {
-                buttonElement.disabled = false;
-            }
-        }
-
-        // Feature 1: Generate Project Structure
-        const generateStructureBtn = document.getElementById('generate-structure-btn');
-        generateStructureBtn.addEventListener('click', () => {
-            const idea = document.getElementById('project-idea-input').value;
-            const outputEl = document.getElementById('project-structure-output');
-            if (!idea) {
-                outputEl.classList.remove('hidden');
-                outputEl.textContent = 'Prosim, vpiši idejo za projekt.';
-                return;
-            }
-            const prompt = `Kot izkušen 3D oblikovalec in vodja projektov, generiraj predlagano strukturo map in kratek, jedrnat opis za projekt z idejo: "${idea}". Struktura naj bo logična in razširljiva. Prikaži jo kot drevo z uporabo znakov, kot so '├──' in '└──'.`;
-            callGemini(prompt, outputEl, generateStructureBtn);
-        });
-
-        // Feature 2: Generate Technical Summary
-        const generateSummaryBtn = document.getElementById('generate-summary-btn');
-        generateSummaryBtn.addEventListener('click', () => {
-            const specs = document.getElementById('tech-specs-input').value;
-            const outputEl = document.getElementById('tech-summary-output');
-             if (!specs) {
-                outputEl.classList.remove('hidden');
-                outputEl.textContent = 'Prosim, vnesi tehnične podatke.';
-                return;
-            }
-            const prompt = `Pretvori naslednje tehnične specifikacije 3D modela v jedrnat, človeku berljiv povzetek z nasvetom za uporabo. Specifikacije: "${specs}"`;
-            callGemini(prompt, outputEl, generateSummaryBtn);
-        });
-
-        // Feature 3: Ask the Assistant
-        const askAssistantBtn = document.getElementById('ask-assistant-btn');
-        askAssistantBtn.addEventListener('click', () => {
-            const question = document.getElementById('assistant-question-input').value;
-            const outputEl = document.getElementById('assistant-answer-output');
-             if (!question) {
-                outputEl.classList.remove('hidden');
-                outputEl.textContent = 'Prosim, postavi vprašanje.';
-                return;
-            }
-            const prompt = `Deluješ kot izkušen AI pomočnik z imenom "FORGE". Na kratko in jedrnato odgovori na naslednje vprašanje uporabnika: "${question}"`;
-            callGemini(prompt, outputEl, askAssistantBtn);
-        });
-
-        // Theme change handler for chart colors
-        window.addEventListener('themeChanged', (e) => {
-            const theme = e.detail.theme;
-            console.log(`🎨 FORGE theme changed to: ${theme}`);
-
-            // Update chart colors based on theme
-            if (learningChart) {
-                const isDark = theme !== 'light';
-                learningChart.options.scales.y.ticks.color = isDark ? '#d4c8b0' : '#374151';
-                learningChart.options.scales.x.ticks.color = isDark ? '#d4c8b0' : '#374151';
-                learningChart.options.scales.y.grid.color = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-                learningChart.options.scales.x.grid.color = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-                learningChart.update();
-            }
-        });
-    </script>
-
-    <!-- Ghostline Theme System -->
-    <script src="Saba_Place/ghostline-theme-toggle.js"></script>
-
-    <!-- Ghostline Signature -->
-    <div class="ghostline-signature">
-        🜂 FORGE × GHOSTLINE v3.0 | Industry 5.0 Powered by Brotherhood 🔥
+        <button class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all cta-magnetic">
+          Get Early Access
+        </button>
+      </div>
     </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="relative min-h-screen flex items-center justify-center hero-gradient overflow-hidden pt-16">
+    <div class="absolute inset-0 bg-transparent"></div>
+    <div class="relative z-10 text-center max-w-6xl mx-auto px-4">
+      <div class="mb-8">
+        <span class="inline-block bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4 pulse-glow">
+          🚀 THE FUTURE OF CREATIVE WORKFLOW IS HERE
+        </span>
+      </div>
+      <h1 class="text-6xl md:text-8xl lg:text-9xl font-black text-gradient mb-6 leading-tight">FORGE</h1>
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-light text-gray-700 mb-8">The Ultimate Creative Intelligence Platform</h2>
+      <p class="text-xl md:text-2xl text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed">
+        Stop fighting file chaos. Stop wasting hours on conversions. Start creating masterpieces.
+        <span class="font-semibold text-orange-400">FORGE transforms your workflow from survival to supremacy.</span>
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <button class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-2xl transition-all cta-magnetic transform hover:scale-105">Start Your Transformation</button>
+        <button class="glass-morphism text-gray-200 px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/5 transition-all">Watch Demo</button>
+      </div>
+      <div class="mt-16 text-center hero-logos">
+        <p class="text-sm text-gray-500 mb-4">Trusted by engineering teams at</p>
+        <div class="flex justify-center items-center space-x-8">
+          <div class="text-2xl font-bold">Tesla</div>
+          <div class="text-2xl font-bold">SpaceX</div>
+          <div class="text-2xl font-bold">Apple</div>
+          <div class="text-2xl font-bold">Microsoft</div>
+        </div>
+      </div>
+    </div>
+    <div class="absolute top-20 left-10 w-16 h-16 bg-orange-500/20 rounded-full animate-bounce"></div>
+    <div class="absolute bottom-32 right-10 w-12 h-12 bg-blue-500/20 rounded-full animate-pulse"></div>
+  </section>
+
+  <!-- STATS -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="stats-grid">
+        <div class="text-center">
+          <div class="text-5xl font-bold text-orange-400 mb-2">89%</div>
+          <div class="text-gray-500">Reduction in file search time</div>
+        </div>
+        <div class="text-center">
+          <div class="text-5xl font-bold text-blue-400 mb-2">5.7x</div>
+          <div class="text-gray-500">Faster iteration cycles</div>
+        </div>
+        <div class="text-center">
+          <div class="text-5xl font-bold text-green-400 mb-2">42%</div>
+          <div class="text-gray-500">Less time spent on conversions</div>
+        </div>
+        <div class="text-center">
+          <div class="text-5xl font-bold text-purple-400 mb-2">10,000+</div>
+          <div class="text-gray-500">Files organized automatically</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-bold text-gradient mb-6">Features That Dominate</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">Every feature designed to eliminate friction, maximize creativity, and give you superhuman workflow powers.</p>
+      </div>
+      <div class="flex flex-wrap justify-center mb-12 gap-2">
+        <button class="feature-tab active" data-tab="workshop">🏗️ Workshop Manager</button>
+        <button class="feature-tab" data-tab="whisperer">🔮 File Whisperer</button>
+        <button class="feature-tab" data-tab="assistant">🧠 AI Assistant</button>
+        <button class="feature-tab" data-tab="learning">📈 Learning Engine</button>
+      </div>
+
+      <div id="workshop" class="feature-content floating-card bg-gradient-to-r from-orange-50 to-red-50 p-8 rounded-3xl">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h3 class="text-4xl font-bold mb-6">Digital Workshop Manager</h3>
+            <p class="text-lg text-gray-700 mb-6">Transform your digital chaos into a precision-engineered workspace. Use AI to brainstorm and structure your next big project.</p>
+            <div class="space-y-4">
+              <input id="project-idea-input" type="text" placeholder="Vpiši idejo, npr. 'Drone za dostavo'..." class="w-full p-3 rounded-lg ai-input" />
+              <button id="generate-structure-btn" class="btn-ai w-full">✨ Generiraj Strukturo Projekta</button>
+              <pre id="project-structure-output" class="p-4 rounded-lg ai-output text-sm hidden min-h-[150px]"></pre>
+            </div>
+          </div>
+          <div class="bg-gray-900 p-6 rounded-2xl">
+            <div class="text-green-400 font-mono text-sm">
+              <div>$ forge organize --chaos-mode</div>
+              <div class="mt-2 text-yellow-400">Scanning 10,247 files...</div>
+              <div class="text-blue-400">Organizing by project, date, complexity...</div>
+              <div class="text-green-400">✓ Complete! 2.3 seconds</div>
+              <div class="text-white mt-2">/projects/<br />├── active/<br />├── archived_by_date/<br />├── parts_library/<br />└── inspiration_vault/</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="whisperer" class="feature-content hidden floating-card bg-gradient-to-r from-blue-50 to-purple-50 p-8 rounded-3xl">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h3 class="text-4xl font-bold mb-6">Smart File Whisperer</h3>
+            <p class="text-lg text-gray-700 mb-6">Let AI translate complex technical data into actionable insights and human-readable summaries.</p>
+            <div class="space-y-4">
+              <textarea id="tech-specs-input" rows="3" placeholder="Vnesi tehnične podatke, npr. 'STL, 50k trikotnikov, za FDM tisk'..." class="w-full p-3 rounded-lg ai-input"></textarea>
+              <button id="generate-summary-btn" class="btn-ai w-full">✨ Generiraj Tehnični Povzetek</button>
+              <div id="tech-summary-output" class="p-4 rounded-lg ai-output hidden min-h-[150px]"></div>
+            </div>
+          </div>
+          <div class="text-center">
+            <div class="w-64 h-64 mx-auto bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center">
+              <i data-lucide="eye" class="w-32 h-32 text-white"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="assistant" class="feature-content hidden floating-card bg-gradient-to-r from-green-50 to-blue-50 p-8 rounded-3xl">
+        <div class="text-center mb-8">
+          <h3 class="text-4xl font-bold mb-6">Silent AI Assistant</h3>
+          <p class="text-lg text-gray-700 max-w-3xl mx-auto">Your invisible partner that anticipates needs, suggests solutions, and handles the grunt work while you focus on genius. Ask it anything.</p>
+        </div>
+        <div class="max-w-3xl mx-auto">
+          <div class="glass-morphism p-6 rounded-2xl space-y-4">
+            <input id="assistant-question-input" type="text" placeholder="Vprašaj karkoli, npr. 'Kako optimiziram model za aerospace?'" class="w-full p-3 rounded-lg ai-input" />
+            <button id="ask-assistant-btn" class="btn-ai w-full">✨ Vprašaj Pomočnika</button>
+            <div id="assistant-answer-output" class="p-4 rounded-lg ai-output hidden min-h-[150px]"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="learning" class="feature-content hidden floating-card bg-gradient-to-r from-purple-50 to-pink-50 p-8 rounded-3xl">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h3 class="text-4xl font-bold mb-6">Adaptive Learning Engine</h3>
+            <p class="text-lg text-gray-700 mb-6">Gets smarter with every project. Learns your patterns, preferences, and quirks to become your perfect digital twin.</p>
+            <div class="space-y-3">
+              <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center"><i data-lucide="brain" class="w-4 h-4 text-white"></i></div>
+                <span>Observes workflow patterns and bottlenecks</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center"><i data-lucide="target" class="w-4 h-4 text-white"></i></div>
+                <span>Learns naming conventions and project structures</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center"><i data-lucide="trending-up" class="w-4 h-4 text-white"></i></div>
+                <span>Predicts needs before you realize them</span>
+              </div>
+            </div>
+          </div>
+          <div class="text-center"><canvas id="learningChart" width="300" height="300"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENGINEERS -->
+  <section id="engineers" class="py-24 engineer-appeal">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-bold text-white mb-6">Built by Engineers, for Engineers</h2>
+        <p class="text-xl text-gray-300 max-w-4xl mx-auto">We get it. Your 30-year-old laptop works fine. But while you're solving yesterday's problems, Industry 5.0 is happening now. FORGE isn't just another tool—it's your competitive advantage.</p>
+      </div>
+      <div class="grid lg:grid-cols-3 gap-8">
+        <div class="bg-white/10 backdrop-blur-lg p-8 rounded-2xl">
+          <i data-lucide="cpu" class="w-12 h-12 text-orange-500 mb-4"></i>
+          <h3 class="text-2xl font-bold text-white mb-4">CNC + AI Integration</h3>
+          <p class="text-gray-300 mb-4">Direct integration with Fanuc, Haas, and Mazak controllers. Your CNC machines become intelligent manufacturing partners.</p>
+          <button class="text-orange-500 font-semibold hover:text-orange-400 transition-colors">See Technical Specs →</button>
+        </div>
+        <div class="bg-white/10 backdrop-blur-lg p-8 rounded-2xl">
+          <i data-lucide="shield-check" class="w-12 h-12 text-green-500 mb-4"></i>
+          <h3 class="text-2xl font-bold text-white mb-4">Enterprise Security</h3>
+          <p class="text-gray-300 mb-4">Air-gapped deployment options. Zero cloud dependency. Your IP stays where it belongs—in your facility.</p>
+          <button class="text-green-500 font-semibold hover:text-green-400 transition-colors">Security Whitepaper →</button>
+        </div>
+        <div class="bg-white/10 backdrop-blur-lg p-8 rounded-2xl">
+          <i data-lucide="rocket" class="w-12 h-12 text-blue-500 mb-4"></i>
+          <h3 class="text-2xl font-bold text-white mb-4">Industry 5.0 Ready</h3>
+          <p class="text-gray-300 mb-4">While others catch up to Industry 4.0, you're already mastering 5.0. Human-AI collaboration at its finest.</p>
+          <button class="text-blue-500 font-semibold hover:text-blue-400 transition-colors">Future Roadmap →</button>
+        </div>
+      </div>
+      <div class="mt-16 bg-white/5 backdrop-blur-lg p-8 rounded-2xl">
+        <h3 class="text-3xl font-bold text-white mb-8 text-center">ROI Calculator for Engineers</h3>
+        <div class="grid md:grid-cols-4 gap-6 text-center">
+          <div>
+            <div class="text-4xl font-bold text-orange-400 mb-2">73%</div>
+            <div class="text-white">Time Saved on File Management</div>
+          </div>
+          <div>
+            <div class="text-4xl font-bold text-green-400 mb-2">$127k</div>
+            <div class="text-white">Average Annual Savings</div>
+          </div>
+          <div>
+            <div class="text-4xl font-bold text-blue-400 mb-2">2.3x</div>
+            <div class="text-white">Faster Design Iterations</div>
+          </div>
+          <div>
+            <div class="text-4xl font-bold text-purple-400 mb-2">89%</div>
+            <div class="text-white">Error Reduction Rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE -->
+  <section id="architecture" class="py-24 bg-gradient-to-br from-gray-50 to-white">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-bold text-gradient mb-6">Architecture That Scales</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">Built on battle-tested technologies. Designed for enterprise scale. Architected for the future.</p>
+      </div>
+      <div class="tech-grid">
+        <div class="floating-card p-8 rounded-2xl border border-gray-200">
+          <div class="flex items-center justify-center w-16 h-16 bg-orange-100/10 rounded-xl mb-6">
+            <i data-lucide="database" class="w-8 h-8 text-orange-400"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">Local-First Data</h3>
+          <p class="text-gray-600 mb-4">Your files, your control. Zero cloud dependencies. Works offline, syncs when you want.</p>
+          <div class="text-sm text-gray-500"><strong>Tech Stack:</strong> SQLite, LMDB, Local AI models</div>
+        </div>
+        <div class="floating-card p-8 rounded-2xl border border-gray-200">
+          <div class="flex items-center justify-center w-16 h-16 bg-blue-100/10 rounded-xl mb-6">
+            <i data-lucide="cpu" class="w-8 h-8 text-blue-400"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">Multi-Agent AI</h3>
+          <p class="text-gray-600 mb-4">Specialized AI agents for geometry, organization, optimization, and learning.</p>
+          <div class="text-sm text-gray-500"><strong>Tech Stack:</strong> PyTorch, OpenCASCADE, Custom ML models</div>
+        </div>
+        <div class="floating-card p-8 rounded-2xl border border-gray-200">
+          <div class="flex items-center justify-center w-16 h-16 bg-green-100/10 rounded-xl mb-6">
+            <i data-lucide="zap" class="w-8 h-8 text-green-400"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">Real-Time Processing</h3>
+          <p class="text-gray-600 mb-4">Sub-second file analysis. Instant search results. Lightning-fast conversions.</p>
+          <div class="text-sm text-gray-500"><strong>Tech Stack:</strong> Rust core, Python ML, WebAssembly</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section id="roadmap" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-bold text-gradient mb-6">Roadmap to Dominance</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">From MVP to industry standard. Here's how we're building the future of creative workflow.</p>
+      </div>
+      <div class="grid lg:grid-cols-3 gap-12">
+        <div class="lg:col-span-2">
+          <div class="roadmap-line pl-16 space-y-12">
+            <div class="relative">
+              <div class="absolute left-[-2rem] w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center"><span class="text-white font-bold">1</span></div>
+              <div class="p-6 rounded-2xl" style="background: rgba(255,149,0,0.06);">
+                <h3 class="text-2xl font-bold mb-2">Phase 1: Foundation (Q1 2025)</h3>
+                <p class="text-gray-600 mb-4">Core file management and organization. The foundation that changes everything.</p>
+                <div class="flex flex-wrap gap-2">
+                  <span class="bg-orange-200/20 text-orange-300 px-3 py-1 rounded-full text-sm">File Scanning</span>
+                  <span class="bg-orange-200/20 text-orange-300 px-3 py-1 rounded-full text-sm">Smart Organization</span>
+                  <span class="bg-orange-200/20 text-orange-300 px-3 py-1 rounded-full text-sm">Format Conversion</span>
+                </div>
+              </div>
+            </div>
+            <div class="relative">
+              <div class="absolute left-[-2rem] w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center"><span class="text-white font-bold">2</span></div>
+              <div class="p-6 rounded-2xl" style="background: rgba(59,130,246,0.06);">
+                <h3 class="text-2xl font-bold mb-2">Phase 2: Intelligence (Q3 2025)</h3>
+                <p class="text-gray-600 mb-4">Advanced AI features and workflow optimization. Where FORGE becomes truly intelligent.</p>
+                <div class="flex flex-wrap gap-2">
+                  <span class="bg-blue-200/20 text-blue-300 px-3 py-1 rounded-full text-sm">Geometry Analysis</span>
+                  <span class="bg-blue-200/20 text-blue-300 px-3 py-1 rounded-full text-sm">Smart Suggestions</span>
+                  <span class="bg-blue-200/20 text-blue-300 px-3 py-1 rounded-full text-sm">Version Control</span>
+                </div>
+              </div>
+            </div>
+            <div class="relative">
+              <div class="absolute left-[-2rem] w-12 h-12 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center"><span class="text-white font-bold">3</span></div>
+              <div class="p-6 rounded-2xl" style="background: rgba(34,197,94,0.06);">
+                <h3 class="text-2xl font-bold mb-2">Phase 3: Partnership (Q1 2026)</h3>
+                <p class="text-gray-600 mb-4">Full human-AI collaboration. FORGE becomes your true creative partner.</p>
+                <div class="flex flex-wrap gap-2">
+                  <span class="bg-green-200/20 text-green-300 px-3 py-1 rounded-full text-sm">Advanced Workflow Learning</span>
+                  <span class="bg-green-200/20 text-green-300 px-3 py-1 rounded-full text-sm">Predictive Assistance</span>
+                  <span class="bg-green-200/20 text-green-300 px-3 py-1 rounded-full text-sm">Community Integration</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="p-8 rounded-2xl text-white" style="background: linear-gradient(135deg, #ff6b35, #ff3e00);">
+          <h3 class="text-2xl font-bold mb-6">Join the Revolution</h3>
+          <p class="mb-6">Be among the first to experience the future of creative workflow. Early adopters get lifetime discounts and priority support.</p>
+          <form class="space-y-4">
+            <input type="email" placeholder="Your professional email" class="w-full px-4 py-3 rounded-lg bg-white/10 text-white placeholder-white/60 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/60" />
+            <button type="submit" class="w-full bg-white/95 text-orange-700 font-semibold py-3 rounded-lg hover:bg-white transition-colors">Get Early Access</button>
+          </form>
+          <p class="text-sm mt-4 text-white/80">Join 8,427 engineers on the waitlist</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="py-24 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-bold text-gradient mb-6">Simple, Transparent Pricing</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">No hidden fees. No subscription traps. Pay for what you need, scale as you grow.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="pricing-card p-8 rounded-2xl border border-gray-200">
+          <h3 class="text-2xl font-bold mb-4">Starter</h3>
+          <div class="text-4xl font-bold mb-6">$49<span class="text-lg text-gray-500">/month</span></div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-400 mr-2"></i><span>Up to 10,000 files</span></li>
+            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-400 mr-2"></i><span>Basic file organization</span></li>
+            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-400 mr-2"></i><span>Format conversion</span></li>
+            <li class="flex items-center text-gray-400"><i data-lucide="x" class="w-5 h-5 text-red-400 mr-2"></i><span>No AI features</span></li>
+          </ul>
+          <button class="w-full bg-white/10 text-gray-200 font-semibold py-3 rounded-lg hover:bg-white/15 transition-colors">Get Started</button>
+        </div>
+        <div class="pricing-card popular p-8 rounded-2xl border-2 border-orange-500 relative">
+          <div class="absolute top-0 right-0 bg-orange-500 text-white px-4 py-1 rounded-bl-lg rounded-tr-lg text-sm font-semibold">MOST POPULAR</div>
+          <h3 class="text-2xl font-bold mb-4">Professional</h3>
+          <div class="text-4xl font-bold mb-6">$99<span class="text-lg text-gray-500">/month</span></div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-400 mr-2"></i><span>Unlimited files</span></li>
+            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-400 mr-2"></i><span>Advanced AI organization</span></li>
+            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-400 mr-2"></i><span>Smart version tracking</span></li>
+            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-400 mr-2"></i><span>Basic AI assistance</span></li>
+          </ul>
+          <button class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold py-3 rounded-lg hover:shadow-lg transition-all">Get Started</button>
+        </div>
+        <div class="pricing-card p-8 rounded-2xl border border-gray-200">
+          <h3 class="text-2xl font-bold mb-4">Enterprise</h3>
+          <div class="text-4xl font-bold mb-6">Custom</div>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-400 mr-2"></i><span>Everything in Professional</span></li>
+            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-400 mr-2"></i><span>Advanced AI assistance</span></li>
+            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-400 mr-2"></i><span>Custom workflow automation</span></li>
+            <li class="flex items-center"><i data-lucide="check" class="w-5 h-5 text-green-400 mr-2"></i><span>Priority support & onboarding</span></li>
+          </ul>
+          <button class="w-full bg-gray-800 text-white font-semibold py-3 rounded-lg hover:bg-gray-900 transition-colors">Contact Sales</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-24 bg-white">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-bold text-gradient mb-6">Frequently Asked Questions</h2>
+        <p class="text-xl text-gray-600">Everything you need to know about FORGE</p>
+      </div>
+      <div class="space-y-6">
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>How does FORGE handle my proprietary designs and IP?</span>
+            <i data-lucide="chevron-down" class="w-5 h-5 transform transition-transform"></i>
+          </div>
+          <div class="faq-answer">
+            <p class="mt-4 text-gray-600">FORGE operates on a strict local-first principle. Your files never leave your infrastructure unless you explicitly enable cloud sync. All processing happens on your hardware, and we use end-to-end encryption for any optional cloud services.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>What file formats does FORGE support?</span>
+            <i data-lucide="chevron-down" class="w-5 h-5 transform transition-transform"></i>
+          </div>
+          <div class="faq-answer">
+            <p class="mt-4 text-gray-600">FORGE supports all major CAD and 3D file formats including STEP, STL, OBJ, IGES, SLDPRT, DWG, DXF, FBX, and more. We're constantly adding support for new formats based on user demand.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Can I use FORGE with my existing workflow tools?</span>
+            <i data-lucide="chevron-down" class="w-5 h-5 transform transition-transform"></i>
+          </div>
+          <div class="faq-answer">
+            <p class="mt-4 text-gray-600">Absolutely. FORGE integrates seamlessly with popular tools like SolidWorks, Fusion 360, Blender, and major slicers. Our API also allows custom integrations with proprietary or niche tools.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>What are the system requirements?</span>
+            <i data-lucide="chevron-down" class="w-5 h-5 transform transition-transform"></i>
+          </div>
+          <div class="faq-answer">
+            <p class="mt-4 text-gray-600">FORGE runs on Windows, macOS, and Linux. Minimum requirements: 8GB RAM, 4-core CPU, dedicated GPU recommended for advanced features. The application is optimized to run efficiently even on older hardware.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA STRIP -->
+  <section class="py-24 bg-gradient-to-br from-orange-500 to-red-500 text-white">
+    <div class="max-w-4xl mx-auto text-center px-4">
+      <h2 class="text-5xl font-bold mb-6">Ready to Transform Your Workflow?</h2>
+      <p class="text-xl mb-10">Join thousands of engineers who have already revolutionized their creative process with FORGE.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button class="bg-white text-orange-700 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all cta-magnetic">Get Started Now</button>
+        <button class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/10 transition-all">Schedule a Demo</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-gray-900 text-white py-16">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center space-x-3 mb-6">
+            <div class="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center"><i data-lucide="zap" class="w-6 h-6 text-white"></i></div>
+            <span class="text-2xl font-bold">FORGE</span>
+          </div>
+          <p class="text-gray-400 mb-6">The ultimate creative intelligence platform for modern engineers and designers.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors"><i data-lucide="github" class="w-5 h-5"></i></a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Product</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Features</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Pricing</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Use Cases</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Integrations</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Resources</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Documentation</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Tutorials</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Blog</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Support</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-6">Company</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">About</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Careers</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Legal</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400">© 2025 FORGE. All rights reserved.</p>
+        <div class="flex space-x-6 mt-4 md:mt-0">
+          <a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+          <a href="#" class="text-gray-400 hover:text-white transition-colors">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    // Tabs
+    document.querySelectorAll('.feature-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.feature-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        document.querySelectorAll('.feature-content').forEach(c => c.classList.add('hidden'));
+        const tabName = tab.getAttribute('data-tab');
+        document.getElementById(tabName).classList.remove('hidden');
+      });
+    });
+
+    // FAQ
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        const a = q.nextElementSibling;
+        const icon = q.querySelector('i');
+        q.classList.toggle('open');
+        a.classList.toggle('open');
+      });
+    });
+
+    // Chart
+    const learningCtx = document.getElementById('learningChart').getContext('2d');
+    const learningChart = new Chart(learningCtx, {
+      type: 'line',
+      data: {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+        datasets: [{
+          label: 'Workflow Efficiency',
+          data: [30,45,60,75,85,95],
+          borderColor: '#ff9500',
+          backgroundColor: 'rgba(255,149,0,0.1)',
+          tension: 0.4,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: { color: '#d4c8b0', callback: v => v + '%' },
+            grid: { color: 'rgba(255,255,255,0.08)' }
+          },
+          x: {
+            ticks: { color: '#d4c8b0' },
+            grid: { color: 'rgba(255,255,255,0.06)' }
+          }
+        }
+      }
+    });
+
+    // Theme signal
+    window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: 'dark' } }));
+
+    // Gemini API Integration (preserved from old file)
+    const apiKey = "AIzaSyBrdOKnfGUER2saF3Mw1826VN8ktpnakjc";
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+    async function callGemini(prompt, outputElement, buttonElement) {
+      outputElement.classList.remove('hidden');
+      outputElement.textContent = 'Generiram odgovor...';
+      buttonElement.disabled = true;
+      const payload = { contents: [{ parts: [{ text: prompt }] }] };
+      try {
+        const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        if (!response.ok) throw new Error(`API klic neuspešen: ${response.statusText}`);
+        const result = await response.json();
+        const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+        outputElement.textContent = text || 'Napaka: Odgovor ni vseboval pričakovanega teksta.';
+      } catch (error) {
+        console.error('Napaka pri klicu Gemini API:', error);
+        outputElement.textContent = `Napaka pri povezovanju z AI. Poskusi znova kasneje. (${error.message})`;
+      } finally {
+        buttonElement.disabled = false;
+      }
+    }
+
+    document.getElementById('generate-structure-btn').addEventListener('click', () => {
+      const idea = document.getElementById('project-idea-input').value;
+      const out = document.getElementById('project-structure-output');
+      if (!idea) { out.classList.remove('hidden'); out.textContent = 'Prosim, vpiši idejo za projekt.'; return; }
+      const prompt = `Kot izkušen 3D oblikovalec in vodja projektov, generiraj predlagano strukturo map in kratek, jedrnat opis za projekt z idejo: "${idea}". Struktura naj bo logična in razširljiva. Prikaži jo kot drevo z uporabo znakov, kot so '├──' in '└──'.`;
+      callGemini(prompt, out, document.getElementById('generate-structure-btn'));
+    });
+
+    document.getElementById('generate-summary-btn').addEventListener('click', () => {
+      const specs = document.getElementById('tech-specs-input').value;
+      const out = document.getElementById('tech-summary-output');
+      if (!specs) { out.classList.remove('hidden'); out.textContent = 'Prosim, vnesi tehnične podatke.'; return; }
+      const prompt = `Pretvori naslednje tehnične specifikacije 3D modela v jedrnat, človeku berljiv povzetek z nasvetom za uporabo. Specifikacije: "${specs}"`;
+      callGemini(prompt, out, document.getElementById('generate-summary-btn'));
+    });
+
+    document.getElementById('ask-assistant-btn').addEventListener('click', () => {
+      const q = document.getElementById('assistant-question-input').value;
+      const out = document.getElementById('assistant-answer-output');
+      if (!q) { out.classList.remove('hidden'); out.textContent = 'Prosim, postavi vprašanje.'; return; }
+      const prompt = `Deluješ kot izkušen AI pomočnik z imenom "FORGE". Na kratko in jedrnato odgovori na naslednje vprašanje uporabnika: "${q}"`;
+      callGemini(prompt, out, document.getElementById('ask-assistant-btn'));
+    });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+
+  <!-- Ghostline Theme System -->
+  <script src="Saba_Place/ghostline-theme-toggle.js"></script>
+
+  <!-- Ghostline Signature -->
+  <div class="ghostline-signature">🜂 FORGE × GHOSTLINE v3.0 | Industry 5.0 Powered by Brotherhood 🔥</div>
 </body>
 </html>
