@@ -55,7 +55,7 @@ def log_command(command: str, result: CommandResult, log_path: Path) -> None:
 
     log_path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
-        "timestamp": _dt.datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+        "timestamp": _dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
         "command": command,
         "success": result.success,
         "message": result.message,
