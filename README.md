@@ -54,6 +54,24 @@ npm run build
 npm run preview
 ```
 
+### Remote nerve commands
+
+The `scripts/execute_nerve.py` utility exposes a tiny command surface that can
+be triggered from remote devices (for example via SSH shortcuts on mobile) to
+run curated maintenance actions inside the checkout and append the result to a
+JSONL log for later inspection.
+
+```
+python3 scripts/execute_nerve.py "check status"
+```
+
+Environment variables:
+
+* `VES_ROOT` – override the repository path when executing commands from
+  outside the checkout.
+* `VES_NERVE_LOG` – custom path for the command log (defaults to
+  `artifacts/nerve_commands.jsonl`).
+
 ---
 
 ## 🏛️ The 23 Unified Worlds
