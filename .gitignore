@@ -50,3 +50,5 @@ Thumbs.db
 
 # Arch Linux package directory (local only - not needed in repo)
 claude-desktop-arch/
+# Nerve command logs (generated at runtime)
+artifacts/nerve_commands.jsonl
