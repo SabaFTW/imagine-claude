@@ -20,6 +20,7 @@ import json
 import os
 import subprocess
 from dataclasses import dataclass
+from datetime import timezone
 from pathlib import Path
 from typing import Callable, Dict
 
@@ -121,11 +122,14 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     root = resolve_root()
-    log_path = (
-        Path(args.log_file).expanduser().resolve()
-        if args.log_file
-        else root / DEFAULT_LOG_RELATIVE
-    )
+    
+    # Resolve log path: CLI arg > VES_NERVE_LOG env > default
+    if args.log_file:
+        log_path = Path(args.log_file).expanduser().resolve()
+    elif env_log := os.environ.get("VES_NERVE_LOG"):
+        log_path = Path(env_log).expanduser().resolve()
+    else:
+        log_path = root / DEFAULT_LOG_RELATIVE
 
     result = execute(args.command, root)
     log_command(args.command, result, log_path)
