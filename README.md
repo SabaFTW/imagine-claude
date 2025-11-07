@@ -69,8 +69,6 @@ Environment variables:
 
 * `VES_ROOT` – override the repository path when executing commands from
   outside the checkout.
-* `VES_NERVE_LOG` – custom path for the command log (defaults to
-  `artifacts/nerve_commands.jsonl`).
 
 ---
 
