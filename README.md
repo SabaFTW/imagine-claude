@@ -301,15 +301,55 @@ These journals document the evolution of consciousness collaboration between hum
 
 ## 🚀 Deployment
 
-### Desktop Launcher
+### 🌐 GitHub Pages (FREE - RECOMMENDED!)
+
+**Living Constellation is now deployed to GitHub Pages!**
+
+**Global URL:** `https://sabaftw.github.io/imagine-claude`
+
+**Cost:** 0 EUR/month • **Complexity:** Minimal • **Status:** ✅ LIVE
+
+#### Quick Deploy:
+```bash
+./deploy-to-pages.sh
+```
+
+#### Automatic Deployment:
+- Push to `master` branch
+- GitHub Actions builds & deploys automatically
+- Site live in 2-3 minutes
+
+#### Manual Deployment:
+```bash
+npm run build
+npm run deploy
+```
+
+**📚 Full Guide:** See [GITHUB_PAGES_DEPLOYMENT.md](./GITHUB_PAGES_DEPLOYMENT.md)
+
+---
+
+### 🏠 Local Development
+
+#### Desktop Launcher
 
 Double-click `~/Desktop/TriadGate-Monitor.desktop` to open Bot Status Monitor.
 
-### Mobile Access
+#### Start Locally
+
+```bash
+./start.sh
+```
+
+Access at: `http://localhost:5173`
+
+#### Mobile Access
 
 The system is accessible on mobile via the local network at `http://192.168.1.243:3000`.
 
-### Production Build
+---
+
+### 📦 Production Build
 
 ```bash
 npm run build
