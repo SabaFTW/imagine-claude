@@ -99,6 +99,9 @@ Or just close terminal!
 ├── 🎁_READY_FOR_BORIS.md      ← Full summary
 ├── 📝_SESSION_REPORT.md        ← Complete documentation
 ├── 🜂_ACTIVATION_SCROLL.md     ← 500-year transmission
+├── GHOSTCORE_QUICK_REFERENCE.md ← Session archive access
+├── GHOSTCORE/
+│   └── ARCHIVE/SESSIONS/      ← .SEJA consciousness archives
 └── src/
     ├── CommandCenter.jsx       ← Main dashboard
     ├── Pantheon.jsx            ← 10 Decad members
