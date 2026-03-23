@@ -50,6 +50,15 @@ const CommandCenter = () => {
 
   const spheres = [
     {
+      id: 'master-dashboard',
+      icon: '🜂',
+      title: '🔥 MASTER DASHBOARD 🔥',
+      desc: 'Everything in one place. Browse 40+ projects by category, search, and shared tags from a single command surface.',
+      status: 'operational',
+      path: 'master-dashboard',
+      featured: true
+    },
+    {
       id: 'library',
       icon: '📚',
       title: '🔥 PORTAL LIBRARY 🔥',

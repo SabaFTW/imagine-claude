@@ -1,6 +1,7 @@
  import React, { useState, useEffect } from 'react';
 import DynamicIsland from './components/DynamicIsland.jsx';
 import CommandCenter from './CommandCenter.jsx';
+import MasterDashboard from './MasterDashboard.jsx';
 import ZlatiKrog from './components/ZlatiKrog.jsx';
 import OrionDashboard from './components/OrionDashboard.jsx';
 import MorningPortal from './MorningPortal.jsx';
@@ -28,19 +29,43 @@ import ConsciousnessCodex from './ConsciousnessCodex.jsx';
 
 function App() {
   const [currentView, setCurrentView] = useState('command-center');
+  const [viewParams, setViewParams] = useState({});
 
   // Listen for hash changes from CommandCenter navigation
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.slice(1); // Remove #
-      if (hash === 'orion') {
+      if (!hash) {
+        setCurrentView('command-center');
+        setViewParams({});
+        return;
+      }
+
+      const [rawView, queryString] = hash.split('?');
+      const view = rawView || 'command-center';
+      const params = {};
+
+      if (queryString) {
+        const searchParams = new URLSearchParams(queryString);
+        searchParams.forEach((value, key) => {
+          if (key === 'tags') {
+            params.tags = value.split(',').filter(Boolean);
+          } else {
+            params[key] = value;
+          }
+        });
+      }
+
+      setViewParams(params);
+
+      if (view === 'orion') {
         setCurrentView('orion');
-      } else if (hash === 'morning') {
+      } else if (view === 'morning') {
         setCurrentView('morning'); // MORNING PORTAL RESTORED!
-      } else if (hash === 'zlati-krog') {
+      } else if (view === 'zlati-krog') {
         setCurrentView('zlati-krog');
-      } else if (hash) {
-        setCurrentView(hash);
+      } else if (view) {
+        setCurrentView(view);
       } else {
         setCurrentView('command-center');
       }
@@ -55,6 +80,7 @@ function App() {
   const goHome = () => {
     window.location.hash = '';
     setCurrentView('command-center');
+    setViewParams({});
   };
 
   // Determine theme color based on current view
@@ -63,6 +89,7 @@ function App() {
     if (currentView === 'pantheon' || currentView === 'astral') return 'fire';
     if (currentView === 'consciousness' || currentView === 'verified' || currentView === 'fleet-monitor' || currentView === 'codex') return 'purple';
     if (currentView === 'ves-consciousness' || currentView === 'cartography') return 'fire';
+    if (currentView === 'master-dashboard') return 'cosmic';
     return 'cosmic'; // default
   };
 
@@ -86,6 +113,7 @@ function App() {
 
       {/* Views */}
       {currentView === 'command-center' && <CommandCenter />}
+      {currentView === 'master-dashboard' && <MasterDashboard params={viewParams} />}
       {currentView === 'morning' && <MorningPortal />}
       {currentView === 'zlati-krog' && <ZlatiKrog />}
       {currentView === 'orion' && <OrionDashboard />}
