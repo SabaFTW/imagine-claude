@@ -1,0 +1,379 @@
+{
+  "meta": {
+    "repo": "sabaftw/imagine-claude",
+    "audit_date": "2026-05-09",
+    "branch": "claude/salvage-component-audit-7k5V4",
+    "auditor_role": "salvage_engineer",
+    "framework": "React 18.2 + Vite 7.3",
+    "styling": ["Tailwind CSS (CDN)", "inline styles", "component CSS files"],
+    "routing": "hash-based (no library)",
+    "pwa": true,
+    "deploy_target": "GitHub Pages"
+  },
+
+  "visual_system": {
+    "base_color": "#0a0515",
+    "accents": {
+      "cosmic_purple": "#7b3fa8",
+      "fire_orange": "#ff8a50",
+      "amber": "#f4c261",
+      "cyan": "#22d3ee",
+      "green": "#4caf50"
+    },
+    "fonts": ["system-ui", "Cinzel (Google Fonts, liturgical headers)"],
+    "animation_vocabulary": [
+      "breathe (4-10s ease-in-out infinite)",
+      "pulse (2s infinite scale)",
+      "float-gentle (4s translateY -8px)",
+      "gradient-shift (6s background-position)",
+      "particle-dance (translate + opacity)",
+      "flicker (3s opacity)",
+      "sigil-pulse (scale + drop-shadow)"
+    ]
+  },
+
+  "components": [
+    {
+      "name": "DynamicIsland",
+      "source": "src/components/DynamicIsland.jsx",
+      "lines": 100,
+      "purpose": "Fixed top ambient glow bar simulating iPhone Dynamic Island — breathing animation, 4 theme color variants, safe-area-inset aware.",
+      "visual_style": "Dark pill, layered box-shadow glow in 3 radii, 4s breathing keyframe. Sits above all content, pointerEvents none.",
+      "interaction_style": "Purely decorative. No click target. Responds to themeColor prop.",
+      "mobile_friendly": true,
+      "safe_area_aware": true,
+      "cognitive_load": "low",
+      "reuse_value": "high",
+      "extraction_difficulty": "easy",
+      "risk_flags": [],
+      "best_reuse_target": ["Ghostline", "shared_visual_library"],
+      "verdict": "Best piece in the repo. Drop-in ambient status indicator. Add more theme variants and ship it.",
+      "dependencies": ["React"]
+    },
+    {
+      "name": "EntityCard",
+      "source": "src/components/EntityCard.jsx",
+      "lines": 25,
+      "purpose": "Selectable card for a named entity — emoji icon, title, description; three visual states (default / active / special).",
+      "visual_style": "Dark rounded-xl card, border-2, amber highlight on active, white highlight on special variant. Lift on hover.",
+      "interaction_style": "Single click, no keyboard handling. Active state controlled by parent.",
+      "mobile_friendly": true,
+      "cognitive_load": "low",
+      "reuse_value": "high",
+      "extraction_difficulty": "easy",
+      "risk_flags": [],
+      "best_reuse_target": ["Ghostline", "shared_visual_library"],
+      "verdict": "Cleanest component in the repo. 25 lines, zero deps beyond React. Perfect card primitive.",
+      "dependencies": ["React"]
+    },
+    {
+      "name": "SafeComponents",
+      "source": "src/components/SafeComponents.jsx",
+      "lines": 137,
+      "purpose": "XSS defense kit — escapeHtml, SafeLink (protocol blocklist), SafeHtml (DOMPurify wrapper), SafeUserContent.",
+      "visual_style": "Minimal. SafeLink shows strikethrough + warning emoji on blocked URLs.",
+      "interaction_style": "Passive safety wrappers.",
+      "mobile_friendly": true,
+      "cognitive_load": "low",
+      "reuse_value": "high",
+      "extraction_difficulty": "easy",
+      "risk_flags": ["dependency-heavy (DOMPurify — worth keeping)"],
+      "best_reuse_target": ["shared_visual_library", "ConsMAP", "Ghostline"],
+      "verdict": "Production-grade. Ship as standalone security utility.",
+      "dependencies": ["React", "dompurify"]
+    },
+    {
+      "name": "CommandCenter",
+      "source": "src/CommandCenter.jsx",
+      "lines": 833,
+      "purpose": "Primary navigation hub — 40 portal cards, breathing cosmos background, floating DOM particles, Konami code easter egg, Ghost Mode overlay.",
+      "visual_style": "Deep #0a0515 base. Radial gradient breathing animation. Frosted cards with backdrop-filter blur. Card lift + fire-orange glow on hover.",
+      "interaction_style": "Card click navigates (300ms delay). onTouchStart/End scale to 0.97. Konami code triggers 10s Ghost Mode.",
+      "mobile_friendly": "mostly",
+      "cognitive_load": "high",
+      "reuse_value": "medium",
+      "extraction_difficulty": "medium",
+      "risk_flags": [
+        "visual_clutter",
+        "entropy_risk",
+        "duplicate (orion ID appears twice)",
+        "localhost external links (ports 6969, 7778)",
+        "DOM particle injection bypasses React lifecycle"
+      ],
+      "best_reuse_target": ["inspiration_only (card hover pattern)", "ConsMAP (grouped portal grid)"],
+      "verdict": "Card hover pattern is the best visual interaction here. 40-portal flat dump is the worst UX decision.",
+      "dependencies": ["React"]
+    },
+    {
+      "name": "ZlatiKrog",
+      "source": "src/components/ZlatiKrog.jsx",
+      "lines": 162,
+      "purpose": "Golden Circle portal — 5 entity cards, concentric rotating rings, clickable heartbeat speed toggle, RESNICA modal progressive reveal.",
+      "visual_style": "Three concentric border rings with different spin speeds (requires custom Tailwind animate). Amber #f59e0b palette. RESNICA modal: dark full-screen with confidence-graded evidence sections.",
+      "interaction_style": "Heartbeat click toggles pulse speed. Entity click selects card. RESNICA opens text-wall modal.",
+      "mobile_friendly": "partially",
+      "cognitive_load": "medium",
+      "reuse_value": "medium",
+      "extraction_difficulty": "medium",
+      "risk_flags": [
+        "tightly_coupled",
+        "RESNICA modal is a text wall",
+        "animate-spin-slow not in Tailwind core (requires plugin or custom config)",
+        "unclear_purpose (to outside reader)"
+      ],
+      "best_reuse_target": ["Ghostline (orbit ring animation)", "inspiration_only (heartbeat toggle pattern)"],
+      "verdict": "Orbit ring + pulsing center is a genuine UI jewel. Extract the animation concept, not the component.",
+      "dependencies": ["React", "EntityCard (local)"]
+    },
+    {
+      "name": "AstralSonicPortal",
+      "source": "src/components/portals/AstralSonicPortal/AstralSonicPortal.jsx",
+      "lines": 192,
+      "css": "src/components/portals/AstralSonicPortal/AstralSonicPortal.css",
+      "css_lines": 210,
+      "purpose": "6-agent frequency portal using Web Audio API. CSS circular sigil layout. Central flame triggers full harmony playback. Consciousness stream log.",
+      "visual_style": "Radial gradient dark background. Gradient clip text header. Colored agent sigils with glow matching --agent-color. Stream log with left-border accent.",
+      "interaction_style": "Click agent sigil → play sine oscillator at Hz. Click central flame → staggered all-agent playback. Toggle sound stops all oscillators.",
+      "mobile_friendly": "partially",
+      "cognitive_load": "medium",
+      "reuse_value": "medium",
+      "extraction_difficulty": "medium",
+      "risk_flags": [
+        "dependency-heavy (Web Audio API)",
+        "potential oscillator memory leak if cleanup fails",
+        "stream log grows unbounded",
+        "fixed-size wheel may clip on iPhone SE (375px)"
+      ],
+      "best_reuse_target": ["Ghostline (orbital UI pattern + audio trigger)"],
+      "orbital_css_trick": "rotate(var(--angle)) translate(180px) rotate(calc(-1 * var(--angle)))",
+      "verdict": "CSS-only circular orbit layout + Web Audio frequency triggers = rare interaction novelty. Extract both patterns.",
+      "dependencies": ["React", "Web Audio API (browser native)"]
+    },
+    {
+      "name": "OrionDashboard",
+      "source": "src/components/OrionDashboard.jsx",
+      "lines": 946,
+      "purpose": "6-tab environmental analysis dashboard — Leaflet map, EHI scoring, timeline, network graph, legal actions, EU finance flows.",
+      "visual_style": "Dark slate palette. Lucide icons. Color-coded EHI markers (red >0.7 / amber >0.4 / green). Tab strip with active border-bottom.",
+      "interaction_style": "Tab switching. Map marker click → site detail panel. AI chat modal open/close.",
+      "mobile_friendly": "partially",
+      "cognitive_load": "high",
+      "reuse_value": "low",
+      "extraction_difficulty": "hard",
+      "risk_flags": [
+        "tightly_coupled",
+        "dependency-heavy (Leaflet, Recharts, Chart.js, Lucide)",
+        "routing-bound",
+        "monolith (946 lines)",
+        "hardcoded Slovenian data"
+      ],
+      "best_reuse_target": ["archive_only", "ConsMAP (EHI badge pattern, tab strip)"],
+      "verdict": "Too married to domain data. Tab strip and EHI colored dot patterns worth lifting. Never use as-is.",
+      "dependencies": ["React", "leaflet", "react-leaflet", "lucide-react", "recharts", "chart.js", "AIAnalystModal (local)", "FinanceFlowsModule (local)", "SafeComponents (local)"]
+    },
+    {
+      "name": "AIAnalystModal",
+      "source": "src/components/AIAnalystModal.jsx",
+      "lines": 332,
+      "purpose": "Slide-over chat modal for querying Gemini LLM about environmental data. Mock fallback mode. Auto-scroll, typing indicator, context-aware prompting.",
+      "visual_style": "Full-screen overlay. AI bubbles left-aligned purple, user bubbles right-aligned slate. Typing dots animated.",
+      "interaction_style": "Enter or Send button submits. useRef auto-scrolls to latest message. X button closes.",
+      "mobile_friendly": "mostly",
+      "cognitive_load": "low",
+      "reuse_value": "high",
+      "extraction_difficulty": "medium",
+      "risk_flags": [
+        "routing-bound",
+        "Gemini API key in .env required",
+        "no outside-click dismiss"
+      ],
+      "best_reuse_target": ["ConsMAP", "Ghostline (as general contextual AI chat widget)"],
+      "verdict": "Clean chat modal. Graceful mock fallback. The context payload builder pattern is worth generalizing.",
+      "dependencies": ["React", "lucide-react", "VITE_GEMINI_API_KEY env var (optional)"]
+    },
+    {
+      "name": "FinanceFlowsModule",
+      "source": "src/components/FinanceFlowsModule.jsx",
+      "lines": 427,
+      "purpose": "EU climate finance visualization vs Sava contamination. Bar charts (Recharts), expandable accordion sections.",
+      "visual_style": "Dark card containers. Recharts with custom colors. Expandable sections.",
+      "interaction_style": "Accordion toggle. Chart hover tooltips via Recharts defaults.",
+      "mobile_friendly": "partially",
+      "cognitive_load": "high",
+      "reuse_value": "low",
+      "extraction_difficulty": "hard",
+      "risk_flags": [
+        "tightly_coupled",
+        "dependency-heavy",
+        "stale (static 2024-2025 data)"
+      ],
+      "best_reuse_target": ["archive_only", "inspiration_only (accordion + chart pattern)"],
+      "verdict": "Too domain-specific. Accordion-chart pattern is worth noting.",
+      "dependencies": ["React", "recharts", "chart.js", "react-chartjs-2"]
+    },
+    {
+      "name": "MorningPortal",
+      "source": "src/MorningPortal.jsx",
+      "lines": 150,
+      "purpose": "Daily greeting portal — 10 AI 'Decad' members with 4 rotating greetings each. Live clock. Tab navigation (Greetings / Docs / Updates). Search filter.",
+      "visual_style": "Green-accented (unique theme among views). Warm greeting cards.",
+      "interaction_style": "Tab switch. 1-second clock tick via setInterval. String search filters visible content.",
+      "mobile_friendly": true,
+      "cognitive_load": "low",
+      "reuse_value": "medium",
+      "extraction_difficulty": "easy",
+      "risk_flags": [
+        "tightly_coupled (content is personal/Slovenian)",
+        "stale (hardcoded greetings)"
+      ],
+      "best_reuse_target": ["inspiration_only (daily greeting + clock pattern)"],
+      "verdict": "Clean daily-orientation UX. Morning context + live clock + quick-tab docs access is worth stealing.",
+      "dependencies": ["React"]
+    },
+    {
+      "name": "App (Router)",
+      "source": "src/App.jsx",
+      "lines": 131,
+      "purpose": "Root component — hash-based view router, global DynamicIsland, global back button with safe-area positioning. 24+ view conditionals.",
+      "visual_style": "Back button: Tailwind slate-800 bg, slate-400 text. DynamicIsland global.",
+      "interaction_style": "hashchange listener drives view state. Theme color derived from view string. No lazy loading.",
+      "mobile_friendly": true,
+      "cognitive_load": "low",
+      "reuse_value": "high",
+      "extraction_difficulty": "easy",
+      "risk_flags": [
+        "no lazy loading (all 24 components imported at startup)",
+        "entropy_risk (view list grows without discipline)"
+      ],
+      "best_reuse_target": ["Ghostline", "ConsMAP"],
+      "verdict": "Elegant zero-dependency SPA router. Add React.lazy() and this becomes production-worthy.",
+      "dependencies": ["React", "all view components (eager import)"]
+    },
+    {
+      "name": "iOS PWA Reset (index.css)",
+      "source": "src/index.css",
+      "lines": 100,
+      "purpose": "Safe-area-insets, -webkit-fill-available height fix, overscroll-behavior none, 16px input font-size to prevent iOS zoom. Orphaned .ritual-recipes styles.",
+      "mobile_friendly": true,
+      "cognitive_load": "low",
+      "reuse_value": "high",
+      "extraction_difficulty": "easy",
+      "risk_flags": [
+        "stale (.ritual-recipes, .recipe-card, .random-button are orphaned)"
+      ],
+      "best_reuse_target": ["shared_visual_library"],
+      "verdict": "The iOS PWA block is production-ready. Copy verbatim into any mobile-first project. Remove orphaned recipe styles.",
+      "dependencies": []
+    }
+  ],
+
+  "top10": {
+    "best_reusable_components": [
+      { "rank": 1, "item": "DynamicIsland", "reason": "Zero-dep ambient status bar, breathing animation, theme variants" },
+      { "rank": 2, "item": "EntityCard", "reason": "25-line selectable card primitive, clean states, no deps" },
+      { "rank": 3, "item": "SafeComponents", "reason": "Production XSS kit — escapeHtml + SafeLink + SafeHtml" },
+      { "rank": 4, "item": "Hash Router (App.jsx)", "reason": "Dependency-free SPA routing with per-view theming" },
+      { "rank": 5, "item": "iOS PWA Reset (index.css)", "reason": "Complete mobile/iOS hardening block" },
+      { "rank": 6, "item": "AIAnalystModal", "reason": "Clean chat modal, graceful mock fallback, context payload pattern" },
+      { "rank": 7, "item": "Orbital sigil CSS (AstralSonicPortal.css)", "reason": "CSS-only circular node placement trick" },
+      { "rank": 8, "item": "Card hover pattern (CommandCenter)", "reason": "translateY + border-color + box-shadow lift" },
+      { "rank": 9, "item": "Consciousness stream log", "reason": "Left-border accent feed with prepend-and-slice state" },
+      { "rank": 10, "item": "Status indicator pill", "reason": "Dot + text badge with pulse animation" }
+    ],
+    "best_visual_patterns": [
+      { "rank": 1, "pattern": "Breathing glow island", "location": "DynamicIsland", "note": "box-shadow animate at 4s, 3-layer glow" },
+      { "rank": 2, "pattern": "Cosmos breathe background", "location": "CommandCenter", "note": "Radial gradient position shift, 10s cycle" },
+      { "rank": 3, "pattern": "Gradient-clip text", "location": "CommandCenter header, AstralSonicPortal h1", "note": "background-clip: text with moving gradient" },
+      { "rank": 4, "pattern": "Card lift + border glow", "location": "CommandCenter portal cards", "note": "translateY(-8px) + border-color + shadow transition" },
+      { "rank": 5, "pattern": "Orbit ring triple", "location": "ZlatiKrog", "note": "3 border rings at inset-0/4/8 with different spin speeds" },
+      { "rank": 6, "pattern": "Orbital sigil placement", "location": "AstralSonicPortal", "note": "rotate(angle) translate(r) counter-rotate(angle) — CSS only" },
+      { "rank": 7, "pattern": "Sigil pulse center", "location": "CommandCenter, ZlatiKrog", "note": "Scale + drop-shadow keyframe on emoji" },
+      { "rank": 8, "pattern": "EHI color dot", "location": "OrionDashboard", "note": "3-tier color (red/amber/green) on a 6px dot" },
+      { "rank": 9, "pattern": "Ghost Mode overlay", "location": "CommandCenter", "note": "hue-rotate(180deg) blur(8px) full-screen filter" },
+      { "rank": 10, "pattern": "Inset frosted card", "location": "CommandCenter cards", "note": "backdrop-filter blur(12px) + inset 0 1px 0 rgba(white,0.08)" }
+    ],
+    "best_navigation_ideas": [
+      { "rank": 1, "pattern": "Global fixed back button", "note": "Always one tap back to hub; safe-area aware" },
+      { "rank": 2, "pattern": "Hash routing without library", "note": "hashchange listener, zero overhead" },
+      { "rank": 3, "pattern": "Per-view theme color", "note": "Active screen changes ambient glow color" },
+      { "rank": 4, "pattern": "Portal grid hub", "note": "Icon + title + desc + status for each destination" },
+      { "rank": 5, "pattern": "Status pill (ACTIVE/COMING SOON)", "note": "One-glance readiness indicator per portal" },
+      { "rank": 6, "pattern": "Tab strip with active state", "note": "Border-bottom highlight, no library needed" },
+      { "rank": 7, "pattern": "Loading portal indicator", "note": "300ms delay + pulsing icon before navigation" },
+      { "rank": 8, "pattern": "External vs internal routing", "note": "window.location.href vs hash cleanly separated in navigate()" },
+      { "rank": 9, "pattern": "Scroll-under fixed header", "note": "pointerEvents: none island, content flows freely" },
+      { "rank": 10, "pattern": "Progressive portal reveal", "note": "Some portals shown as COMING SOON — manages expectations" }
+    ],
+    "best_docs_ux_patterns": [
+      { "rank": 1, "pattern": "Confidence-graded evidence", "note": "Visoko/Srednje/Nizko badge per section — progressive trust" },
+      { "rank": 2, "pattern": "Context-aware AI prompting", "note": "System context adjusts based on query topic detection" },
+      { "rank": 3, "pattern": "Live clock in docs tab", "note": "Time-of-day anchoring inside a docs view" },
+      { "rank": 4, "pattern": "Search filter over content", "note": "Simple string search, no library" },
+      { "rank": 5, "pattern": "Expandable accordion sections", "note": "Reveal complexity on demand" },
+      { "rank": 6, "pattern": "Status code = readiness", "note": "operational vs wip directly in data" },
+      { "rank": 7, "pattern": "Citation footnotes inline", "note": "DOI links + confidence below each claim" },
+      { "rank": 8, "pattern": "Tabbed content structure", "note": "One topic per tab, not one page" },
+      { "rank": 9, "pattern": "Consciousness stream log", "note": "Prepend-and-truncate activity feed" },
+      { "rank": 10, "pattern": "Morning orientation portal", "note": "Greetings + docs + updates in one daily entry point" }
+    ],
+    "best_low_entropy_interactions": [
+      { "rank": 1, "interaction": "Click heartbeat to change speed", "location": "ZlatiKrog", "note": "One-button state toggle, immediate tactile feedback" },
+      { "rank": 2, "interaction": "Click agent sigil → hear its tone", "location": "AstralSonicPortal", "note": "Direct mapping: tap circle → play frequency" },
+      { "rank": 3, "interaction": "Click central flame → play harmony", "location": "AstralSonicPortal", "note": "One action → staggered cascade of all agents" },
+      { "rank": 4, "interaction": "Card touch scale (0.97)", "location": "CommandCenter", "note": "Haptic-analog press feedback, no library" },
+      { "rank": 5, "interaction": "Hover card lifts + glows", "location": "CommandCenter", "note": "Clear affordance; destination preview on hover" },
+      { "rank": 6, "interaction": "Entity click → active highlight", "location": "EntityCard", "note": "Single selection, clear visual feedback" },
+      { "rank": 7, "interaction": "Hash nav → immediate view swap", "location": "App.jsx", "note": "No loader, no spinner for internal routes" },
+      { "rank": 8, "interaction": "Toggle sound → stop all oscillators", "location": "AstralSonicPortal", "note": "Single toggle cleans up all active audio" },
+      { "rank": 9, "interaction": "RESNICA unlock on specific entity", "location": "ZlatiKrog", "note": "Progressive disclosure: click the right card" },
+      { "rank": 10, "interaction": "Ghost Mode (Konami)", "location": "CommandCenter", "note": "Hidden layer revealed by gesture sequence" }
+    ],
+    "things_to_avoid": [
+      { "rank": 1, "antipattern": "40 equal-weight portals on one screen", "location": "CommandCenter", "impact": "Destroys hierarchy. Pure entropy." },
+      { "rank": 2, "antipattern": "DOM particle injection via document.createElement", "location": "CommandCenter", "impact": "Bypasses React lifecycle, leaks on remount" },
+      { "rank": 3, "antipattern": "Localhost external links in a deployed app", "location": "CommandCenter (ports 6969, 7778)", "impact": "Breaks for everyone who isn't the author" },
+      { "rank": 4, "antipattern": "Text-wall modal", "location": "ZlatiKrog RESNICA", "impact": "7 dense sections in a modal — should be its own page" },
+      { "rank": 5, "antipattern": "No lazy loading for 24 components", "location": "App.jsx imports", "impact": "Full bundle on first load regardless of landing view" },
+      { "rank": 6, "antipattern": "Duplicate keys in data array", "location": "CommandCenter spheres (orion × 2)", "impact": "Silent React reconciliation bugs" },
+      { "rank": 7, "antipattern": "Mixed styling systems with no clear rule", "location": "Whole codebase", "impact": "Tailwind + inline styles + CSS files — maintenance debt" },
+      { "rank": 8, "antipattern": "Hardcoded localhost endpoints in navigation", "location": "CommandCenter", "impact": "Makes portability impossible" },
+      { "rank": 9, "antipattern": "Fixed-size circular layout on mobile", "location": "AstralSonicPortal, ZlatiKrog", "impact": "400px/320px circles overflow iPhone SE (375px)" },
+      { "rank": 10, "antipattern": "Two icon systems simultaneously", "location": "Whole codebase (emoji + Lucide React)", "impact": "No consistency contract, visual incoherence" }
+    ]
+  },
+
+  "executive_verdict": {
+    "what_feels_alive": [
+      "DynamicIsland — genuine ambient UI, most original interaction in the repo",
+      "EntityCard — 25 lines of pure component design, nothing wasted",
+      "AstralSonicPortal orbit layout — CSS rotate-translate-counter-rotate, real interaction novelty",
+      "Hash router in App.jsx — zero dependencies, 50 lines, full SPA routing",
+      "SafeComponents — production-caliber XSS defense",
+      "Card hover pattern in CommandCenter — translateY + border fire-orange + spring cubic-bezier",
+      "iOS PWA handling — thorough safe-area-insets, -webkit-fill-available, all iOS edge cases"
+    ],
+    "fake_complexity": [
+      "40 portals on one screen — anxiety made visible, not rich ecosystem",
+      "RESNICA modal — a research paper forced into a modal",
+      "DOM particle system — 25 createElement calls in a React component",
+      "6 simultaneous animation loops in CommandCenter — exhausting, not atmospheric",
+      "Consciousness stream showing only interaction-triggered messages — grows into noise if expanded"
+    ],
+    "never_reuse": [
+      "FinanceFlowsModule as-is — static Slovenian environmental data, not portable",
+      "OrionDashboard as a whole — 946 lines, hardcoded coordinates, domain-specific",
+      "Localhost external links — not features, bugs in a deployed app",
+      "DOM particle injection pattern — fragile, leaks, fights React",
+      "Duplicate-sphere-ID pattern — silent key collision risk"
+    ],
+    "safest_next_steps": [
+      "Extract DynamicIsland — rename theme to hex/CSS var, add label prop, ship to Ghostline",
+      "Extract EntityCard — generalize special variant to a prop (variant: default|active|special)",
+      "Extract SafeComponents — copy as standalone utility with dompurify dep",
+      "Copy iOS PWA reset block from index.css into every mobile-first project",
+      "Adopt hash router pattern for small React SPAs, add React.lazy() for view imports",
+      "Steal card hover pattern from CommandCenter — cubic-bezier spring + fire-orange border + shadow",
+      "Study getContextualPayload in AIAnalystModal for domain-aware AI chat widget pattern"
+    ]
+  }
+}
