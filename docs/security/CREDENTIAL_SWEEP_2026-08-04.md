@@ -49,15 +49,14 @@ A clean current tree must not be interpreted as proof that no historical copy ex
 
 A shared Gemini credential was copied across multiple public or legacy artifacts.
 
-Verified current-tree locations included:
+Verified current-tree locations:
 
 - `public/portals/dreem-journal.html`;
 - `public/portals/forge.html`;
 - `public/ghostcore-v3-unified.html`;
 - `public/portals/MANDALA_PANTEONA.html`;
 - `public/portals/forge_backup_OLD_INDUSTRY_5.html`;
-- `DUAL_PORTAL_DEPLOYMENT_SESSION.md`;
-- additional archived or duplicated text artifacts found by credential-pattern scanning.
+- `DUAL_PORTAL_DEPLOYMENT_SESSION.md`.
 
 **Required external action:** revoke or rotate this credential at the provider.
 
@@ -120,10 +119,10 @@ For both:
 - replaced the rune-oracle provider request with a local unavailable message;
 - retained non-AI visualization, practice, ledger, project, and interaction systems.
 
-### Deployment record and duplicated artifacts
+### Deployment record
 
 - added a dated remediation notice to `DUAL_PORTAL_DEPLOYMENT_SESSION.md`;
-- redacted concrete credential-shaped values from current-tree text artifacts;
+- redacted the concrete credential value;
 - corrected the claim that a public hardcoded credential was acceptable for demonstration or personal use.
 
 ---
