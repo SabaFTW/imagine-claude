@@ -172,7 +172,7 @@ def sanitize_ghostcore() -> None:
 
             function displayWhisper'''
     updated, count = rune_pattern.subn(rune_replacement, updated, count=1)
-    if count == 0 and "Oracle unavailable" not in updated:
+    if count == 0 and AI_UNAVAILABLE_EN not in updated:
         raise RuntimeError(f"Rune provider block not found in {path}")
 
     write_if_changed(path, original, updated)
