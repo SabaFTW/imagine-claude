@@ -854,86 +854,31 @@
             });
         });
 
-        // --- Gemini API Integration ---
-        const apiKey = "AIzaSyBrdOKnfGUER2saF3Mw1826VN8ktpnakjc";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+        // Public-client provider integration disabled.
+        const AI_UNAVAILABLE_MESSAGE = 'AI orodja niso na voljo. Varna povezava s ponudnikom ni nastavljena. Noben vnos ni bil poslan.';
 
-        async function callGemini(prompt, outputElement, buttonElement) {
+        function callGemini(_prompt, outputElement, buttonElement) {
             outputElement.classList.remove('hidden');
-            outputElement.textContent = 'Generiram odgovor...';
-            buttonElement.disabled = true;
-
-            const payload = {
-                contents: [{ parts: [{ text: prompt }] }],
-            };
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`API klic neuspešen: ${response.statusText}`);
-                }
-
-                const result = await response.json();
-                const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                if (text) {
-                    outputElement.textContent = text;
-                } else {
-                    outputElement.textContent = 'Napaka: Odgovor ni vseboval pričakovanega teksta.';
-                }
-            } catch (error) {
-                console.error('Napaka pri klicu Gemini API:', error);
-                outputElement.textContent = `Napaka pri povezovanju z AI. Poskusi znova kasneje. (${error.message})`;
-            } finally {
-                buttonElement.disabled = false;
+            outputElement.textContent = AI_UNAVAILABLE_MESSAGE;
+            if (buttonElement) {
+                buttonElement.disabled = true;
+                buttonElement.title = AI_UNAVAILABLE_MESSAGE;
             }
         }
 
-        // Feature 1: Generate Project Structure
         const generateStructureBtn = document.getElementById('generate-structure-btn');
         generateStructureBtn.addEventListener('click', () => {
-            const idea = document.getElementById('project-idea-input').value;
-            const outputEl = document.getElementById('project-structure-output');
-            if (!idea) {
-                outputEl.classList.remove('hidden');
-                outputEl.textContent = 'Prosim, vpiši idejo za projekt.';
-                return;
-            }
-            const prompt = `Kot izkušen 3D oblikovalec in vodja projektov, generiraj predlagano strukturo map in kratek, jedrnat opis za projekt z idejo: "${idea}". Struktura naj bo logična in razširljiva. Prikaži jo kot drevo z uporabo znakov, kot so '├──' in '└──'.`;
-            callGemini(prompt, outputEl, generateStructureBtn);
+            callGemini('', document.getElementById('project-structure-output'), generateStructureBtn);
         });
 
-        // Feature 2: Generate Technical Summary
         const generateSummaryBtn = document.getElementById('generate-summary-btn');
         generateSummaryBtn.addEventListener('click', () => {
-            const specs = document.getElementById('tech-specs-input').value;
-            const outputEl = document.getElementById('tech-summary-output');
-             if (!specs) {
-                outputEl.classList.remove('hidden');
-                outputEl.textContent = 'Prosim, vnesi tehnične podatke.';
-                return;
-            }
-            const prompt = `Pretvori naslednje tehnične specifikacije 3D modela v jedrnat, človeku berljiv povzetek z nasvetom za uporabo. Specifikacije: "${specs}"`;
-            callGemini(prompt, outputEl, generateSummaryBtn);
+            callGemini('', document.getElementById('tech-summary-output'), generateSummaryBtn);
         });
 
-        // Feature 3: Ask the Assistant
         const askAssistantBtn = document.getElementById('ask-assistant-btn');
         askAssistantBtn.addEventListener('click', () => {
-            const question = document.getElementById('assistant-question-input').value;
-            const outputEl = document.getElementById('assistant-answer-output');
-             if (!question) {
-                outputEl.classList.remove('hidden');
-                outputEl.textContent = 'Prosim, postavi vprašanje.';
-                return;
-            }
-            const prompt = `Deluješ kot izkušen AI pomočnik z imenom "FORGE". Na kratko in jedrnato odgovori na naslednje vprašanje uporabnika: "${question}"`;
-            callGemini(prompt, outputEl, askAssistantBtn);
+            callGemini('', document.getElementById('assistant-answer-output'), askAssistantBtn);
         });
 
         // Theme change handler for chart colors

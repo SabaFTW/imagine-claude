@@ -662,50 +662,31 @@
     // Theme signal
     window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: 'dark' } }));
 
-    // Gemini API Integration (preserved from old file)
-    const apiKey = "AIzaSyBrdOKnfGUER2saF3Mw1826VN8ktpnakjc";
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-    async function callGemini(prompt, outputElement, buttonElement) {
+    // Public-client provider integration disabled.
+    const AI_UNAVAILABLE_MESSAGE = 'AI orodja niso na voljo. Varna povezava s ponudnikom ni nastavljena. Noben vnos ni bil poslan.';
+
+    function callGemini(_prompt, outputElement, buttonElement) {
       outputElement.classList.remove('hidden');
-      outputElement.textContent = 'Generiram odgovor...';
-      buttonElement.disabled = true;
-      const payload = { contents: [{ parts: [{ text: prompt }] }] };
-      try {
-        const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-        if (!response.ok) throw new Error(`API klic neuspešen: ${response.statusText}`);
-        const result = await response.json();
-        const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-        outputElement.textContent = text || 'Napaka: Odgovor ni vseboval pričakovanega teksta.';
-      } catch (error) {
-        console.error('Napaka pri klicu Gemini API:', error);
-        outputElement.textContent = `Napaka pri povezovanju z AI. Poskusi znova kasneje. (${error.message})`;
-      } finally {
-        buttonElement.disabled = false;
+      outputElement.textContent = AI_UNAVAILABLE_MESSAGE;
+      if (buttonElement) {
+        buttonElement.disabled = true;
+        buttonElement.title = AI_UNAVAILABLE_MESSAGE;
       }
     }
 
     document.getElementById('generate-structure-btn').addEventListener('click', () => {
-      const idea = document.getElementById('project-idea-input').value;
       const out = document.getElementById('project-structure-output');
-      if (!idea) { out.classList.remove('hidden'); out.textContent = 'Prosim, vpiši idejo za projekt.'; return; }
-      const prompt = `Kot izkušen 3D oblikovalec in vodja projektov, generiraj predlagano strukturo map in kratek, jedrnat opis za projekt z idejo: "${idea}". Struktura naj bo logična in razširljiva. Prikaži jo kot drevo z uporabo znakov, kot so '├──' in '└──'.`;
-      callGemini(prompt, out, document.getElementById('generate-structure-btn'));
+      callGemini('', out, document.getElementById('generate-structure-btn'));
     });
 
     document.getElementById('generate-summary-btn').addEventListener('click', () => {
-      const specs = document.getElementById('tech-specs-input').value;
       const out = document.getElementById('tech-summary-output');
-      if (!specs) { out.classList.remove('hidden'); out.textContent = 'Prosim, vnesi tehnične podatke.'; return; }
-      const prompt = `Pretvori naslednje tehnične specifikacije 3D modela v jedrnat, človeku berljiv povzetek z nasvetom za uporabo. Specifikacije: "${specs}"`;
-      callGemini(prompt, out, document.getElementById('generate-summary-btn'));
+      callGemini('', out, document.getElementById('generate-summary-btn'));
     });
 
     document.getElementById('ask-assistant-btn').addEventListener('click', () => {
-      const q = document.getElementById('assistant-question-input').value;
       const out = document.getElementById('assistant-answer-output');
-      if (!q) { out.classList.remove('hidden'); out.textContent = 'Prosim, postavi vprašanje.'; return; }
-      const prompt = `Deluješ kot izkušen AI pomočnik z imenom "FORGE". Na kratko in jedrnato odgovori na naslednje vprašanje uporabnika: "${q}"`;
-      callGemini(prompt, out, document.getElementById('ask-assistant-btn'));
+      callGemini('', out, document.getElementById('ask-assistant-btn'));
     });
 
     // Smooth scrolling

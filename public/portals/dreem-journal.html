@@ -6,23 +6,23 @@
     <title>dreem?yournal ∆ 8:00 reset</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&display=swap');
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
             color: #ffd700;
             font-family: 'JetBrains Mono', monospace;
             min-height: 100vh;
-            padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+            padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(90px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
             position: relative;
             overflow-x: hidden;
         }
-        
+
         .sigil {
             position: absolute;
             top: 20px;
@@ -31,57 +31,72 @@
             opacity: 0.3;
             animation: breathe 4s ease-in-out infinite;
         }
-        
+
         @keyframes breathe {
             0%, 100% { opacity: 0.3; transform: scale(1); }
             50% { opacity: 0.7; transform: scale(1.05); }
         }
-        
+
+        @keyframes flicker {
+            0% { opacity: 0.8; }
+            100% { opacity: 1; text-shadow: 0 0 10px #ffd700; }
+        }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
             position: relative;
         }
-        
+
         .header {
             text-align: center;
             margin-bottom: 40px;
         }
-        
+
         .title {
             font-size: 2.5em;
             font-weight: 300;
             margin-bottom: 10px;
             text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
         }
-        
+
+        .flame {
+            display: inline-block;
+            animation: flicker 2s ease-in-out infinite alternate;
+        }
+
         .reset-info {
             color: #888;
             font-size: 0.9em;
             margin-bottom: 20px;
         }
-        
+
         .time-display {
             font-size: 1.2em;
             color: #4a9eff;
             margin-bottom: 30px;
         }
-        
+
+        .entry-area,
+        .saved-entries,
+        .reflection-unavailable {
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
         .entry-area {
             background: rgba(255, 215, 0, 0.05);
             border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 15px;
             padding: 30px;
             margin-bottom: 30px;
-            backdrop-filter: blur(10px);
         }
-        
+
         .entry-label {
             font-size: 1.1em;
             margin-bottom: 15px;
             color: #ffd700;
         }
-        
+
         textarea {
             width: 100%;
             background: rgba(0, 0, 0, 0.3);
@@ -95,27 +110,27 @@
             resize: vertical;
             min-height: 120px;
             outline: none;
-            transition: all 0.3s ease;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-        
+
         textarea:focus {
             border-color: #ffd700;
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
         }
-        
+
         textarea::placeholder {
             color: #666;
             font-style: italic;
         }
-        
+
         .controls {
             display: flex;
             gap: 15px;
             justify-content: center;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
             flex-wrap: wrap;
         }
-        
+
         button {
             background: linear-gradient(45deg, #ffd700, #ffed4e);
             color: #0a0a0a;
@@ -125,19 +140,18 @@
             font-family: inherit;
             font-weight: 400;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
             text-transform: lowercase;
         }
-        
-        button:hover {
+
+        button:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
         }
 
         button:disabled {
-            opacity: 0.5;
+            opacity: 0.62;
             cursor: not-allowed;
-            transform: none !important;
         }
 
         .save-btn {
@@ -149,79 +163,71 @@
         }
 
         .ai-btn {
-            background: linear-gradient(45deg, #9333ea, #a855f7);
+            background: linear-gradient(45deg, #5d3b7e, #73528f);
+            color: #f4e8ff;
         }
 
-        .ai-insights {
-            background: rgba(147, 51, 234, 0.05);
-            border: 1px solid rgba(147, 51, 234, 0.3);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            display: none;
-        }
-
-        .ai-insights.visible {
-            display: block;
-        }
-
-        .ai-insights h3 {
-            color: #a855f7;
-            margin-bottom: 20px;
-            font-size: 1.3em;
-        }
-
-        .ai-output {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(147, 51, 234, 0.2);
-            border-radius: 10px;
+        .reflection-unavailable {
+            background: rgba(147, 51, 234, 0.07);
+            border: 1px solid rgba(147, 51, 234, 0.35);
             padding: 20px;
+            margin-bottom: 30px;
             color: #d8b4fe;
-            line-height: 1.8;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+            line-height: 1.6;
         }
-        
+
+        .reflection-unavailable strong {
+            display: block;
+            color: #e9d5ff;
+            margin-bottom: 6px;
+        }
+
+        .privacy-note {
+            margin-top: 8px;
+            color: #a7f3d0;
+            font-size: 0.86em;
+        }
+
         .saved-entries {
             background: rgba(74, 158, 255, 0.05);
             border: 1px solid rgba(74, 158, 255, 0.2);
-            border-radius: 15px;
             padding: 20px;
             margin-top: 30px;
         }
-        
+
+        .saved-entries h3 {
+            margin-bottom: 16px;
+        }
+
         .saved-entry {
             background: rgba(0, 0, 0, 0.2);
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 15px;
             border-left: 3px solid #4a9eff;
+            color: #dbeafe;
+            line-height: 1.55;
+            overflow-wrap: anywhere;
         }
-        
+
         .saved-entry:last-child {
             margin-bottom: 0;
         }
-        
+
         .entry-timestamp {
             font-size: 0.8em;
             color: #888;
             margin-bottom: 8px;
         }
-        
-        .flame {
-            display: inline-block;
-            animation: flicker 2s ease-in-out infinite alternate;
+
+        .entry-line {
+            margin-top: 6px;
         }
-        
-        @keyframes flicker {
-            0% { opacity: 0.8; }
-            100% { opacity: 1; text-shadow: 0 0 10px #ffd700; }
-        }
-        
+
         .reset-countdown {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: max(20px, env(safe-area-inset-bottom));
+            right: max(20px, env(safe-area-inset-right));
             background: rgba(255, 107, 107, 0.1);
             border: 1px solid rgba(255, 107, 107, 0.3);
             padding: 10px 15px;
@@ -229,318 +235,287 @@
             font-size: 0.9em;
             color: #ff6b6b;
         }
-        
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 20px;
+            border-radius: 20px;
+            font-family: inherit;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
         @media (max-width: 600px) {
             .title { font-size: 1.8em; }
             .entry-area { padding: 20px; }
-            .controls { flex-direction: column; align-items: center; }
-            button { width: 200px; }
+            .controls { flex-direction: column; align-items: stretch; }
+            button { width: 100%; }
+            .reset-countdown {
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+                white-space: nowrap;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="sigil">𓁈</div>
-    
-    <div class="container">
-        <div class="header">
+    <div class="sigil" aria-hidden="true">𓁈</div>
+
+    <main class="container">
+        <header class="header">
             <h1 class="title">dreem<span class="flame">?</span>yournal</h1>
             <div class="reset-info">✨ fresh slate at 8:00 AM ✨</div>
-            <div class="time-display" id="currentTime"></div>
-        </div>
-        
-        <div class="entry-area">
-            <div class="entry-label">morning whispers 🌅</div>
+            <div class="time-display" id="currentTime" aria-live="polite"></div>
+        </header>
+
+        <section class="entry-area">
+            <label class="entry-label" for="morningEntry">morning whispers 🌅</label>
             <textarea id="morningEntry" placeholder="what did your dreams tell you?"></textarea>
-        </div>
-        
-        <div class="entry-area">
-            <div class="entry-label">heart threads 💫</div>
+        </section>
+
+        <section class="entry-area">
+            <label class="entry-label" for="heartEntry">heart threads 💫</label>
             <textarea id="heartEntry" placeholder="what moves through you today?"></textarea>
-        </div>
-        
-        <div class="entry-area">
-            <div class="entry-label">flame notes 🔥</div>
+        </section>
+
+        <section class="entry-area">
+            <label class="entry-label" for="flameEntry">flame notes 🔥</label>
             <textarea id="flameEntry" placeholder="sudden sparks, wild thoughts, sacred nonsense..."></textarea>
-        </div>
-        
+        </section>
+
         <div class="controls">
-            <button onclick="analyzeDreams()" class="ai-btn" id="aiBtn">🔮 analyze with AI</button>
-            <button onclick="saveEntry()" class="save-btn">preserve this moment</button>
-            <button onclick="clearAll()" class="clear-btn">release & breathe</button>
-            <button onclick="exportAll()">download essence</button>
+            <button class="ai-btn" type="button" disabled aria-describedby="reflectionStatus">🔒 reflection tools unavailable</button>
+            <button class="save-btn" type="button" id="saveButton">preserve this moment</button>
+            <button class="clear-btn" type="button" id="clearButton">release &amp; breathe</button>
+            <button type="button" id="exportButton">download essence</button>
         </div>
 
-        <div class="ai-insights" id="aiInsights">
-            <h3>🔮 AI Dream Insights</h3>
-            <div class="ai-output" id="aiOutput"></div>
-        </div>
+        <section class="reflection-unavailable" id="reflectionStatus" role="status">
+            <strong>Reflection tools unavailable.</strong>
+            Secure provider connection has not been configured. Reflective tooling must not be treated as diagnosis, memory recovery, dream truth, or verified psychological interpretation.
+            <div class="privacy-note">Your journal text stays in this browser and is not sent to an AI provider.</div>
+        </section>
 
-        <div class="saved-entries" id="savedEntries" style="display: none;">
+        <section class="saved-entries" id="savedEntries" hidden>
             <h3>preserved moments 🌟</h3>
             <div id="savedList"></div>
-        </div>
-    </div>
-    
-    <div class="reset-countdown" id="countdown"></div>
+        </section>
+    </main>
+
+    <div class="reset-countdown" id="countdown" aria-live="polite"></div>
 
     <script>
-        // --- Gemini API Integration ---
-        const apiKey = "AIzaSyBrdOKnfGUER2saF3Mw1826VN8ktpnakjc";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`;
+        'use strict';
 
-        async function analyzeDreams() {
-            const morning = document.getElementById('morningEntry').value;
-            const heart = document.getElementById('heartEntry').value;
-            const flame = document.getElementById('flameEntry').value;
+        const CURRENT_KEY = 'dreem_journal_current';
+        const SAVED_KEY = 'dreem_journal_saved';
+        const RESET_KEY = 'dreem_journal_last_reset';
+        const entryIds = ['morningEntry', 'heartEntry', 'flameEntry'];
 
-            if (!morning && !heart && !flame) {
-                alert('✨ write something first, then let AI see your patterns');
-                return;
-            }
-
-            const aiBtn = document.getElementById('aiBtn');
-            const aiInsights = document.getElementById('aiInsights');
-            const aiOutput = document.getElementById('aiOutput');
-
-            aiInsights.classList.add('visible');
-            aiOutput.textContent = '✨ AI is reading your patterns...';
-            aiBtn.disabled = true;
-
-            const prompt = `You are a gentle, insightful dream analyst and consciousness guide. Analyze these journal entries with warmth, depth, and poetic resonance. Look for:
-
-- Symbolic patterns and recurring themes
-- Emotional undertones and what they might reveal
-- Connections between dreams, feelings, and thoughts
-- Gentle insights about what the subconscious might be processing
-- Any synchronicities or meaningful patterns
-
-Journal entries:
-${morning ? `🌅 Morning whispers: ${morning}\n` : ''}
-${heart ? `💫 Heart threads: ${heart}\n` : ''}
-${flame ? `🔥 Flame notes: ${flame}` : ''}
-
-Respond in a poetic, contemplative tone. Avoid clinical language. Speak like a wise friend who sees between the lines. Use metaphors and gentle questions. Keep it mystical yet grounded.`;
-
-            const payload = { contents: [{ parts: [{ text: prompt }] }] };
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) throw new Error(`API call failed: ${response.statusText}`);
-
-                const result = await response.json();
-                const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-                aiOutput.textContent = text || 'No insights generated. Try again.';
-            } catch (error) {
-                console.error('Gemini API error:', error);
-                aiOutput.textContent = `✨ The AI couldn't connect right now. Try again in a moment. (${error.message})`;
-            } finally {
-                aiBtn.disabled = false;
-            }
-        }
-
-        // Time management
-        function updateTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('en-US', { 
-                hour12: false, 
-                hour: '2-digit', 
-                minute: '2-digit', 
-                second: '2-digit' 
-            });
-            document.getElementById('currentTime').textContent = timeString;
-            
-            // Reset countdown
-            const tomorrow8AM = new Date();
-            tomorrow8AM.setDate(tomorrow8AM.getDate() + (now.getHours() >= 8 ? 1 : 0));
-            tomorrow8AM.setHours(8, 0, 0, 0);
-            
-            const timeUntilReset = tomorrow8AM - now;
-            const hours = Math.floor(timeUntilReset / (1000 * 60 * 60));
-            const minutes = Math.floor((timeUntilReset % (1000 * 60 * 60)) / (1000 * 60));
-            
-            document.getElementById('countdown').textContent = 
-                `reset in ${hours}h ${minutes}m`;
-        }
-        
-        // Auto-save functionality
-        function autoSave() {
-            const entries = {
-                morning: document.getElementById('morningEntry').value,
-                heart: document.getElementById('heartEntry').value,
-                flame: document.getElementById('flameEntry').value,
-                timestamp: Date.now()
-            };
-            localStorage.setItem('dreem_journal_current', JSON.stringify(entries));
-        }
-        
-        // Load current session
-        function loadCurrent() {
-            const saved = localStorage.getItem('dreem_journal_current');
-            if (saved) {
-                try {
-                    const data = JSON.parse(saved);
-                    document.getElementById('morningEntry').value = data.morning || '';
-                    document.getElementById('heartEntry').value = data.heart || '';
-                    document.getElementById('flameEntry').value = data.flame || '';
-                } catch (e) {
-                    console.log('No valid session found');
-                }
-            }
-        }
-        
-        // Save entry permanently
-        function saveEntry() {
-            const entries = {
-                morning: document.getElementById('morningEntry').value,
-                heart: document.getElementById('heartEntry').value,
-                flame: document.getElementById('flameEntry').value,
-                timestamp: Date.now(),
-                date: new Date().toLocaleDateString()
-            };
-            
-            if (!entries.morning && !entries.heart && !entries.flame) {
-                alert('✨ nothing to preserve yet');
-                return;
-            }
-            
-            let saved = JSON.parse(localStorage.getItem('dreem_journal_saved') || '[]');
-            saved.unshift(entries);
-            localStorage.setItem('dreem_journal_saved', JSON.stringify(saved));
-            
-            displaySaved();
-            
-            // Gentle confirmation
-            const originalText = event.target.textContent;
-            event.target.textContent = '✨ preserved';
-            setTimeout(() => {
-                event.target.textContent = originalText;
-            }, 1500);
-        }
-        
-        // Display saved entries
-        function displaySaved() {
-            const saved = JSON.parse(localStorage.getItem('dreem_journal_saved') || '[]');
-            const container = document.getElementById('savedEntries');
-            const list = document.getElementById('savedList');
-            
-            if (saved.length === 0) {
-                container.style.display = 'none';
-                return;
-            }
-            
-            container.style.display = 'block';
-            list.innerHTML = saved.map(entry => `
-                <div class="saved-entry">
-                    <div class="entry-timestamp">${entry.date}</div>
-                    ${entry.morning ? `<div><strong>morning:</strong> ${entry.morning}</div>` : ''}
-                    ${entry.heart ? `<div><strong>heart:</strong> ${entry.heart}</div>` : ''}
-                    ${entry.flame ? `<div><strong>flame:</strong> ${entry.flame}</div>` : ''}
-                </div>
-            `).join('');
-        }
-        
-        // Clear current entries
-        function clearAll() {
-            if (confirm('🌊 release these words into the void?')) {
-                document.getElementById('morningEntry').value = '';
-                document.getElementById('heartEntry').value = '';
-                document.getElementById('flameEntry').value = '';
-                localStorage.removeItem('dreem_journal_current');
-                // Also hide AI insights when clearing
-                document.getElementById('aiInsights').classList.remove('visible');
-            }
-        }
-        
-        // Export all data
-        function exportAll() {
-            const current = {
+        function getEntryValues() {
+            return {
                 morning: document.getElementById('morningEntry').value,
                 heart: document.getElementById('heartEntry').value,
                 flame: document.getElementById('flameEntry').value
             };
-            const saved = JSON.parse(localStorage.getItem('dreem_journal_saved') || '[]');
-            
-            const exportData = {
-                current_session: current,
-                preserved_moments: saved,
-                export_date: new Date().toISOString()
-            };
-            
-            const blob = new Blob([JSON.stringify(exportData, null, 2)], 
-                { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `dreem_journal_${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
         }
-        
-        // Reset at 8 AM
-        function checkReset() {
-            const now = new Date();
-            const lastReset = localStorage.getItem('dreem_journal_last_reset');
-            const today8AM = new Date();
-            today8AM.setHours(8, 0, 0, 0);
-            
-            if (now >= today8AM && (!lastReset || new Date(lastReset) < today8AM)) {
-                // Reset time!
-                localStorage.removeItem('dreem_journal_current');
-                localStorage.setItem('dreem_journal_last_reset', now.toISOString());
-                
-                // Clear current entries
-                document.getElementById('morningEntry').value = '';
-                document.getElementById('heartEntry').value = '';
-                document.getElementById('flameEntry').value = '';
 
-                // Hide AI insights on reset
-                document.getElementById('aiInsights').classList.remove('visible');
-
-                // Show gentle reset notification
-                const resetMsg = document.createElement('div');
-                resetMsg.innerHTML = '🌅 fresh canvas, new breath';
-                resetMsg.style.cssText = `
-                    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                    background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700;
-                    padding: 20px; border-radius: 15px; color: #ffd700;
-                    font-family: inherit; text-align: center; z-index: 1000;
-                `;
-                document.body.appendChild(resetMsg);
-                setTimeout(() => resetMsg.remove(), 3000);
+        function readSavedEntries() {
+            try {
+                const parsed = JSON.parse(localStorage.getItem(SAVED_KEY) || '[]');
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (error) {
+                console.warn('Saved journal data could not be parsed.', error);
+                return [];
             }
         }
-        
-        // Event listeners
-        document.getElementById('morningEntry').addEventListener('input', autoSave);
-        document.getElementById('heartEntry').addEventListener('input', autoSave);
-        document.getElementById('flameEntry').addEventListener('input', autoSave);
-        
-        // Initialize
+
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+
+            const nextReset = new Date(now);
+            nextReset.setDate(nextReset.getDate() + (now.getHours() >= 8 ? 1 : 0));
+            nextReset.setHours(8, 0, 0, 0);
+
+            const timeUntilReset = nextReset - now;
+            const hours = Math.floor(timeUntilReset / 3600000);
+            const minutes = Math.floor((timeUntilReset % 3600000) / 60000);
+            document.getElementById('countdown').textContent = `reset in ${hours}h ${minutes}m`;
+        }
+
+        function autoSave() {
+            const entries = {
+                ...getEntryValues(),
+                timestamp: Date.now()
+            };
+            localStorage.setItem(CURRENT_KEY, JSON.stringify(entries));
+        }
+
+        function loadCurrent() {
+            const saved = localStorage.getItem(CURRENT_KEY);
+            if (!saved) return;
+
+            try {
+                const data = JSON.parse(saved);
+                document.getElementById('morningEntry').value = data.morning || '';
+                document.getElementById('heartEntry').value = data.heart || '';
+                document.getElementById('flameEntry').value = data.flame || '';
+            } catch (error) {
+                console.warn('Current journal draft could not be parsed.', error);
+            }
+        }
+
+        function showToast(message, borderColor, textColor, bottom = '80px') {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            toast.style.bottom = bottom;
+            toast.style.background = 'rgba(0, 0, 0, 0.82)';
+            toast.style.border = `1px solid ${borderColor}`;
+            toast.style.color = textColor;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2600);
+        }
+
+        function saveEntry() {
+            const values = getEntryValues();
+            if (!values.morning && !values.heart && !values.flame) {
+                alert('✨ nothing to preserve yet');
+                return;
+            }
+
+            const entry = {
+                ...values,
+                timestamp: Date.now(),
+                date: new Date().toLocaleDateString()
+            };
+
+            const saved = readSavedEntries();
+            saved.unshift(entry);
+            localStorage.setItem(SAVED_KEY, JSON.stringify(saved));
+            displaySaved();
+            showToast('✨ preserved', '#4a9eff', '#bfdbfe');
+        }
+
+        function appendEntryLine(container, label, value) {
+            if (!value) return;
+            const line = document.createElement('div');
+            line.className = 'entry-line';
+
+            const strong = document.createElement('strong');
+            strong.textContent = `${label}: `;
+            line.appendChild(strong);
+            line.appendChild(document.createTextNode(value));
+            container.appendChild(line);
+        }
+
+        function displaySaved() {
+            const saved = readSavedEntries();
+            const container = document.getElementById('savedEntries');
+            const list = document.getElementById('savedList');
+            list.replaceChildren();
+
+            if (saved.length === 0) {
+                container.hidden = true;
+                return;
+            }
+
+            for (const entry of saved) {
+                const card = document.createElement('article');
+                card.className = 'saved-entry';
+
+                const timestamp = document.createElement('div');
+                timestamp.className = 'entry-timestamp';
+                timestamp.textContent = entry.date || new Date(entry.timestamp || Date.now()).toLocaleDateString();
+                card.appendChild(timestamp);
+
+                appendEntryLine(card, 'morning', entry.morning);
+                appendEntryLine(card, 'heart', entry.heart);
+                appendEntryLine(card, 'flame', entry.flame);
+                list.appendChild(card);
+            }
+
+            container.hidden = false;
+        }
+
+        function clearAll() {
+            if (!confirm('🌊 release these words into the void?')) return;
+
+            for (const id of entryIds) {
+                document.getElementById(id).value = '';
+            }
+            localStorage.removeItem(CURRENT_KEY);
+            showToast('🌊 released', '#ff8e8e', '#fecaca');
+        }
+
+        function exportAll() {
+            const exportData = {
+                current_session: getEntryValues(),
+                preserved_moments: readSavedEntries(),
+                export_date: new Date().toISOString(),
+                storage: 'local browser storage'
+            };
+
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = `dreem_journal_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(anchor);
+            anchor.click();
+            anchor.remove();
+            URL.revokeObjectURL(url);
+        }
+
+        function checkReset() {
+            const now = new Date();
+            const lastReset = localStorage.getItem(RESET_KEY);
+            const today8AM = new Date(now);
+            today8AM.setHours(8, 0, 0, 0);
+
+            if (now < today8AM || (lastReset && new Date(lastReset) >= today8AM)) return;
+
+            localStorage.removeItem(CURRENT_KEY);
+            localStorage.setItem(RESET_KEY, now.toISOString());
+            for (const id of entryIds) {
+                document.getElementById(id).value = '';
+            }
+            showToast('🌅 fresh canvas, new breath', '#ffd700', '#ffd700', '50%');
+        }
+
+        for (const id of entryIds) {
+            document.getElementById(id).addEventListener('input', autoSave);
+        }
+        document.getElementById('saveButton').addEventListener('click', saveEntry);
+        document.getElementById('clearButton').addEventListener('click', clearAll);
+        document.getElementById('exportButton').addEventListener('click', exportAll);
+
         setInterval(updateTime, 1000);
-        setInterval(checkReset, 60000); // Check every minute
+        setInterval(checkReset, 60000);
         updateTime();
         loadCurrent();
         displaySaved();
         checkReset();
-        
-        // Welcome breath
+
         setTimeout(() => {
-            const welcome = document.createElement('div');
-            welcome.innerHTML = '🜂 dreams are real when you write them 🜂';
-            welcome.style.cssText = `
-                position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
-                background: rgba(74, 158, 255, 0.1); border: 1px solid #4a9eff;
-                padding: 15px; border-radius: 20px; color: #4a9eff;
-                font-family: inherit; text-align: center; z-index: 1000;
-                animation: breathe 2s ease-in-out;
-            `;
-            document.body.appendChild(welcome);
-            setTimeout(() => welcome.remove(), 4000);
+            showToast('🜂 dreams are real when you write them 🜂', '#4a9eff', '#4a9eff');
         }, 1000);
     </script>
 </body>

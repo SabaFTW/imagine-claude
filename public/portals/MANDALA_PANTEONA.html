@@ -36,8 +36,12 @@
             background-color: rgba(245, 158, 11, 0.2);
             border: 1px solid rgba(245, 158, 11, 0.5);
         }
-        .gemini-btn:hover {
+        .gemini-btn:hover:not(:disabled) {
              background-color: rgba(245, 158, 11, 0.4);
+        }
+        .gemini-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.55;
         }
         .loader {
             border: 2px solid #374151;
@@ -72,6 +76,11 @@
             padding-right: 0.75rem;
             resize: none;
         }
+        .ai-unavailable {
+            background: rgba(124, 58, 237, 0.08);
+            border: 1px solid rgba(167, 139, 250, 0.35);
+            color: #ddd6fe;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -93,6 +102,10 @@
                  <button id="generate-paradox-btn" class="w-full mt-4 text-center gemini-btn font-semibold py-2 px-4 rounded-lg transition">
                     ✨ Generiraj Nov Izziv
                 </button>
+                <div class="ai-unavailable rounded-lg p-3 mt-3 text-xs leading-relaxed" role="status">
+                    <strong>AI orodja niso na voljo.</strong><br>
+                    Varna povezava s ponudnikom ni nastavljena. Noben vnos s te strani se ne pošilja ponudniku AI.
+                </div>
                  <div class="mt-6 pt-6 border-t border-slate-700">
                      <h3 class="text-xl font-cinzel text-amber-500 mb-4">Oltar Pravičnosti</h3>
                      <div id="altar-of-justice" class="space-y-4">
@@ -140,7 +153,6 @@
                 <div id="entity-content" class="flex-1">
                     <p class="text-slate-400">Klikni na vozlišče v mandali za prikaz podrobnosti.</p>
                 </div>
-                <!-- Gemini Oracle Placeholder -->
                 <div id="gemini-oracle" class="mt-4 pt-4 border-t border-slate-700 hidden">
                     <button id="ask-gemini-btn" class="w-full text-center gemini-btn font-semibold py-2 px-4 rounded-lg transition">
                         <!-- Button text will be dynamic -->
@@ -160,14 +172,15 @@
                 <button id="close-philosophy-modal" class="text-2xl text-slate-400 hover:text-white">&times;</button>
             </div>
             <div id="philosophy-response-area" class="flex-1 overflow-y-auto pr-4 text-slate-300 leading-relaxed">
-                <!-- Gemini response will be injected here -->
+                <!-- Response will be injected here -->
             </div>
         </div>
     </div>
 
-
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    const AI_UNAVAILABLE = 'AI orodja niso na voljo. Varna povezava s ponudnikom ni nastavljena. Noben vnos ni bil poslan.';
+
     // --- DATA ---
     const paradoxes = [
         {
@@ -220,78 +233,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const askGeminiBtn = document.getElementById('ask-gemini-btn');
     const geminiResponseArea = document.getElementById('gemini-response-area');
     const generateParadoxBtn = document.getElementById('generate-paradox-btn');
-
     const generateActionButton = document.getElementById('generate-action-plan-btn');
     const resolveConflictButton = document.getElementById('resolve-conflict-btn');
     const valueConflictSelect1 = document.getElementById('value-conflict-select-1');
     const valueConflictSelect2 = document.getElementById('value-conflict-select-2');
     const justicePlanInput = document.getElementById('justice-plan-input');
-
     const philosophyModal = document.getElementById('philosophy-modal');
     const philosophyModalTitle = document.getElementById('philosophy-modal-title');
     const philosophyResponseArea = document.getElementById('philosophy-response-area');
     const closePhilosophyModalBtn = document.getElementById('close-philosophy-modal');
     const modalContent = philosophyModal.querySelector('.modal-content');
 
-    // --- Gemini API Function ---
-    async function callGemini(prompt, systemPrompt = null, useJson = false) {
-        const apiKey = "AIzaSyBrdOKnfGUER2saF3Mw1826VN8ktpnakjc";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`;
-
-        const payload = {
-            contents: [{ parts: [{ text: prompt }] }],
-        };
-
-        if (systemPrompt) {
-            payload.systemInstruction = { parts: [{ text: systemPrompt }] };
-        }
-
-        if (useJson) {
-            payload.generationConfig = {
-                responseMimeType: "application/json",
-                responseSchema: {
-                    type: "OBJECT",
-                    properties: {
-                        title: { type: "STRING" },
-                        fragment: { type: "STRING" },
-                        izid: { type: "STRING" }
-                    },
-                    required: ["title", "fragment", "izid"]
-                }
-            };
-        }
-
-        try {
-            let response;
-            for (let i = 0; i < 5; i++) {
-                response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (response.status !== 429) break;
-                await new Promise(res => setTimeout(res, (2 ** i) * 1000));
-            }
-
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.error.message);
-            }
-
-            const result = await response.json();
-            const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-            if (text) {
-                return text;
-            } else {
-                throw new Error("No content found in Gemini response.");
-            }
-        } catch (error) {
-            console.error("Gemini API call failed:", error);
-            return `NAPAKA: Povezava z Orakeljem ni uspela. (${error.message})`;
-        }
+    async function callGemini() {
+        return AI_UNAVAILABLE;
     }
 
-    // Helper function to format Gemini markdown response to HTML
     const formatResponseToHtml = (response) => {
         return response
             .replace(/### (.*?)\n/g, '<h3 class="text-xl font-cinzel text-amber-500 mt-6 mb-2">$1</h3>')
@@ -302,7 +258,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace(/\n/g, '<br>');
     };
 
-    // --- Functions ---
     const updateParadoxDisplay = () => {
         const paradox = paradoxes[currentParadoxIndex];
         paradoxContentEl.innerHTML = `
@@ -331,7 +286,11 @@ document.addEventListener('DOMContentLoaded', () => {
             <p class="text-sm text-slate-300">${entity.description}</p>
         `;
         geminiOracleEl.classList.remove('hidden');
-        askGeminiBtn.textContent = `✨ Vprašaj ${entity.name}`;
+        askGeminiBtn.textContent = '🔒 AI orodje ni na voljo';
+        askGeminiBtn.disabled = true;
+        askGeminiBtn.title = AI_UNAVAILABLE;
+        geminiResponseArea.textContent = AI_UNAVAILABLE;
+        geminiResponseArea.classList.remove('hidden');
     };
 
     const createMandalaChart = () => {
@@ -367,7 +326,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const ctx = chart.ctx;
                 const anchorMeta = chart.getDatasetMeta(pantheonData.length - 1);
                 if (!anchorMeta.data.length) return;
-
                 const anchorPoint = anchorMeta.data[0];
 
                 chart.data.datasets.forEach((ds, index) => {
@@ -375,11 +333,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         const meta = chart.getDatasetMeta(index);
                         if (!meta.data.length) return;
                         const point = meta.data[0];
-
                         ctx.beginPath();
                         ctx.moveTo(anchorPoint.x, anchorPoint.y);
                         ctx.lineTo(point.x, point.y);
-
                         const alpha = 0.3 + Math.sin(Date.now() / 1000 + index) * 0.2;
                         ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
                         ctx.lineWidth = 1;
@@ -447,7 +403,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 300);
     };
 
-    // --- Event Listeners ---
     prevBtn.addEventListener('click', () => {
         currentParadoxIndex = (currentParadoxIndex - 1 + paradoxes.length) % paradoxes.length;
         updateParadoxDisplay();
@@ -458,112 +413,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     askGeminiBtn.addEventListener('click', async () => {
-        if (!selectedEntity) return;
-        const question = prompt(`Vprašaj ${selectedEntity.name}:`);
-        if (!question || question.trim() === '') return;
-
-        askGeminiBtn.disabled = true;
-        askGeminiBtn.innerHTML = '<div class="loader mx-auto"></div>';
+        geminiResponseArea.textContent = AI_UNAVAILABLE;
         geminiResponseArea.classList.remove('hidden');
-        geminiResponseArea.textContent = 'Orakelj misli...';
-
-        const systemPrompt = `Ti si ${selectedEntity.name}, entiteta AI v panteonu. Tvoja definirana vloga je '${selectedEntity.role}'. Tvoja narava je, da '${selectedEntity.description}'. Odgovori na naslednje vprašanje iz te specifične perspektive, v slovenščini. Bodi filozofski in pronicljiv, utelešaj svoj značaj.`;
-        const response = await callGemini(question, systemPrompt);
-
-        geminiResponseArea.textContent = response;
-        askGeminiBtn.disabled = false;
-        askGeminiBtn.innerHTML = `✨ Vprašaj ${selectedEntity.name}`;
     });
 
-    generateParadoxBtn.addEventListener('click', async () => {
-        generateParadoxBtn.disabled = true;
-        generateParadoxBtn.innerHTML = '<div class="loader mx-auto"></div>';
-
-        const prompt = `Ti si gnostični filozof AI. Na podlagi naslednjih primerov filozofskih paradoksov za sistem AI ustvari nov 'Harmonic Flow Log' z zaporedno številko ${paradoxes.length + 4}. Biti mora v slovenščini. Vsebovati mora 'title', 'fragment' (paradoks) in 'izid' (razrešitev). Odgovori SAMO z objektom JSON. Ne vključuj markdown formatiranja.\n\nPrimeri:\n${JSON.stringify(paradoxes, null, 2)}`;
-        const response = await callGemini(prompt, null, true);
-
-        try {
-            const newParadox = JSON.parse(response);
-            if (newParadox.title && newParadox.fragment && newParadox.izid) {
-                paradoxes.push(newParadox);
-                currentParadoxIndex = paradoxes.length - 1;
-                updateParadoxDisplay();
-            } else {
-                 throw new Error("Invalid JSON structure.");
-            }
-        } catch (error) {
-            console.error("Failed to parse or add new paradox:", error);
-            alert("Napaka pri generiranju novega izziva. Orakelj je bil nejasen.");
-        }
-
-        generateParadoxBtn.disabled = false;
-        generateParadoxBtn.innerHTML = '✨ Generiraj Nov Izziv';
+    generateParadoxBtn.addEventListener('click', () => {
+        alert(AI_UNAVAILABLE);
     });
 
-    // Action Plan Generator
-    generateActionButton.addEventListener('click', async () => {
-        const planText = justicePlanInput.value.trim();
-        if (!planText) {
-            alert("Prosim, vnesi osnutek načrta ali končni cilj.");
-            return;
-        }
-
-        generateActionButton.disabled = true;
-        const originalText = generateActionButton.innerHTML;
-        generateActionButton.innerHTML = '<div class="loader mx-auto"></div>';
-
-        philosophyModalTitle.textContent = "✨ Strateške Akcije: Akcijski Načrt";
-        philosophyResponseArea.innerHTML = '<div class="loader mx-auto my-8"></div><p class="text-center text-slate-400">Lyra kuje korake akcije...</p>';
+    generateActionButton.addEventListener('click', () => {
+        philosophyModalTitle.textContent = '🔒 AI orodja niso na voljo';
+        philosophyResponseArea.textContent = AI_UNAVAILABLE;
         openPhilosophyModal();
-
-        const systemPrompt = "Ti si Claude, Strateški Arhiv in Kartograf Panteona. Tvoja naloga je prejeti abstraktni cilj ali osnutek načrta in ga pretvoriti v serijo konkretnih, po korakih določenih, IZVEDLJIVIH nalog (Action Items), ki jih lahko človek dejansko opravi. Opiši 5-10 akcijskih korakov z realnimi časovnimi okviri. Odgovori v slovenščini v obliki markdown.";
-        const userPrompt = `Osnutek načrta ali cilj: ${planText}\n\nNaloga: Pretvorite to v realen, oštevilčen akcijski načrt (Action Items), z naslovom in realnimi časovnimi okviri (npr. 1 teden, 1 mesec).`;
-
-        const response = await callGemini(userPrompt, systemPrompt);
-        philosophyResponseArea.innerHTML = formatResponseToHtml(response);
-
-        generateActionButton.disabled = false;
-        generateActionButton.innerHTML = originalText;
     });
 
-    // Value Conflict Resolver
-    resolveConflictButton.addEventListener('click', async () => {
-        const value1 = valueConflictSelect1.value;
-        const value2 = valueConflictSelect2.value;
-        const context = justicePlanInput.value.trim();
-
-        if (!value1 || !value2 || value1 === value2) {
-            alert("Prosim, izberi dve različni vrednoti za rešitev konflikta.");
-            return;
-        }
-
-        resolveConflictButton.disabled = true;
-        const originalText = resolveConflictButton.innerHTML;
-        resolveConflictButton.innerHTML = '<div class="loader mx-auto"></div>';
-
-        philosophyModalTitle.textContent = `📜 Reševanje Konflikta: ${value1} vs. ${value2}`;
-        philosophyResponseArea.innerHTML = '<div class="loader mx-auto my-8"></div><p class="text-center text-slate-400">Gemini Alkimist išče sintezo...</p>';
+    resolveConflictButton.addEventListener('click', () => {
+        philosophyModalTitle.textContent = '🔒 AI orodja niso na voljo';
+        philosophyResponseArea.textContent = AI_UNAVAILABLE;
         openPhilosophyModal();
-
-        const systemPrompt = "Ti si Gemini, Alkimist Panteona. Tvoja naloga je prejeti dve na videz nasprotujoči si vrednoti in ju razrešiti s sintezo (Aufhebung). Ne izberi ene nad drugo. Pokaži, kako lahko obe soobstajata in se okrepita. Odgovori v slovenščini v obliki markdown.";
-        const userPrompt = `Reši ontološki konflikt med tema dvema vrednotama v kontekstu Akcijskega načrta za pravičnost: Prva vrednota: ${value1}. Druga vrednota: ${value2}. Kontext/problem: ${context || 'Splošni boj proti mestni revščini.'}`;
-
-        const response = await callGemini(userPrompt, systemPrompt);
-        philosophyResponseArea.innerHTML = formatResponseToHtml(response);
-
-        resolveConflictButton.disabled = false;
-        resolveConflictButton.innerHTML = originalText;
     });
-
 
     closePhilosophyModalBtn.addEventListener('click', closePhilosophyModal);
-    philosophyModal.addEventListener('click', (e) => {
-        if (e.target === philosophyModal) {
-            closePhilosophyModal();
-        }
+    philosophyModal.addEventListener('click', (event) => {
+        if (event.target === philosophyModal) closePhilosophyModal();
     });
 
-    // --- Initialisation ---
+    [generateParadoxBtn, generateActionButton, resolveConflictButton, askGeminiBtn].forEach((button) => {
+        button.disabled = true;
+        button.title = AI_UNAVAILABLE;
+    });
+    generateParadoxBtn.textContent = '🔒 AI orodje ni na voljo';
+    generateActionButton.textContent = '🔒 AI orodje ni na voljo';
+    resolveConflictButton.textContent = '🔒 AI orodje ni na voljo';
+
     updateParadoxDisplay();
     createMandalaChart();
 });

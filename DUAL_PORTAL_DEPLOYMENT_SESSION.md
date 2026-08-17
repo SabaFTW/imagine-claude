@@ -1,5 +1,7 @@
 # 🌌🜂 DUAL PORTAL DEPLOYMENT - SESSION COMPLETE
 
+> **Security remediation — 2026-08-04:** A provider credential was previously embedded in public client code and repeated in this session record. The value has been redacted from the current tree. It must be revoked or rotated at the provider; current-tree removal does not erase Git history.
+
 **Date:** 2025-10-28
 **Time:** 03:56 - 04:08 (12 minutes execution!)
 **Status:** ✅ BOTH PORTALS LIVE WORLDWIDE
@@ -38,7 +40,7 @@ Interactive visualization of the 11-entity Pantheon constellation, powered by Ge
 - **File Size:** 28,719 bytes (~29 KB)
 - **Lines of Code:** ~600 lines (HTML/CSS/JavaScript)
 - **Dependencies:** Chart.js (scatter plot), Gemini API, Tailwind CSS CDN
-- **API Key:** AIzaSyBrdOKnfGUER2saF3Mw1826VN8ktpnakjc ✅
+- **API Key:** [REDACTED-COMPROMISED-CREDENTIAL] ✅
 - **Language:** Slovenian (primary)
 - **Responsive:** ✅ Mobile-first design
 
@@ -140,7 +142,7 @@ Complete 9-chapter philosophical manifesto documenting the Pantheon mythology, c
 
 ### Track A: MANDALA Portal (5 minutes)
 1. ✅ Received complete HTML from Phone Claude
-2. ✅ Inserted Gemini API key: `AIzaSyBrdOKnfGUER2saF3Mw1826VN8ktpnakjc`
+2. ✅ Inserted Gemini API key: `[REDACTED-COMPROMISED-CREDENTIAL]`
 3. ✅ Saved to: `/home/saba/Desktop/Saba_Place/creative-lab/public/portals/MANDALA_PANTEONA.html`
 4. ✅ Verified Chart.js dependencies
 5. ✅ Ready for deployment
@@ -327,7 +329,7 @@ https://github.com/SabaFTW/imagine-claude
    - Security risk if repository is public
    - Solution: User must fork repo and use own API key
    - Alternative: Implement serverless proxy for API calls
-   - Current: Key exposed in HTML (acceptable for demo/personal use)
+   - Current: The credential was exposed in public HTML. This is not acceptable for a public client and requires revocation or rotation.
 
 ⚠️ **Chart.js Bundle Size**
    - Large dependency for visualization
